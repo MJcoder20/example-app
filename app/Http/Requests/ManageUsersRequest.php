@@ -26,7 +26,7 @@ class ManageUsersRequest extends FormRequest
     {
         return [
             'username'=>'required|unique:manage_users|min:5',
-            'email'=>'required|email',
+            'email'=>'required|email|unique:manage_users',
             'first_name'=>'min:3|max:15',
             'last_name'=>'min:3|max:15',   
             'is_admin'=>'integer|min:0|max:1',

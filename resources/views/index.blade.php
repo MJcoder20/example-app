@@ -1,5 +1,5 @@
 <x-layout>
-    <h1>Users List</h1>
+    <h1 style="font-size:40px;font-weight:bold">Users List</h1>
     <br><br>
     <div class="d-flex flex-column  justify-content-center">     
         <ul class="list-group">
