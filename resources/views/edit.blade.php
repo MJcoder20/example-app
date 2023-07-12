@@ -8,7 +8,7 @@
                 <input id="username" type="text" name="username" required value="{{$user->username}}"
                 class="@error('username') is_invalid @enderror form-control"/><br><br>
                 @error('username')
-                    <div>{{$message}}</div>
+                    <div class="alert alert-danger">{{$message}}</div>
                 @enderror
             </div>
             <div class="form-group">
@@ -16,7 +16,7 @@
                 <input id="email" type="text" name="email" required value="{{$user->email}}"
                 class="@error('email') is_invalid @enderror form-control"/><br><br>
                 @error('email')
-                    <div>{{$message}}</div>
+                    <div class="alert alert-danger">{{$message}}</div>
                 @enderror
             </div>
             <div  class="form-group">
@@ -25,7 +25,7 @@
                  value="{{$user->first_name}}" 
                  class="@error('first_name') is_invalid @enderror form-control"/><br><br>
                 @error('first_name')
-                    <div>{{$message}}</div>
+                    <div class="alert alert-danger">{{$message}}</div>
                 @enderror
             </div>
             <div  class="form-group">
@@ -34,7 +34,7 @@
                 value="{{$user->last_name}}" 
                 class="@error('last_name') is_invalid @enderror form-control"/><br><br>
                 @error('last_name')
-                    <div>{{$message}}</div>
+                    <div class="alert alert-danger">{{$message}}</div>
                 @enderror
             </div>
             <div  class="form-group">
@@ -43,7 +43,7 @@
                 value="{{$user->is_admin}}" 
                 class="@error('is_admin') is_invalid @enderror form-control"/><br><br>
                 @error('is_admin')
-                    <div>{{$message}}</div>
+                    <div class="alert alert-danger">{{$message}}</div>
                 @enderror
             </div>
             <div  class="form-group">
@@ -52,7 +52,7 @@
                 value="{{$user->is_active}}" 
                 class="@error('is_active') is_invalid @enderror form-control"/><br><br>
                 @error('is_active')
-                    <div>{{$message}}</div>
+                    <div class="alert alert-danger">{{$message}}</div>
                 @enderror
             </div>
             <div class="form-group">
@@ -61,7 +61,7 @@
                 value="{{$user->password}}" 
                 class="@error('password') is_invalid @enderror form-control"/><br><br>
                 @error('password')
-                    <div>{{$message}}</div>
+                    <div class="alert alert-danger">{{$message}}</div>
                 @enderror
             </div>
            

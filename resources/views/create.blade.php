@@ -10,7 +10,7 @@
                     class="@error('username') is_invalid @enderror form-control"/>
             
                 @error('username')
-                    <div>{{$message}}</div>
+                    <div class="alert alert-danger">{{$message}}</div>
                 @enderror
             </div>
             <div class="form-group">
@@ -20,7 +20,7 @@
                     class="@error('email') is_invalid @enderror form-control"/>
           
                 @error('email')
-                    <div>{{$message}}</div>
+                    <div  class="alert alert-danger">{{$message}}</div>
                 @enderror
             </div>
             
@@ -31,7 +31,7 @@
                 class="@error('first_name') is_invalid @enderror form-control"/>
             
                 @error('first_name')
-                    <div>{{$message}}</div>
+                    <div  class="alert alert-danger">{{$message}}</div>
                 @enderror
             </div>
             <div class="form-group ">
@@ -41,7 +41,7 @@
                 class="@error('last_name') is_invalid @enderror form-control"/>
             
                 @error('last_name')
-                    <div>{{$message}}</div>
+                    <div  class="alert alert-danger">{{$message}}</div>
                 @enderror
             </div>
             <div class="form-group ">
@@ -51,7 +51,7 @@
                     class="@error('is_admin') is_invalid @enderror form-control"/>
              
                 @error('is_admin')
-                    <div>{{$message}}</div>
+                    <div  class="alert alert-danger">{{$message}}</div>
                 @enderror
             </div>
             <div class="form-group ">
@@ -61,7 +61,7 @@
                   class="@error('is_active') is_invalid @enderror form-control"/>
                 
                 @error('is_active')
-                    <div>{{$message}}</div>
+                    <div class="alert alert-danger">{{$message}}</div>
                 @enderror
             </div>
             <div class="form-group ">
@@ -71,7 +71,7 @@
                     class="@error('password') is_invalid @enderror form-control"/>
                
                 @error('password')
-                    <div>{{$message}}</div>
+                    <div class="alert alert-danger">{{$message}}</div>
                 @enderror
             </div>
             <div class="form-group ">
@@ -81,7 +81,7 @@
                     class="@error('confirm_password') is_invalid @enderror form-control"/>
             
                 @error('confirm_password')
-                    <div>{{$message}}</div>
+                    <div class="alert alert-danger">{{$message}}</div>
                 @enderror
             </div>
             <button type="submit" class="btn btn-primary mb-2">Create User</button>            
