@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\ManageUsers;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ManageUsersRequest extends FormRequest
@@ -13,7 +14,7 @@ class ManageUsersRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
