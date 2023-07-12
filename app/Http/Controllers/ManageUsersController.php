@@ -46,7 +46,7 @@ class ManageUsersController extends Controller
     public function update(Request $request, ManageUsers $user){
 
         $fields= $request->validate([
-            'username'=>'required|unique:manage_users|min:5',
+            'username'=>'required|min:5',
             'email'=>'required|email',
             'first_name'=>'min:3|max:15',
             'last_name'=>'min:3|max:15',   

@@ -57,10 +57,19 @@
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
-                <input id="password" type="password" name="password" required
+                <input id="password" type="password" name="password" 
                 value="{{$user->password}}" 
                 class="@error('password') is_invalid @enderror form-control"/><br><br>
                 @error('password')
+                    <div class="alert alert-danger">{{$message}}</div>
+                @enderror
+            </div>
+            <div class="form-group">
+                <label for="confirmed_password">Password</label>
+                <input id="confirmed_password" type="password" name="confirmed_password" 
+                value="{{$user->confirmed_password}}" 
+                class="@error('confirmed_password') is_invalid @enderror form-control"/><br><br>
+                @error('confirmed_password')
                     <div class="alert alert-danger">{{$message}}</div>
                 @enderror
             </div>
