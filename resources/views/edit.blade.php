@@ -1,5 +1,7 @@
 <x-layout>
-    <div class="justify-content-center">
+    <div class="container">
+        <h1 style="font-size:40px;font-weight:bold">Update User</h1>
+        <div class="py-5 text-center">
         <form action="/users/{{$user->id}}" method="post">
             @csrf
             @method('PUT')
@@ -73,8 +75,9 @@
                 @enderror
             </div>
            
-            <button type="submit" class="btn btn-primary mb-2">Update User</button>
+            <button type="submit" class="btn btn-primary mb-2 btn-lg btn-block">Update User</button>
             
         </form>  
     </div>
+</div>
 </x-layout>

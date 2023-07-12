@@ -1,5 +1,5 @@
 <x-layout>
-    
+    <h1 style="font-size:40px;font-weight:bold">Create User</h1>
         <form action="/" method="post" >
             @csrf
            
