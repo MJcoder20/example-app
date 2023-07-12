@@ -3,15 +3,15 @@
         <form action="/users/{{$user->id}}" method="post">
             @csrf
             @method('PUT')
-            <div>
-                <label for="username">UserName</label>
+            <div class="form-group">
+                <label class="col-sm-2 col-form-label" for="username">UserName</label>
                 <input id="username" type="text" name="username" value="{{$user->username}}"
-                class="@error('username') is_invalid @enderror"/><br><br>
+                class="@error('username') is_invalid @enderror form-control"/><br><br>
                 @error('username')
                     <div>{{$message}}</div>
                 @enderror
             </div>
-            <div>
+            <div class="form-group">
                 <label for="email">User email</label>
                 <input id="email" type="text" name="email" value="{{$user->email}}"
                 class="@error('email') is_invalid @enderror"/><br><br>

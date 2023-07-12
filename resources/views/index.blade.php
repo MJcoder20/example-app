@@ -1,10 +1,12 @@
 <x-layout>
     <h1>Users List</h1>
-    <div class="d-flex flex-column">     
+    <br><br>
+    <div class="d-flex flex-row align-items-center">     
         <ul class="list-group">
         @foreach($users as $user)
-        <div class="d-flex flex-row ">
-        <li class="list-group-item nav-item ">{{$user->username}}   -   {{ $user->email }}
+        
+        <li class="list-group-item nav-item ">
+            <div class="d-flex flex-row  p-2">{{$user->username}}   -   {{ $user->email }}
             @if($user->is_active==1)
             -   Active
          
@@ -18,7 +20,7 @@
             -   User
             @endif
         </div>
-        <div class="d-flex flex-row-reverse">
+        <div class="d-flex flex-row p-2">
             <br><a class="btn btn-outline-info" href="/users/{{$user->id}}/edit">Edit</a> 
             <form action="/users/{{$user->id}}" method="post">
                 @csrf
