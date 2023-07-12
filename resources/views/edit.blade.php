@@ -66,8 +66,7 @@
             </div>
             <div class="form-group">
                 <label for="confirm_password">Confirm Password</label>
-                <input id="confirm_password" type="password" name="confirm_password" 
-                value="{{$user->confirm_password}}" 
+                <input id="confirm_password" type="password" name="confirm_password"  
                 class="@error('confirm_password') is_invalid @enderror form-control"/><br><br>
                 @error('confirm_password')
                     <div class="alert alert-danger">{{$message}}</div>
