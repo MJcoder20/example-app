@@ -1,4 +1,8 @@
+
 <x-layout>
+   
+    {{-- @include('partials.navbar') --}}
+
     <h1 style="font-size:40px;font-weight:bold">Users List</h1>
     <br><br>
     <div class="d-flex flex-column">     
@@ -25,7 +29,7 @@
             <form action="/users/{{$user->id}}" method="post">
                 @csrf
                 @method('DELETE')
-                <button class="btn btn-outline-danger ">Delete</button>
+                <button class="btn btn-outline-danger ">{{ __('Delete') }}</button>
             </form>
         </div>
       

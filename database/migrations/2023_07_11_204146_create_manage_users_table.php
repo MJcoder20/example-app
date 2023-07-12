@@ -22,6 +22,7 @@ return new class extends Migration
             $table->tinyInteger('is_admin');
             $table->tinyInteger('is_active');
             $table->string('password');
+            $table->rememberToken();
             $table->timestamps();
         });
     }

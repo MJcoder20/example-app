@@ -13,9 +13,10 @@ class ManageUsers extends Model
         'is_admin' => 0,
         'is_active' => 1,
     ];
+
     protected $hidden = [
         'password',
-        'confirmed_password',
+        'confirm_password',
     ];
 
     

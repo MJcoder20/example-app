@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ManageUsersController;
 
@@ -16,17 +17,18 @@ use App\Http\Controllers\ManageUsersController;
 
 
 Route::get('/',[ManageUsersController::class, 'index']);
-Route::get('/users/create',[ManageUsersController::class, 'create']);
-Route::post('/',[ManageUsersController::class, 'store']);
-Route::get('/users/{user}/edit',[ManageUsersController::class, 'edit']);
-Route::put('/users/{user}',[ManageUsersController::class, 'update']);
-Route::delete('/users/{user}',[ManageUsersController::class, 'destroy']);
+Route::get('/users/create',[ManageUsersController::class, 'create'])->middleware('auth');
+Route::post('/',[ManageUsersController::class, 'store'])->middleware('auth');
+Route::get('/users/{user}/edit',[ManageUsersController::class, 'edit'])->middleware('auth');
+Route::put('/users/{user}',[ManageUsersController::class, 'update'])->middleware('auth');
+Route::delete('/users/{user}',[ManageUsersController::class, 'destroy'])->middleware('auth');
+
+
+// Route::get('/register',[ManageUsersController::class, 'create']);
+// Route::get('/login',[ManageUsersController::class, 'login']);
 
 
 
+Auth::routes();
 
-
-
-
-
-
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

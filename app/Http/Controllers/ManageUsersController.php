@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ManageUsers;
 use Illuminate\Http\Request;
+use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\ManageUsersRequest;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -61,6 +62,16 @@ class ManageUsersController extends Controller
         $user->update($fields);
 
         return back();
+    }
+
+    public function register(ManageUsersRequest $request) 
+    {
+        $user = ManageUsers::create($request->validated());
+
+        auth()->login($user);
+
+        return redirect('/')->with('success', "Successfully registered.");
+
     }
 
 

@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Models\ManageUsers;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ManageUsersRequest extends FormRequest
+class RegisterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,13 +24,9 @@ class ManageUsersRequest extends FormRequest
     public function rules()
     {
         return [
-            'username'=>'required|unique:manage_users|min:5',
-            'email'=>'required|email|unique:manage_users',
-            'first_name'=>'min:3|max:15',
-            'last_name'=>'min:3|max:15',   
-            // 'is_admin'=>'integer|min:0|max:1',
-            // 'is_active'=>'integer|min:0|max:1',
-            'password'=>'required|min:9|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/|regex:/[@$!%*#?&]/',
+            'email' => 'required|email:rfc,dns|unique:manage_users,email',
+            'username' => 'required|unique:manage_users,username',
+            'password' => 'required|min:9|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/|regex:/[@$!%*#?&]/',
             'confirm_password' => 'required|same:password'
         ];
     }

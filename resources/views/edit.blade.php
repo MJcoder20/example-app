@@ -1,4 +1,5 @@
 <x-layout>
+    @extends('layouts.app')
     <div class="container">
         <h1 style="font-size:40px;font-weight:bold">Update User</h1>
         <div class="py-5 text-center">
@@ -14,7 +15,7 @@
                 @enderror
             </div>
             <div class="form-group">
-                <label for="email">User email</label>
+                <label for="email">Email</label>
                 <input id="email" type="text" name="email" required value="{{$user->email}}"
                 class="@error('email') is_invalid @enderror form-control"/><br><br>
                 @error('email')
@@ -75,7 +76,7 @@
                 @enderror
             </div>
            
-            <button type="submit" class="btn btn-primary mb-2 btn-lg btn-block">Update User</button>
+            <button type="submit" class="btn btn-primary mb-2 btn-lg btn-block">{{ __('Update User') }}</button>
             
         </form>  
     </div>
