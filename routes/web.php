@@ -14,9 +14,6 @@ use App\Http\Controllers\ManageUsersController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
 
 Route::get('/',[ManageUsersController::class, 'index']);
 Route::get('/users/create',[ManageUsersController::class, 'create']);
