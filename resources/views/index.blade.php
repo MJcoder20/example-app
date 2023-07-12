@@ -1,11 +1,11 @@
 <x-layout>
     <h1>Users List</h1>
     <br><br>
-    <div class="d-flex flex-row align-items-center">     
+    <div class="d-flex justify-content-center ">     
         <ul class="list-group">
         @foreach($users as $user)
-        
-        <li class="list-group-item nav-item ">
+        <div class="d-flex flex-row ">
+        <li class="list-group-item ">
             <div class="d-flex flex-row  p-2">{{$user->username}}   -   {{ $user->email }}
             @if($user->is_active==1)
             -   Active
@@ -29,6 +29,7 @@
             </form>
         </div>
         </li>
+        </div>
         @endforeach
         </ul>
     </div>
