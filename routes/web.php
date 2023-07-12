@@ -22,7 +22,7 @@ Route::get('/',[ManageUsersController::class, 'index']);
 Route::get('/users/create',[ManageUsersController::class, 'create']);
 Route::post('/',[ManageUsersController::class, 'store']);
 Route::get('/users/{user}/edit',[ManageUsersController::class, 'edit']);
-Route::put('/users/{user}',[ManageUsersController::class, 'update']);
+Route::put('/',[ManageUsersController::class, 'update']);
 Route::delete('/users/{user}',[ManageUsersController::class, 'destroy']);
 
 
