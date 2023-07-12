@@ -64,15 +64,15 @@ class ManageUsersController extends Controller
         return back();
     }
 
-    public function register(ManageUsersRequest $request) 
-    {
-        $user = ManageUsers::create($request->validated());
+    // public function register(ManageUsersRequest $request) 
+    // {
+    //     $user = ManageUsers::create($request->validated());
 
-        auth()->login($user);
+    //     auth()->login($user);
 
-        return redirect('/')->with('success', "Successfully registered.");
+    //     return redirect('/')->with('success', "Successfully registered.");
 
-    }
+    // }
 
 
    

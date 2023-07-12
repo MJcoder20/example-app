@@ -16,7 +16,7 @@ use App\Http\Controllers\ManageUsersController;
 */
 
 
-Route::get('/',[ManageUsersController::class, 'index']);
+Route::get('/',[ManageUsersController::class, 'index'])->name('index');
 Route::get('/users/create',[ManageUsersController::class, 'create'])->middleware('auth');
 Route::post('/',[ManageUsersController::class, 'store'])->middleware('auth');
 Route::get('/users/{user}/edit',[ManageUsersController::class, 'edit'])->middleware('auth');
