@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ManageUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\ManageUsersRequest;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ManageUsersController extends Controller
@@ -19,6 +17,8 @@ class ManageUsersController extends Controller
         if(Auth::user()->is_admin==1){
             $users = ManageUsers::paginate();
             return view('index', ['users'=>$users]);
+        }else{
+            echo "Unauthorized user";
         }
         
     }
@@ -66,10 +66,9 @@ class ManageUsersController extends Controller
         ]);
         
         $fields['password']=bcrypt($fields['password']);
-
         $user->update($fields);
 
-        return back();
+        return redirect('/');
     }
 
     // public function register(ManageUsersRequest $request) 

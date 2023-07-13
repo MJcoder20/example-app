@@ -56,8 +56,8 @@ class RegisterController extends Controller
             'email'=>'required|string|email|unique:manage_users',
             'first_name'=>'min:3|max:15',
             'last_name'=>'min:3|max:15',   
-            'password'=>'required|string|confirmed|min:9|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/|regex:/[@$!%*#?&]/',
-            'confirm_password' => 'required|same:password'
+            'password'=>'required|string|same:confirm_password|min:9|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/|regex:/[@$!%*#?&]/',
+            'confirm_password' => 'required'
         ]);
     }
 

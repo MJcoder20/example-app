@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class ManageUsers extends Model
+class ManageUsers extends Authenticatable
 {
     use HasFactory;
     protected $fillable = ['username','first_name','last_name','email','password','is_admin','is_active'];
