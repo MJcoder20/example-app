@@ -16,7 +16,7 @@ use App\Http\Controllers\ManageUsersController;
 */
 
 
-Route::get('/',[ManageUsersController::class, 'index'])->name('index');
+Route::get('/',[ManageUsersController::class, 'index'])->name('index')->middleware('auth');
 Route::get('/users/create',[ManageUsersController::class, 'create'])->middleware('auth');
 Route::post('/',[ManageUsersController::class, 'store'])->middleware('auth');
 Route::get('/users/{user}/edit',[ManageUsersController::class, 'edit'])->middleware('auth');
@@ -31,4 +31,4 @@ Route::delete('/users/{user}',[ManageUsersController::class, 'destroy'])->middle
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [App\Http\Controllers\ManageUsersController::class, 'index'])->name('home');

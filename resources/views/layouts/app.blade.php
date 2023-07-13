@@ -123,6 +123,10 @@
                                 </li>
                             @endif
                         @else
+                            @if(Auth::user()->is_admin==1)
+                            
+                               dd('admin Logged in');
+                            
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->username }}
@@ -140,6 +144,7 @@
                                     </form>
                                 </div>
                             </li>
+                            @endif
                         @endguest
                     </ul>
                 </div>
@@ -152,7 +157,7 @@
 
         
     </div>
-    @if(Auth::user())
+    @if(Auth::user() && Auth::user()->is_admin==1)
     <footer>
         <p class="copyright">Copyright &copy; 2023, All Rights reserved</p>
         <a href="/users/create" class="footer-button ">Create User</a>
