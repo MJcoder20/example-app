@@ -44,25 +44,24 @@
         }
         .copyright{
             position: absolute;
-            bottom: 0;
-            text-align: center;
+           
             padding: 5px;
             position: fixed;
-            /* top: 80%;
-            left: 80%; */
-            transform: translate(100%, -50%);
+            top: 95%;
+            left: 75%;
+            transform: translate(-50%, -50%);
         
         }
         .footer-button {
-            background-color: rgba(0, 255, 127, .3);
-            
-            /* bottom:0; */
-            /* width: 25%; */
+            /* background-color: rgba(0, 255, 127, .3); */
+            background-color:black;
+            width: 10%;
             padding: 5px;
             position: fixed;
-            top: 90%;
+            top: 95%;
             left: 90%;
             transform: translate(-50%, -50%);
+            text-decoration-line: none;
         }
   
        
