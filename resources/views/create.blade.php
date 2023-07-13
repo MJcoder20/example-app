@@ -1,4 +1,6 @@
-<x-layout>
+@extends('layouts.app')
+
+@section('content')
     <div class="container">
     <h1 style="font-size:40px;font-weight:bold">Create User</h1>
     <div class="py-5 text-center">
@@ -90,4 +92,4 @@
         </form>
         </div>
     </div>
-</x-layout>
+@endsection

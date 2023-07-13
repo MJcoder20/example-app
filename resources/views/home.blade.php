@@ -15,7 +15,7 @@
                     @endif
 
                     {{ __('You are logged in!') }}
-                    <a class="nav-link" href="{{ route('index') }}">{{ __('Go to main page') }}</a>
+                    <a class="nav-link" style="color:lightseagreen; " href="{{ route('index') }}">{{ __('Go to main page') }}</a>
 
                 </div>
             </div>

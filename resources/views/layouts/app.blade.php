@@ -9,9 +9,84 @@
 
     <title>{{ config('app.name', 'Online Reservations') }}</title>
 
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/main.css">
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+    />
+    <link href="{!! url('assets/css/signin.css') !!}" rel="stylesheet">
+    
+    {{-- <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style> --}}
+    <style>
+        footer {
+            position: relative;
+            background-color: #ef3b2d;
+            text-align: center;
+        }
+        .copyright{
+            position: absolute;
+            bottom: 0;
+            text-align: center;
+            padding: 5px;
+            position: fixed;
+            /* top: 80%;
+            left: 80%; */
+            transform: translate(100%, -50%);
+        
+        }
+        .footer-button {
+            background-color: rgba(0, 255, 127, .3);
+            
+            /* bottom:0; */
+            /* width: 25%; */
+            padding: 5px;
+            position: fixed;
+            top: 90%;
+            left: 90%;
+            transform: translate(-50%, -50%);
+        }
+  
+       
+    </style>
+
+     <!-- Fonts -->
+     <link rel="dns-prefetch" href="//fonts.bunny.net">
+     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+
+
+    {{-- <script src="//unpkg.com/alpinejs" defer></script> --}}
+    {{-- <script src="https://cdn.tailwindcss.com"></script>  --}}
+    {{-- <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        laravel: "#ef3b2d",
+                    },
+                },
+            },
+        };
+    </script> --}}
+    {{-- <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>  --}}
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
@@ -75,6 +150,15 @@
         <main class="py-4">
             @yield('content')
         </main>
+
+        
     </div>
+    <footer>
+  
+        <p class="copyright">Copyright &copy; 2023, All Rights reserved</p>
+
+        <a href="/users/create"
+            class="footer-button ">Create User</a>
+    </footer>
 </body>
 </html>
