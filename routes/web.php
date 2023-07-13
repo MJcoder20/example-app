@@ -18,6 +18,7 @@ use App\Http\Controllers\ManageUsersController;
 
 
 Route::get('/',[ManageUsersController::class, 'index'])->name('index')->middleware('auth');
+Route::get('/users/create',[ManageUsersController::class, 'create'])->middleware('auth');
 Route::post('/',[ManageUsersController::class, 'store'])->middleware('auth');
 Route::get('/users/{user}/edit',[ManageUsersController::class, 'edit'])->middleware('auth');
 Route::put('/users/{user}',[ManageUsersController::class, 'update'])->middleware('auth');
@@ -25,12 +26,12 @@ Route::delete('/users/{user}',[ManageUsersController::class, 'destroy'])->middle
 
 
 Auth::routes();
-Route::group(['middleware' => 'admin'], function(){
+// Route::group(['middleware' => 'admin'], function(){
 
-    //all the routes protected by the admin middleware 
-    Route::get('/users/create',[ManageUsersController::class, 'create'])->middleware('auth');
+//     //all the routes protected by the admin middleware 
+//     Route::get('/users/create',[ManageUsersController::class, 'create'])->middleware('auth');
 
 
-});
+// });
 
 // Route::get('/home', [App\Http\Controllers\ManageUsersController::class, 'index'])->name('home');

@@ -14,12 +14,10 @@ class ManageUsersController extends Controller
     
     public function index()
     {
-        if(Auth::user()->is_admin==1){
+      
             $users = ManageUsers::paginate();
             return view('index', ['users'=>$users]);
-        }else{
-            echo "Unauthorized user";
-        }
+       
         
     }
 

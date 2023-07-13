@@ -19,23 +19,23 @@ class AdminMiddleware
     {
         // return $next($request);
 
-        if (Auth::guard($guard)->guest()) {
+        // if (Auth::guard($guard)->guest()) {
 
-            if ($request->ajax()) {
+        //     if ($request->ajax()) {
  
-              return response('Unauthorized.', 401);
+        //       return response('Unauthorized.', 401);
  
-            } else {
+        //     } else {
  
-              return redirect()->guest('login');
+        //       return redirect()->guest('login');
  
-            }
+        //     }
  
-          } else if (!Auth::guard($guard)->user()->is_admin==1) {
+        //   } else if (!Auth::guard($guard)->user()->is_admin==1) {
  
-            return redirect()->route('login');
+        //     return redirect()->route('login');
  
-          }
+        //   }
  
           return $next($request);
     }
