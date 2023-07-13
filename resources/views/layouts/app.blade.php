@@ -59,8 +59,8 @@
      <link rel="stylesheet" type="text/css" href="https://mdbcdn.b-cdn.net/wp-content/themes/mdbootstrap4/docs-app/css/dist/mdb5/standard/core.min.css">
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-        <script type="text/javascript" src="../../js/jquery.slim.min.js"></script>
-        <script type="text/javascript" src="../../js/bootstrap.min.js"></script>
+        {{-- <script type="text/javascript" src="../../js/jquery.slim.min.js"></script> --}}
+        {{-- <script type="text/javascript" src="../../js/bootstrap.min.js"></script> --}}
 
     {{-- <script src="//unpkg.com/alpinejs" defer></script> --}}
     {{-- <script src="https://cdn.tailwindcss.com"></script>  --}}
