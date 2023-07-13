@@ -21,21 +21,6 @@
     />
     <link href="{!! url('assets/css/signin.css') !!}" rel="stylesheet">
     
-    {{-- <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-      }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-    </style> --}}
     <style>
         footer {
             position: relative;
@@ -71,6 +56,11 @@
      <link rel="dns-prefetch" href="//fonts.bunny.net">
      <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
+     <link rel="stylesheet" type="text/css" href="https://mdbcdn.b-cdn.net/wp-content/themes/mdbootstrap4/docs-app/css/dist/mdb5/standard/core.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+        <script type="text/javascript" src="../../js/jquery.slim.min.js"></script>
+        <script type="text/javascript" src="../../js/bootstrap.min.js"></script>
 
     {{-- <script src="//unpkg.com/alpinejs" defer></script> --}}
     {{-- <script src="https://cdn.tailwindcss.com"></script>  --}}

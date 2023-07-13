@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
     <h1 style="font-size:40px;font-weight:bold">Create User</h1>
-    <div class="py-5 text-center">
+    <div class="py-5 text-center" style="font-size:20px;">
         <form action="/" method="post" >
             @csrf
            

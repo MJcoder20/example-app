@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <h1 style="font-size:40px;font-weight:bold">Update User</h1>
-        <div class="py-5 text-center">
+        <div class="py-5 text-center" style="font-size:20px;">
         <form action="/users/{{$user->id}}" method="post">
             @csrf
             @method('PUT')
@@ -11,7 +11,7 @@
                 <label for="username" class="col-sm-3 col-form-label">UserName</label>
                 <div class="col-sm-9">
                 <input id="username" type="text" name="username" required value="{{$user->username}}"
-                class="@error('username') is_invalid @enderror form-control"/><br><br>
+                class="@error('username') is_invalid @enderror form-control"/>
                 </div>
                 @error('username')
                     <div class="alert alert-danger">{{$message}}</div>
@@ -22,7 +22,7 @@
                 <label for="email" class="col-sm-3 col-form-label">Email</label>
                 <div class="col-sm-9">
                 <input id="email" type="text" name="email" required value="{{$user->email}}"
-                class="@error('email') is_invalid @enderror form-control"/><br><br>
+                class="@error('email') is_invalid @enderror form-control"/>
                 </div>
                 @error('email')
                     <div class="alert alert-danger">{{$message}}</div>
@@ -34,7 +34,7 @@
                 <div class="col-sm-9">
                 <input id="first_name" type="text" name="first_name"
                  value="{{$user->first_name}}" 
-                 class="@error('first_name') is_invalid @enderror form-control"/><br><br>
+                 class="@error('first_name') is_invalid @enderror form-control"/>
                 </div>
                  @error('first_name')
                     <div class="alert alert-danger">{{$message}}</div>
@@ -46,7 +46,7 @@
                 <div class="col-sm-9">
                 <input id="last_name" type="text" name="last_name" 
                 value="{{$user->last_name}}" 
-                class="@error('last_name') is_invalid @enderror form-control"/><br><br>
+                class="@error('last_name') is_invalid @enderror form-control"/>
                 </div>
                 @error('last_name')
                     <div class="alert alert-danger">{{$message}}</div>
@@ -58,7 +58,7 @@
                 <div class="col-sm-9">
                 <input id="is_admin" type="text" name="is_admin" 
                 value="{{$user->is_admin}}" 
-                class="@error('is_admin') is_invalid @enderror form-control"/><br><br>
+                class="@error('is_admin') is_invalid @enderror form-control"/>
                 </div>
                 @error('is_admin')
                     <div class="alert alert-danger">{{$message}}</div>
@@ -70,7 +70,7 @@
                 <div class="col-sm-9">
                 <input id="is_active" type="text" name="is_active" 
                 value="{{$user->is_active}}" 
-                class="@error('is_active') is_invalid @enderror form-control"/><br><br>
+                class="@error('is_active') is_invalid @enderror form-control"/>
                 </div>
                 @error('is_active')
                     <div class="alert alert-danger">{{$message}}</div>
@@ -82,7 +82,7 @@
                 <div class="col-sm-9">
                 <input id="password" type="password" name="password" 
                 value="{{$user->password}}" 
-                class="@error('password') is_invalid @enderror form-control"/><br><br>
+                class="@error('password') is_invalid @enderror form-control"/>
                 </div>
                 @error('password')
                     <div class="alert alert-danger">{{$message}}</div>
@@ -94,7 +94,7 @@
                 <div class="col-sm-9">
                 <input id="confirm_password" type="password" name="confirm_password" 
                 value="{{$user->password}}" 
-                class="@error('confirm_password') is_invalid @enderror form-control"/><br><br>
+                class="@error('confirm_password') is_invalid @enderror form-control"/>
                 </div>
                 @error('confirm_password')
                     <div class="alert alert-danger">{{$message}}</div>
