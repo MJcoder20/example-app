@@ -53,7 +53,7 @@
         
         }
         .footer-button {
-            /* background-color: rgba(0, 255, 127, .3); */
+          
             background-color:black;
             width: 10%;
             padding: 5px;
@@ -125,7 +125,7 @@
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
+                                    {{ Auth::user()->username }}
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
@@ -152,12 +152,11 @@
 
         
     </div>
+    @if(Auth::user())
     <footer>
-  
         <p class="copyright">Copyright &copy; 2023, All Rights reserved</p>
-
-        <a href="/users/create"
-            class="footer-button ">Create User</a>
+        <a href="/users/create" class="footer-button ">Create User</a>
     </footer>
+    @endif
 </body>
 </html>
