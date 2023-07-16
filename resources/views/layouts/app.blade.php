@@ -118,9 +118,9 @@
            <nav id="sidebar">
               <div class="sidebar_blog_1">
                  <div class="sidebar-header">
-                    <div class="logo_section">
+                    {{-- <div class="logo_section">
                        <img class="logo_icon img-responsive" src="../../images/logo/logo_icon.png" alt="#" /></a>
-                    </div>
+                    </div> --}}
                  </div>
                  <div class="sidebar_user_info">
                     <div class="icon_setting"></div>
@@ -168,7 +168,7 @@
                </div>
                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                    <span class="navbar-toggler-icon"></span>
-               </button>
+               </button> 
 
                <div class="collapse navbar-collapse" id="navbarSupportedContent">
                    <!-- Left Side Of Navbar -->
