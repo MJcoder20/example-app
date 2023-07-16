@@ -15,25 +15,35 @@ class ManageUsersController extends Controller
     
     public function index()
     {
-        // $collection = ManageUsers::collect(['username'=>'mjcoder','email','first_name','last_name','is_admin','is_active']);
-
-        // $users = ManageUsers::
-        // $users = QueryBuilder::for(ManageUsers::class)
-        // ->allowedFilters(['name', 'email'])
-        // ->get();
-        // $users = $collection::
-        // filter()
-        // ->paginate();
-
-        $users =DB::table('manage_users')
-        ->select('id', 'username', 'email', 'first_name', 'last_name', 'is_admin', 'is_active')
-        ->get();
+       
+        $users = ManageUsers::paginate();
 
         return view('index', ['users'=>$users]);
-       
-        
+    
     }
 
+//     public function search(Request $request){
+//         $username = $request->input('username');
+//         $email = $request->input('email');
+//         $first_name = $request->input('first_name');
+//         $last_name = $request->input('last_name');
+//         $is_admin = $request->input('is_Admin');
+//         $is_active = $request->input('is_Active');
+
+   
+//        $data = DB::table('manage_users')
+//        ->where(['username'=>$username, 'email'=>$email, 'is_admin'=>$is_admin, 'is_active'=>$is_active])
+//        ->whereRaw("concat(first_name, ' ', last_name) like '%" .$first_name.' '.$last_name. "%' ")
+//        ->get();
+   
+//        return $data;
+//    }
+
+    // public function filter(){
+    //     $users = ManageUsers::isAdmin(1)->get();
+
+    //     return $users;
+    // }
    
     public function create()
     {
@@ -58,9 +68,9 @@ class ManageUsersController extends Controller
     
     public function edit(ManageUsers $user)
     {
-
-        return view('edit',['user'=>$user]);
-        
+        if(Auth::user()->is_admin==1){
+            return view('edit',['user'=>$user]);
+        }
     }
 
     public function update(Request $request, ManageUsers $user){

@@ -22,6 +22,7 @@ Route::post('/',[ManageUsersController::class, 'store'])->middleware('auth');
 Route::get('/users/{user}/edit',[ManageUsersController::class, 'edit'])->middleware('auth');
 Route::put('/users/{user}',[ManageUsersController::class, 'update'])->middleware('auth');
 Route::delete('/users/{user}',[ManageUsersController::class, 'destroy'])->middleware('auth');
+Route::post('/users/search',[ManageUsersController::class, 'search'])->middleware('auth');
 
 
 Auth::routes();
