@@ -9,8 +9,6 @@
 
     <title>{{ config('app.name', 'Online Reservations') }}</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" 
-    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/main.css">
     <link
     rel="stylesheet"
@@ -57,7 +55,39 @@
      <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
      <link rel="stylesheet" type="text/css" href="https://mdbcdn.b-cdn.net/wp-content/themes/mdbootstrap4/docs-app/css/dist/mdb5/standard/core.min.css">
-        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+
+     {{-- Added css --}}
+      <!-- site icon -->
+      <link rel="icon" href="{{asset('images/fevicon.png')}}" type="image/png" />
+      <!-- bootstrap css -->
+      <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}" />
+      <!-- site css -->
+      <link rel="stylesheet" href="{{asset('style.css')}}" />
+      <!-- responsive css -->
+      <link rel="stylesheet" href="{{asset('css/responsive.css')}}" />
+      <!-- color css -->
+      <link rel="stylesheet" href="{{asset('css/colors.css')}}" />
+      <!-- select bootstrap -->
+      <link rel="stylesheet" href="{{asset('css/bootstrap-select.css')}}" />
+      <!-- scrollbar css -->
+      <link rel="stylesheet" href="{{asset('css/perfect-scrollbar.css')}}" />
+      <!-- custom css -->
+      <link rel="stylesheet" href="{{asset('css/custom.css')}}" />
+
+
+      <link rel="stylesheet" type="text/css" href="{{asset('css/style.css')}}">
+      <link rel="stylesheet" type="text/css" href="{{asset('css/bootstrap.min.css')}}">
+      <link rel="stylesheet" type="text/css" href="https://mdbcdn.b-cdn.net/wp-content/themes/mdbootstrap4/docs-app/css/dist/mdb5/standard/core.min.css">
+      <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+
+      <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+      <![endif]-->
+
 
         {{-- <script type="text/javascript" src="../../js/jquery.slim.min.js"></script> --}}
         {{-- <script type="text/javascript" src="../../js/bootstrap.min.js"></script> --}}
@@ -80,76 +110,162 @@
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
-<body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Online Reservations') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+<body class="dashboard dashboard_1">
+    
+    <div class="full_container">
+        <div class="inner_container">
+           <!-- Sidebar  -->
+           <nav id="sidebar">
+              <div class="sidebar_blog_1">
+                 <div class="sidebar-header">
+                    <div class="logo_section">
+                       <img class="logo_icon img-responsive" src="../../images/logo/logo_icon.png" alt="#" /></a>
+                    </div>
+                 </div>
+                 <div class="sidebar_user_info">
+                    <div class="icon_setting"></div>
+                    <div class="user_profle_side">
+                       {{-- <div class="user_img"><img class="img-responsive" src="../../images/layout_img/user_img.png" alt="#" /></div> --}}
+                       <div class="user_info">
+                          <h6>{{ Auth::user()->username }}</h6>
+                          <p><span class="online_animation"></span> Online</p>
+                       </div>
+                    </div>
+                 </div>
+              </div>
+              <div class="sidebar_blog_2">
+                
+                 <ul class="list-unstyled components">
+                    <li class="active">
+                       <li><a href="/"><i class="fa fa-dashboard yellow_color"></i> <span>Users</span></a></li>           
+                    </li>
+                   
+                    <li><a href="/users/{{$user->id}}/edit"><i class="fa fa-table purple_color2"></i> <span>Edit User Information</span></a></li>
+                    <li><a href="{{ URL('info') }}"><i class="fa fa-object-group blue2_color"></i> <span>Personal Information</span></a></li>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
-
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
-
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                                                    
-                            
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->username }}
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                           
-                        @endguest
-                    </ul>
+             </ul>
+              </div>
+           </nav>
+           <!-- end sidebar -->
+           <!-- right content -->
+           <div id="content">
+              <!-- topbar -->
+              <div class="topbar">
+                 <nav class="navbar navbar-expand-lg navbar-light">
+                    <div class="container">
+                        {{-- <a class="navbar-brand" style="color:white;" href="{{ url('/') }}">
+                            {{ config('app.name', 'Online Reservations') }}
+                        </a> --}}
+                <div class="full">
+                <button type="button" id="sidebarCollapse" class="sidebar_toggle"><i class="fa fa-bars"></i></button>
+                
+                <div style="text-align:center;margin-top:20px;margin-left:500px;">
+                   <form method="post" action="index2.php" >
+                       <input type="text" name="search" >
+                       <input type="submit" name="search_btn" value="Search" >
+                   </form>
                 </div>
-            </div>
+               </div>
+               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                   <span class="navbar-toggler-icon"></span>
+               </button>
+
+               <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                   <!-- Left Side Of Navbar -->
+                   <ul class="navbar-nav me-auto">
+
+                   </ul>
+
+                   <!-- Right Side Of Navbar -->
+                   <ul class="navbar-nav ms-auto">
+                       <!-- Authentication Links -->
+                       @guest
+                           @if (Route::has('login'))
+                               <li class="nav-item">
+                                   <a class="nav-link" style="color:white;" href="{{ route('login') }}">{{ __('Login') }}</a>
+                               </li>
+                           @endif
+
+                           @if (Route::has('register'))
+                               <li class="nav-item">
+                                   <a class="nav-link" style="color:white;" href="{{ route('register') }}">{{ __('Register') }}</a>
+                               </li>
+                           @endif
+                       @else
+                                                   
+                           
+                           <li class="nav-item dropdown">
+                               <a id="navbarDropdown"  style="color:white;" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                   {{ Auth::user()->username }}
+                               </a>
+
+                               <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                   <a class="dropdown-item" href="{{ route('logout') }}"
+                                      onclick="event.preventDefault();
+                                                    document.getElementById('logout-form').submit();">
+                                       {{ __('Logout') }}
+                                   </a>
+
+                                   <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                       @csrf
+                                   </form>
+                               </div>
+                           </li>
+                          
+                       @endguest
+                   </ul>
+               </div>
+           </div>
         </nav>
+        </div>
+           
+                      
+              <!-- end topbar -->
+              <!-- dashboard inner -->
+                 {{-- <h1 style="width:50%;margin:auto;margin-top:100px;">Welcome to Student Gate!</h1> --}}             
+                <main class="py-4"> 
+                 @yield('content')
+                </main>
+              <!-- end dashboard inner -->
+           </div>
+        </div>
+     </div>
 
-        <main class="py-4">
-            @yield('content')
-        </main>
-
+    
         
-    </div>
+    
     @if(Auth::user() && Auth::user()->is_admin==1)
     <footer>
         <p class="copyright">Copyright &copy; 2023, All Rights reserved</p>
         <a href="/users/create" class="footer-button ">Create User</a>
     </footer>
     @endif
+
+
+     <!-- jQuery -->
+     <script src="{{ asset('js/jquery.min.js') }}"></script>
+     <script src="{{ asset('js/popper.min.js') }}"></script>
+     {{-- <script src="{{ asset('js/bootstrap.min.js')}}"></script> --}}
+
+     <!-- wow animation -->
+     <script src="{{ asset('js/animate.js') }}"></script>
+     <!-- select country -->
+     <script src="{{ asset('js/bootstrap-select.js') }}"></script>
+     <!-- owl carousel -->
+     <script src="{{ asset('js/owl.carousel.js') }}"></script> 
+     <!-- chart js -->
+     <script src="{{ asset('js/Chart.min.js') }}"></script>
+     <script src="{{ asset('js/Chart.bundle.min.js') }}"></script>
+     <script src="{{ asset('js/utils.js') }}"></script>
+     <script src="{{ asset('js/analyser.js') }}"></script>
+     <!-- nice scrollbar -->
+     <script src="{{ asset('js/perfect-scrollbar.min.js') }}"></script>
+     <script>
+        var ps = new PerfectScrollbar('#sidebar');
+     </script>
+     <!-- custom js -->
+     <script src="{{ asset('js/custom.js') }}"></script>
+     <script src="{{ asset('js/chart_custom_style1.js') }}"></script>
+
 </body>
 </html>
