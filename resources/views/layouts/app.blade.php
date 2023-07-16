@@ -112,6 +112,34 @@
 </head>
 <body class="dashboard dashboard_1">
     
+    <!-- Authentication Links -->
+    @guest
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+     <!-- Left Side Of Navbar -->
+     <ul class="navbar-nav me-auto">
+
+     </ul>
+
+     <!-- Right Side Of Navbar -->
+     <ul class="navbar-nav ms-auto">
+
+        @if (Route::has('login'))
+            <li class="nav-item">
+                <a class="nav-link" style="color:white;" href="{{ route('login') }}">{{ __('Login') }}</a>
+            </li>
+        @endif
+
+        @if (Route::has('register'))
+            <li class="nav-item">
+                <a class="nav-link" style="color:white;" href="{{ route('register') }}">{{ __('Register') }}</a>
+            </li>
+        @endif
+
+         </ul>
+     </div>
+
+    @else
+
     <div class="full_container">
         <div class="inner_container">
            <!-- Sidebar  -->
@@ -140,7 +168,7 @@
                        <li><a href="/"><i class="fa fa-dashboard yellow_color"></i> <span>Users</span></a></li>           
                     </li>
                    
-                    <li><a href="/users/{{$user->id}}/edit"><i class="fa fa-table purple_color2"></i> <span>Edit User Information</span></a></li>
+                    <li><a href="/users/{{Auth::user()->id}}/edit"><i class="fa fa-table purple_color2"></i> <span>Edit User Information</span></a></li>
                     <li><a href="{{ URL('info') }}"><i class="fa fa-object-group blue2_color"></i> <span>Personal Information</span></a></li>
 
              </ul>
@@ -157,10 +185,10 @@
                             {{ config('app.name', 'Online Reservations') }}
                         </a> --}}
                 <div class="full">
-                <button type="button" id="sidebarCollapse" class="sidebar_toggle"><i class="fa fa-bars"></i></button>
+                <button type="button" style="margin-left: -15px;" id="sidebarCollapse" class="sidebar_toggle"><i class="fa fa-bars"></i></button>
                 
                 <div style="text-align:center;margin-top:20px;margin-left:500px;">
-                   <form method="post" action="index2.php" >
+                   <form action="" >
                        <input type="text" name="search" >
                        <input type="submit" name="search_btn" value="Search" >
                    </form>
@@ -170,28 +198,8 @@
                    <span class="navbar-toggler-icon"></span>
                </button> 
 
-               <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                   <!-- Left Side Of Navbar -->
-                   <ul class="navbar-nav me-auto">
-
-                   </ul>
-
-                   <!-- Right Side Of Navbar -->
-                   <ul class="navbar-nav ms-auto">
-                       <!-- Authentication Links -->
-                       @guest
-                           @if (Route::has('login'))
-                               <li class="nav-item">
-                                   <a class="nav-link" style="color:white;" href="{{ route('login') }}">{{ __('Login') }}</a>
-                               </li>
-                           @endif
-
-                           @if (Route::has('register'))
-                               <li class="nav-item">
-                                   <a class="nav-link" style="color:white;" href="{{ route('register') }}">{{ __('Register') }}</a>
-                               </li>
-                           @endif
-                       @else
+              
+                       
                                                    
                            
                            <li class="nav-item dropdown">
@@ -213,8 +221,7 @@
                            </li>
                           
                        @endguest
-                   </ul>
-               </div>
+                   
            </div>
         </nav>
         </div>

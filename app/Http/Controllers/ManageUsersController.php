@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ManageUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ManageUsersRequest;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -14,9 +15,21 @@ class ManageUsersController extends Controller
     
     public function index()
     {
-      
-            $users = ManageUsers::paginate();
-            return view('index', ['users'=>$users]);
+        // $collection = ManageUsers::collect(['username'=>'mjcoder','email','first_name','last_name','is_admin','is_active']);
+
+        // $users = ManageUsers::
+        // $users = QueryBuilder::for(ManageUsers::class)
+        // ->allowedFilters(['name', 'email'])
+        // ->get();
+        // $users = $collection::
+        // filter()
+        // ->paginate();
+
+        $users =DB::table('manage_users')
+        ->select('id', 'username', 'email', 'first_name', 'last_name', 'is_admin', 'is_active')
+        ->get();
+
+        return view('index', ['users'=>$users]);
        
         
     }
@@ -45,9 +58,9 @@ class ManageUsersController extends Controller
     
     public function edit(ManageUsers $user)
     {
-        if(Auth::user()->is_admin==1){
-            return view('edit',['user'=>$user]);
-        }
+
+        return view('edit',['user'=>$user]);
+        
     }
 
     public function update(Request $request, ManageUsers $user){
@@ -69,18 +82,7 @@ class ManageUsersController extends Controller
         return redirect('/');
     }
 
-    // public function register(ManageUsersRequest $request) 
-    // {
-    //     $user = ManageUsers::create($request->validated());
-
-    //     auth()->login($user);
-
-    //     return redirect('/')->with('success', "Successfully registered.");
-
-    // }
-
-
-   
+ 
     public function destroy(ManageUsers $user)
     {
         $user->delete();
