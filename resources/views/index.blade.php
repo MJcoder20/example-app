@@ -10,9 +10,10 @@
     <div class="d-flex flex-column">     
         <ul class="list-group">
         @foreach($users as $user)
-        <div class="p-2">
-        <li class="list-group-item ">
-            <div class="d-flex flex-row justify-content-start">{{$user->username}}   -   {{ $user->email }}
+        <div class="p-2" >
+        <li class="list-group-item " >
+            <div class="d-flex flex-row justify-content-start" style="font-size:20px;padding-top:25px;text-align: center;">
+                {{$user->username}}   -   {{ $user->email }}
             @if($user->is_active==1)
             -   Active
          
@@ -27,7 +28,7 @@
             @endif
         </div>
         <div class="d-flex  justify-content-end">
-            <br><a class="btn btn-outline-info" href="/users/{{$user->id}}/edit">Edit</a> 
+            <br><a class="btn btn-outline-info" style="margin-right:20px;" href="/users/{{$user->id}}/edit">Edit</a>     
             <form action="/users/{{$user->id}}" method="post">
                 @csrf
                 @method('DELETE')
