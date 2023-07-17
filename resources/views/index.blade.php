@@ -13,7 +13,7 @@
         <div class="p-2" >
         <li class="list-group-item " >
             <div class="d-flex flex-row justify-content-start" style="font-size:20px;padding-top:25px;text-align: center;">
-                {{$user->username}}   -   {{ $user->email }}
+                {{$user->username}}   -   {{ $user->first_name }} {{ $user->last_name }}   -   {{ $user->email }}
             @if($user->is_active==1)
             -   Active
          

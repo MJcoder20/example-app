@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ManageUsersRequest;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ManageUsersController extends Controller
@@ -15,8 +16,8 @@ class ManageUsersController extends Controller
     
     public function index()
     {
-       
-        $users = ManageUsers::paginate();
+        $users = ManageUsers::filter(request()->all());
+        // $users = ManageUsers::paginate();
 
         return view('index', ['users'=>$users]);
     
