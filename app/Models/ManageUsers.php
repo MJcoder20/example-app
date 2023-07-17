@@ -11,7 +11,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class ManageUsers extends Authenticatable
 { 
-    // use HasFactory;
+    use HasFactory;
 
     public $timestamps = true;
     // const CREATED_AT = 'created_at';

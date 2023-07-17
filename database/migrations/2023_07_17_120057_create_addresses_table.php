@@ -18,14 +18,18 @@ return new class extends Migration
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
             $table->morphs('addressable');
+            // $table->foreignId('city_id')
+            // ->constrained()
+            // ->onUpdate('cascade')
+            // ->onDelete('cascade');
             $table->integer('city_id')->unsigned();
             $table->foreign('city_id')
-            ->references('id')->on('cities')->onDelete('cascade');
+            ->references('id')->on('cities');
             $table->string('district');
             $table->string('street');
-            $table->string('phone');
+            $table->string('phone')->unique();
             $table->timestamps();
-        
+            $table->softDeletes();
         });
     }
 

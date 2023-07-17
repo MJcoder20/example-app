@@ -16,11 +16,14 @@ return new class extends Migration
         if(Schema::hasTable('cities')) return;
 
         Schema::create('cities', function (Blueprint $table) {
-            $table->id()->unsigned();
-            $table->integer('country_id')->unsigned();
+            $table->id();      
             $table->string('name')->unique();
+            $table->integer('country_id')->unsigned();
             $table->foreign('country_id')
-            ->references('id')->on('countries')->onDelete('cascade');
+            ->references('id')->on('countries');
+            // $table->foreignId('country_id')->constrained()
+            // ->onUpdate('cascade')->onDelete('cascade');
+            $table->softDeletes();
         });
     }
 

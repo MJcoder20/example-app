@@ -19,10 +19,10 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->tinyInteger('is_active');
-            $table->string('phone');
+            $table->string('phone')->unique();
             $table->rememberToken();
             $table->timestamps();
-      
+            $table->softDeletes();
         });
     }
 
