@@ -12,6 +12,11 @@ class Vendor extends Model
 
     protected $fillable = ['first_name','last_name','email','is_active','phone'];
 
+    protected $attributes = [
+       
+        'is_active' => 1,
+    ];
+
     public $timestamps = true;
     // const CREATED_AT = 'created_at';
     // const UPDATED_AT = 'updated_at';

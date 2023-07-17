@@ -16,20 +16,17 @@ return new class extends Migration
         if(Schema::hasTable('addresses')) return; 
 
         Schema::create('addresses', function (Blueprint $table) {
-            $table->id();
-            $table->morphs('addressable');
-            // $table->foreignId('city_id')
-            // ->constrained()
-            // ->onUpdate('cascade')
-            // ->onDelete('cascade');
-            $table->integer('city_id')->unsigned();
-            $table->foreign('city_id')
-            ->references('id')->on('cities');
+            $table->bigIncrements('id');
+            // $table->unsignedInteger('city_id');
+            $table->morphs('addressable');          
             $table->string('district');
             $table->string('street');
             $table->string('phone')->unique();
             $table->timestamps();
             $table->softDeletes();
+            // $table->foreign('city_id')
+            // ->references('id')->on('cities')->onDelete('cascade');
+            $table->foreignId('city_id')->constrained();
         });
     }
 

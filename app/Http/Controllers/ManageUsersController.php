@@ -17,34 +17,12 @@ class ManageUsersController extends Controller
     public function index()
     {
         $users = ManageUsers::filter(request()->all());
-        // $users = ManageUsers::paginate();
+        // $users = ManageUsers::paginate(3);
 
         return view('index', ['users'=>$users]);
     
     }
 
-//     public function search(Request $request){
-//         $username = $request->input('username');
-//         $email = $request->input('email');
-//         $first_name = $request->input('first_name');
-//         $last_name = $request->input('last_name');
-//         $is_admin = $request->input('is_Admin');
-//         $is_active = $request->input('is_Active');
-
-   
-//        $data = DB::table('manage_users')
-//        ->where(['username'=>$username, 'email'=>$email, 'is_admin'=>$is_admin, 'is_active'=>$is_active])
-//        ->whereRaw("concat(first_name, ' ', last_name) like '%" .$first_name.' '.$last_name. "%' ")
-//        ->get();
-   
-//        return $data;
-//    }
-
-    // public function filter(){
-    //     $users = ManageUsers::isAdmin(1)->get();
-
-    //     return $users;
-    // }
    
     public function create()
     {
