@@ -13,6 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
+        if(Schema::hasTable('countries')) return; 
+
         Schema::create('countries', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name')->unique();

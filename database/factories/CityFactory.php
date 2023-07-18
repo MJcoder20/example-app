@@ -18,7 +18,7 @@ class CityFactory extends Factory
     {
         return [
             'name'=>fake()->unique()->city(),
-    
+            'country_id'=>rand(1,5),
         ];
     }
 }

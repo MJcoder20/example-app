@@ -10,7 +10,7 @@ class Address extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['district','street','phone'];
+    protected $fillable = ['addressable_id','addressable_type','city_id','district','street','phone'];
 
     public $timestamps = true;
     // const CREATED_AT = 'created_at';

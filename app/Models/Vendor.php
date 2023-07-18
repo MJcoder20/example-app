@@ -11,7 +11,7 @@ class Vendor extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['first_name','last_name','email','is_active','phone'];
+    protected $fillable = ['email','first_name','last_name','is_active','phone'];
 
     protected $attributes = [
        

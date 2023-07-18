@@ -16,14 +16,14 @@ return new class extends Migration
         if(Schema::hasTable('cities')) return;
 
         Schema::create('cities', function (Blueprint $table) {
-            $table->bigIncrements('id');     
+            $table->bigIncrements('id');
             // $table->unsignedBigInteger('country_id'); 
             $table->string('name')->unique();
             $table->softDeletes();
             // $table->foreign('country_id')
-            // ->references('id')->on('countries')->onDelete('cascade');
-            $table->foreignId('country_id')->constrained();
-          
+            // ->references('id')->on('countries')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('country_id')->constrained('countries');     
+
         });
     }
 

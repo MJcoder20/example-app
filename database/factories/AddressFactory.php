@@ -17,6 +17,9 @@ class AddressFactory extends Factory
     public function definition()
     {
         return [
+            'addressable_id'=>rand(1,5),
+            'addressable_type'=>fake()->randomElement(['user','vendor']),
+            'city_id'=>rand(1,5),
             'district'=>fake()->address(),
             'street'=>fake()->streetAddress(),
             'phone'=>fake()->unique()->phoneNumber(),

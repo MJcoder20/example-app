@@ -17,7 +17,7 @@ return new class extends Migration
 
         Schema::create('addresses', function (Blueprint $table) {
             $table->bigIncrements('id');
-            // $table->unsignedInteger('city_id');
+            // $table->unsignedBigInteger('city_id');
             $table->morphs('addressable');          
             $table->string('district');
             $table->string('street');
@@ -25,8 +25,9 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
             // $table->foreign('city_id')
-            // ->references('id')->on('cities')->onDelete('cascade');
-            $table->foreignId('city_id')->constrained();
+            // ->references('id')->on('cities')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('city_id')->constrained('cities');
+
         });
     }
 
