@@ -26,9 +26,9 @@ class ManageUsersController extends Controller
    
     public function create()
     {
-        if(Auth::user()->is_admin==1){
+        // if(Auth::user()->is_admin==1){
             return view('create');
-        }
+        // }
     }
 
    

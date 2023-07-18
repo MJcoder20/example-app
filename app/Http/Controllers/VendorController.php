@@ -43,8 +43,9 @@ class VendorController extends Controller
     
     public function edit(Vendor $vendor)
     {
-        return view('vendors.edit',['vendor'=>$vendor]);
-        
+        if(Auth::user()->is_admin==1){
+            return view('vendors.edit',['vendor'=>$vendor]);
+        }
     }
 
     public function update(VendorRequest $request, Vendor $vendor){

@@ -29,8 +29,7 @@ class ManageUsersRequest extends FormRequest
             'email'=>'required|email|unique:manage_users',
             'first_name'=>'min:3|max:15',
             'last_name'=>'min:3|max:15',   
-            // 'is_admin'=>'integer|min:0|max:1',
-            // 'is_active'=>'integer|min:0|max:1',
+       
             'password'=>'required|same:confirm_password|min:9|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/|regex:/[@$!%*#?&]/',
             'confirm_password' => 'required'
         ];
