@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -25,4 +26,9 @@ class Vendor extends Model
     {
         return $this->morphMany(Address::class, 'addressable');
     }
+
+    public function scopeFilter(Builder $builder, $request){
+        return (new VendorFilter())->filter($builder,$request);
+    }
+
 }

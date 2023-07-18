@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Online Reservations') }}</title>
+    <title>{{ config('app.name', 'Online store') }}</title>
 
     <link rel="stylesheet" href="/css/main.css">
     <link
@@ -31,7 +31,7 @@
             padding: 5px;
             position: fixed;
             top: 95%;
-            left: 75%;
+            left: 65%;
             transform: translate(-50%, -50%);
         
         }
@@ -42,10 +42,22 @@
             padding: 5px;
             position: fixed;
             top: 95%;
-            left: 90%;
+            left: 80%;
             transform: translate(-50%, -50%);
             text-decoration-line: none;
         }
+        .footer-button-2 {
+          
+          background-color:black;
+          width: 10%;
+          padding: 5px;
+          position: fixed;
+          top: 95%;
+          left: 90%;
+          margin-left:20px;
+          transform: translate(-50%, -50%);
+          text-decoration-line: none;
+      }
   
        
     </style>
@@ -83,30 +95,6 @@
       <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 
-      <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-      <![endif]-->
-
-
-        {{-- <script type="text/javascript" src="../../js/jquery.slim.min.js"></script> --}}
-        {{-- <script type="text/javascript" src="../../js/bootstrap.min.js"></script> --}}
-
-    {{-- <script src="//unpkg.com/alpinejs" defer></script> --}}
-    {{-- <script src="https://cdn.tailwindcss.com"></script>  --}}
-    {{-- <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        laravel: "#ef3b2d",
-                    },
-                },
-            },
-        };
-    </script> --}}
-    {{-- <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>  --}}
-
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
@@ -123,7 +111,7 @@
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
             <a class="navbar-brand" style="color:white;" href="{{ url('/') }}">
-                {{ config('app.name', 'Online Reservations') }}
+                {{ config('app.name', 'Online Store') }}
             </a>
      
         
@@ -177,12 +165,13 @@
               <div class="sidebar_blog_2">
                 
                  <ul class="list-unstyled components">
+
                     <li class="active">
                        <li><a href="/"><i class="fa fa-dashboard yellow_color"></i> <span>Users</span></a></li>           
                     </li>
                    
-                    <li><a href="/users/{{Auth::user()->id}}/edit"><i class="fa fa-table purple_color2"></i> <span>Edit User Information</span></a></li>
-                    <li><a href="{{ URL('info') }}"><i class="fa fa-object-group blue2_color"></i> <span>Personal Information</span></a></li>
+                    <li><a href="/vendors"><i class="fa fa-table purple_color2"></i> <span>Vendors</span></a></li>
+                    {{-- <li><a href="/vendors/create"><i class="fa fa-object-group blue2_color"></i> <span>Create Vendor</span></a></li> --}}
 
              </ul>
               </div>
@@ -252,11 +241,11 @@
 
     
         
-    
     @if(Auth::user() && Auth::user()->is_admin==1)
     <footer>
         <p class="copyright">Copyright &copy; 2023, All Rights reserved</p>
         <a href="/users/create" class="footer-button ">Create User</a>
+        <a href="/vendors/create" class="footer-button-2 ">Create Vendor</a>
     </footer>
     @endif
 
