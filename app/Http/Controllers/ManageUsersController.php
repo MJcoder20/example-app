@@ -23,23 +23,7 @@ class ManageUsersController extends Controller
     
     }
 
-    public function search(){
-        // $filter=$r->query('id');               
-        // if(!empty($filter))
-        // {
-        //     $terms = ManageUsers::query()
-        //     ->where('term', 'like', '%'.$filter.'%')           
-        //     ->get();
-        
-        //    $terms->appends($request->all());
-        // }
-        // else
-        // {
-        //     $terms = ManageUsers::get();
-        // }
 
-        return view('/users/search');
-    }
 
    
     public function create()
