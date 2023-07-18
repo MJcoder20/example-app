@@ -15,6 +15,6 @@ class ManageUsersSeeder extends Seeder
      */
     public function run()
     {
-        ManageUsers::factory()->count(5)->create();
+        ManageUsers::factory()->hasAddresses(3)->count(5)->create();
     }
 }

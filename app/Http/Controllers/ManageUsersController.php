@@ -16,11 +16,29 @@ class ManageUsersController extends Controller
     
     public function index()
     {
-        $users = ManageUsers::filter(request()->all());
+        $users = ManageUsers::filter(request()->all())->get();
         // $users = ManageUsers::paginate(3);
 
         return view('index', ['users'=>$users]);
     
+    }
+
+    public function search(){
+        // $filter=$r->query('id');               
+        // if(!empty($filter))
+        // {
+        //     $terms = ManageUsers::query()
+        //     ->where('term', 'like', '%'.$filter.'%')           
+        //     ->get();
+        
+        //    $terms->appends($request->all());
+        // }
+        // else
+        // {
+        //     $terms = ManageUsers::get();
+        // }
+
+        return view('/users/search');
     }
 
    

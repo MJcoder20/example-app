@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\City;
+use App\Models\Vendor;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,9 +19,10 @@ class AddressFactory extends Factory
     public function definition()
     {
         return [
-            'addressable_id'=>rand(1,5),
+            // 'addressable_id'=>Vendor::all()->random,
+            // 'addressable_id'=>rand(1,5),
             'addressable_type'=>fake()->randomElement(['user','vendor']),
-            'city_id'=>rand(1,5),
+            'city_id'=>City::factory(),
             'district'=>fake()->address(),
             'street'=>fake()->streetAddress(),
             'phone'=>fake()->unique()->phoneNumber(),

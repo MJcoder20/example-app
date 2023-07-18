@@ -21,4 +21,8 @@ class Address extends Model
         return $this->morphTo();
     }
 
+    public function city() {
+        return $this->belongsTo('App\Models\City');
+    }
+
 }

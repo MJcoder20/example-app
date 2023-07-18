@@ -2,7 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\City;
+use App\Models\Vendor;
 use App\Models\Address;
+use App\Models\ManageUsers;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
@@ -15,6 +18,8 @@ class AddressSeeder extends Seeder
      */
     public function run()
     {
-        Address::factory()->count(5)->create();
+        Address::factory()->count(4)->for(
+            [ManageUsers::factory(),Vendor::factory()],'addressable'
+        )->has(City::factory()->count(4))->create();
     }
 }

@@ -22,7 +22,7 @@ return new class extends Migration
             $table->softDeletes();
             // $table->foreign('country_id')
             // ->references('id')->on('countries')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('country_id')->constrained('countries');     
+            $table->foreignId('country_id')->constrained('countries')->cascadeOnDelete();     
 
         });
     }

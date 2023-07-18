@@ -26,7 +26,7 @@ return new class extends Migration
             $table->softDeletes();
             // $table->foreign('city_id')
             // ->references('id')->on('cities')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('city_id')->constrained('cities');
+            $table->foreignId('city_id')->constrained('cities')->cascadeOnDelete();
 
         });
     }
