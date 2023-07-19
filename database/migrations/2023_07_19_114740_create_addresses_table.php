@@ -13,8 +13,6 @@ return new class extends Migration
      */
     public function up()
     {
-        if(Schema::hasTable('addresses')) return; 
-
         Schema::create('addresses', function (Blueprint $table) {
             $table->bigIncrements('id');
             // $table->unsignedBigInteger('city_id');
@@ -27,7 +25,6 @@ return new class extends Migration
             // $table->foreign('city_id')
             // ->references('id')->on('cities')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('city_id')->constrained('cities')->cascadeOnDelete();
-
         });
     }
 

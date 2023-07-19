@@ -22,12 +22,16 @@ class AddressFactory extends Factory
     {
         return [
             
-            // 'addressable_id'=>rand(1,5),
-            // 'addressable_type'=>fake()->randomElement(['user','vendor']),
+           
             'addressable_id'=>Vendor::factory()||ManageUsers::factory(),
             'addressable_type'=>function (array $attributes) {
-                return (Vendor::find($attributes['addressable_id'])->type)||
-                (ManageUsers::find($attributes['addressable_id'])->type);
+                if(ManageUsers::find($attributes['addressable_id'])->type=='App\Models\ManageUsers'){
+                    return 'user';
+                }else{
+                    return 'vendor' ;
+                }
+                // return (Vendor::find($attributes['addressable_id'])->type)||
+                // (ManageUsers::find($attributes['addressable_id'])->type);
             },
             'city_id'=>City::factory(),
             'district'=>fake()->address(),

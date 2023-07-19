@@ -13,8 +13,6 @@ return new class extends Migration
      */
     public function up()
     {
-        if(Schema::hasTable('cities')) return;
-
         Schema::create('cities', function (Blueprint $table) {
             $table->bigIncrements('id');
             // $table->unsignedBigInteger('country_id'); 
@@ -22,8 +20,7 @@ return new class extends Migration
             $table->softDeletes();
             // $table->foreign('country_id')
             // ->references('id')->on('countries')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('country_id')->constrained('countries')->cascadeOnDelete();     
-
+            $table->foreignId('country_id')->constrained('countries')->cascadeOnDelete(); 
         });
     }
 
