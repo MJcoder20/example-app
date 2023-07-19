@@ -24,16 +24,17 @@ class VendorController extends Controller
    
     public function create()
     {
-        return view('vendors.create');
-       
+        if(Auth::user()->is_admin==1){
+            return view('vendors.create');
+        }
     }
 
    
     public function store(VendorRequest $request)
     {
        
-        $fields = $request->validated();
-        Vendor::create($fields);
+        $validated = $request->validated();
+        Vendor::create($validated);
 
         return redirect('/vendors');
 
@@ -49,9 +50,9 @@ class VendorController extends Controller
 
     public function update(VendorRequest $request, Vendor $vendor){
 
-        $fields= $request->validated();
+        $validated= $request->validated();
         
-        $vendor->update($fields);
+        $vendor->update($validated);
 
         return redirect('/vendors');
     }

@@ -25,13 +25,8 @@ class AddressFactory extends Factory
            
             'addressable_id'=>Vendor::factory()||ManageUsers::factory(),
             'addressable_type'=>function (array $attributes) {
-                if(ManageUsers::find($attributes['addressable_id'])->type=='App\Models\ManageUsers'){
-                    return 'user';
-                }else{
-                    return 'vendor' ;
-                }
-                // return (Vendor::find($attributes['addressable_id'])->type)||
-                // (ManageUsers::find($attributes['addressable_id'])->type);
+                return (Vendor::find($attributes['addressable_id'])->type)||
+                (ManageUsers::find($attributes['addressable_id'])->type);
             },
             'city_id'=>City::factory(),
             'district'=>fake()->address(),

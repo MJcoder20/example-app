@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Filters\VendorFilter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -14,7 +15,6 @@ class Vendor extends Model
     protected $fillable = ['email','first_name','last_name','is_active','phone'];
 
     protected $attributes = [
-       
         'is_active' => 1,
     ];
 

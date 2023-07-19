@@ -10,6 +10,7 @@ use App\Http\Requests\ManageUsersRequest;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+
 class ManageUsersController extends Controller
 {
     use SoftDeletes;
@@ -28,9 +29,9 @@ class ManageUsersController extends Controller
    
     public function create()
     {
-        // if(Auth::user()->is_admin==1){
-            return view('create');
-        // }
+
+         return view('create');
+     
     }
 
    

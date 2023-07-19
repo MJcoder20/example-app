@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class VendorRequest extends FormRequest
+class UpdateItemRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,13 +25,13 @@ class VendorRequest extends FormRequest
     public function rules()
     {
         return [
-         
-            'email'=>'required|unique:vendors|email',
-            'first_name'=>'min:3|max:15',
-            'last_name'=>'min:3|max:15',   
+            'name'=>['required'|Rule::unique('item')->where(function ($query) {
+                $query->where('name', $this->name)
+                   ->where('brand_id', $this->brand_id);
+            })->ignore($this->item->id)],
+            'image'=>'mimes:png,jpg,jpeg',
+            'brand_id'=>'integer',
             'is_active'=>'integer|min:0|max:1',
-            'phone'=>'required|unique:vendors|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
-           
         ];
     }
 }

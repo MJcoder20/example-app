@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ItemController;
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\ManageUsersController;
 
@@ -17,7 +19,7 @@ use App\Http\Controllers\ManageUsersController;
 */
 
 //User routes
-Route::get('/',[ManageUsersController::class, 'index'])->name('index')->middleware('auth');
+Route::get('/',[ManageUsersController::class, 'index'])->name('index');
 Route::get('/users/create',[ManageUsersController::class, 'create'])->middleware('auth');
 Route::post('/',[ManageUsersController::class, 'store'])->middleware('auth');
 Route::get('/users/{user}/edit',[ManageUsersController::class, 'edit'])->middleware('auth');
@@ -28,13 +30,29 @@ Route::delete('/users/{user}',[ManageUsersController::class, 'destroy'])->middle
 
 // Vendor routes
 Route::get('/vendors',[VendorController::class, 'index']);
-Route::get('/vendors/create',[VendorController::class, 'create']);
-Route::post('/vendors',[VendorController::class, 'store']);
-Route::get('/vendors/{vendor}/edit',[VendorController::class, 'edit']);
-Route::put('/vendors/{vendor}',[VendorController::class, 'update']);
-Route::delete('/vendors/{vendor}',[VendorController::class, 'destroy']);
-// Route::post('/vendors/search',[VendorController::class, 'search']);
+Route::get('/vendors/create',[VendorController::class, 'create'])->middleware('auth');
+Route::post('/vendors',[VendorController::class, 'store'])->middleware('auth');
+Route::get('/vendors/{vendor}/edit',[VendorController::class, 'edit'])->middleware('auth');
+Route::put('/vendors/{vendor}',[VendorController::class, 'update'])->middleware('auth');
+Route::delete('/vendors/{vendor}',[VendorController::class, 'destroy'])->middleware('auth');
 
+
+// Brand routes
+Route::get('/brands',[BrandController::class, 'index']);
+Route::get('/brands/create',[BrandController::class, 'create'])->middleware('auth');
+Route::post('/brands',[BrandController::class, 'store'])->middleware('auth');
+Route::get('/brands/{brand}/edit',[BrandController::class, 'edit'])->middleware('auth');
+Route::put('/brands/{brand}',[BrandController::class, 'update'])->middleware('auth');
+Route::delete('/brands/{brand}',[BrandController::class, 'destroy'])->middleware('auth');
+
+
+// Item routes
+Route::get('/items',[ItemController::class, 'index']);
+Route::get('/items/create',[ItemController::class, 'create'])->middleware('auth');
+Route::post('/items',[ItemController::class, 'store'])->middleware('auth');
+Route::get('/items/{item}/edit',[ItemController::class, 'edit'])->middleware('auth');
+Route::put('/items/{item}',[ItemController::class, 'update'])->middleware('auth');
+Route::delete('/items/{item}',[ItemController::class, 'destroy'])->middleware('auth');
 
 Auth::routes();
 // Route::group(['middleware' => 'admin'], function(){
