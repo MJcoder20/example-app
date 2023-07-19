@@ -183,9 +183,7 @@
               <div class="topbar">
                  <nav class="navbar navbar-expand-lg navbar-light">
                     <div class="container">
-                        {{-- <a class="navbar-brand" style="color:white;" href="{{ url('/') }}">
-                            {{ config('app.name', 'Online Reservations') }}
-                        </a> --}}
+                        
                 <div class="full">
                 <button type="button" style="margin-left: -15px;" id="sidebarCollapse" class="sidebar_toggle"><i class="fa fa-bars"></i></button>
                 
@@ -195,6 +193,7 @@
                        <input type="text" name="search" >
                        <input type="submit" name="search_btn" value="Search" >
                    </form>
+                  
                 </div>
                </div>
                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -251,6 +250,7 @@
 
 
      <!-- jQuery -->
+    
      <script src="{{ asset('js/jquery.min.js') }}"></script>
      <script src="{{ asset('js/popper.min.js') }}"></script>
      {{-- <script src="{{ asset('js/bootstrap.min.js')}}"></script> --}}
@@ -274,6 +274,9 @@
      <!-- custom js -->
      <script src="{{ asset('js/custom.js') }}"></script>
      <script src="{{ asset('js/chart_custom_style1.js') }}"></script>
+
+     {{-- <script type="text/javascript" src="js/filters.min.js"></script> --}}
+     <script src="https://mdbcdn.b-cdn.net/wp-content/themes/mdbootstrap4/docs-app/js/dist/mdb5/plugins/standard/filters.min.js"></script>
 
 </body>
 </html>

@@ -19,7 +19,10 @@ class AddressSeeder extends Seeder
     public function run()
     {
         Address::factory()->count(4)->for(
-            [ManageUsers::factory(),Vendor::factory()],'addressable'
-        )->has(City::factory()->count(4))->create();
+            ManageUsers::factory(),'addressable'
+        )->for(
+            Vendor::factory(),'addressable'
+        )->for(City::factory()->create())
+        ->create();
     }
 }

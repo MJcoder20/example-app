@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\City;
+use App\Models\Country;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
@@ -15,6 +16,6 @@ class CitySeeder extends Seeder
      */
     public function run()
     {
-        City::factory()->count(5)->create();
+        City::factory()->count(5)->for(Country::factory()->create())->create();
     }
 }
