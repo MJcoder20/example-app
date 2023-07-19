@@ -30,11 +30,13 @@ class UserFilter {
             $query->where('username','like', '%'.collect($request)->get('username').'%');
         }
         
+        // if (collect($request)->get('first_name') && collect($request)->get('last_name')){
+        //     // $query->where("CONCAT(first_name, ' ', last_name)", ' LIKE ' ,"%".collect($request)->get('first_name').' '.collect($request)->get('last_name')."%");
+        //     $query->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ['%'.collect($request)->get('first_name').' '.collect($request)->get('last_name').'%']);
+        // }
         if (collect($request)->get('first_name') && collect($request)->get('last_name')){
-            // $query->where("CONCAT(first_name, ' ', last_name)", ' LIKE ' ,"%".collect($request)->get('first_name').' '.collect($request)->get('last_name')."%");
-            $query->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ['%'.collect($request)->get('first_name').' '.collect($request)->get('last_name').'%']);
+            $query->where(DB::raw('CONCAT_WS(" ", first_name, last_name)'), 'like', collect($request)->get('first_name')." ".collect($request)->get('last_name'));
         }
-      
         if (collect($request)->get('is_active')!=null){
             $query->where('is_active', '=', collect($request)->get('is_active'));
         }
