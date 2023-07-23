@@ -38,9 +38,27 @@ class ItemController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ItemRequest $request)
+    public function store(Request $request)
     {
-        $validated=$request->validated();
+        $validated = $request->validate([
+          
+            'name'=>'required|string',
+            'image'=>'file|mimes:png,jpg,jpeg',
+            // 'brand_id'=>'integer',
+            'brand_id' => ['required', 'integer', Rule::unique('items')->where(function ($query) use ($request) {
+                return $query->where('name', $request->input('name'));
+            })],
+            'is_active'=>'integer|min:0|max:1',
+        ]);
+
+
+        $image=$request->file('image');
+        if($image){
+            $imageName = time().'.'.$image->getClientOriginalExtension();  
+            $image->move(public_path('images'), $imageName);
+        }
+        $validated['image']=$imageName;
+
         Item::create($validated);
         return redirect('/items');
     }
@@ -64,9 +82,9 @@ class ItemController extends Controller
      */
     public function edit(Item $item)
     {
-        if(Auth::user()->is_admin==1){
-            return view('edit',['item'=>$item]);
-        }
+       
+         return view('items.edit',['item'=>$item]);
+        
     }
 
     /**
@@ -76,9 +94,25 @@ class ItemController extends Controller
      * @param  \App\Models\Item  $item
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateItemRequest $request, Item $item)
+    public function update(Request $request, Item $item)
     {
-        $validated = $request->validated();
+        $validated = $request->validate([
+            'name'=>'required',
+            'image'=>'file|mimes:png,jpg,jpeg',
+            'brand_id' => ['required', 'integer', Rule::unique('items')->where(function ($query) use ($request) {
+                return $query->where('name', $request->input('name'));
+            })],
+            'is_active'=>'integer|min:0|max:1',
+        ]);
+       
+
+        $image=$request->file('image');
+        if($image){
+            $imageName = time().'.'.$image->getClientOriginalExtension();  
+            $image->move(public_path('images'), $imageName);
+        }
+        $validated['image']=$imageName;
+
         $item->update($validated);
         return redirect('/items');
     }

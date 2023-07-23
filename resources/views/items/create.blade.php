@@ -4,7 +4,7 @@
     <div class="container">
     <h1 style="font-size:40px;font-weight:bold">Create Item</h1>
     <div class="py-5 text-center" style="font-size:20px;">
-        <form action="/items" method="post" >
+        <form action="/items" method="post" enctype="multipart/form-data">
             @csrf
            
 
@@ -22,7 +22,7 @@
             <div class="row">
                 <label for="image"  class="col-sm-3 col-form-label">Image</label>
                 <div class="col-sm-9">
-                <input id="image" type="image" name="image"
+                <input id="image" type="file" name="image"
                 class="@error('image') is_invalid @enderror form-control"/>
                 </div>
                 @error('image')

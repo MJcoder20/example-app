@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Brand;
+use Illuminate\Http\File;
 use Illuminate\Http\Request;
 use App\Http\Requests\BrandRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class BrandController extends Controller
 {
@@ -17,6 +19,7 @@ class BrandController extends Controller
     public function index()
     {
         $brands = Brand::filter(request()->all())->get();
+        
         return view('brands.index',['brands'=>$brands]);
     }
 
@@ -39,6 +42,15 @@ class BrandController extends Controller
     public function store(BrandRequest $request)
     {
         $validated = $request->validated();
+
+        $icon=$request->file('icon');
+        if($icon){
+            $iconName = time().'.'.$icon->getClientOriginalExtension();  
+            $icon->move(public_path('images'), $iconName);
+        }
+
+        $validated['icon']=$iconName;
+        
         Brand::create($validated);
         return redirect('/brands');
     }
@@ -76,7 +88,15 @@ class BrandController extends Controller
      */
     public function update(BrandRequest $request, Brand $brand)
     {
+        
         $validated=$request->validated();
+        $icon=$request->file('icon');
+        if($icon){
+            $iconName = time().'.'.$icon->getClientOriginalExtension();  
+            $icon->move(public_path('images'), $iconName);
+        }
+        $validated['icon']=$iconName;
+
         $brand->update($validated);
         return redirect('/brands');
     }
@@ -89,6 +109,7 @@ class BrandController extends Controller
      */
     public function destroy(Brand $brand)
     {
+ 
         $brand->delete();
         return redirect('/brands');
     }

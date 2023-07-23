@@ -25,13 +25,13 @@ class UpdateItemRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>['required'|Rule::unique('item')->where(function ($query) {
-                $query->where('name', $this->name)
-                   ->where('brand_id', $this->brand_id);
-            })->ignore($this->item->id)],
-            'image'=>'mimes:png,jpg,jpeg',
-            'brand_id'=>'integer',
-            'is_active'=>'integer|min:0|max:1',
+            // 'name'=>['required'|Rule::unique('item')->where(function ($query) {
+            //     $query->where('name', $this->name)
+            //        ->where('brand_id', $this->brand_id);
+            // })->ignore($this->item->id)],
+            // 'image'=>'file|mimes:png,jpg,jpeg',
+            // 'brand_id'=>'integer',
+            // 'is_active'=>'integer|min:0|max:1',
         ];
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Unique;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ItemRequest extends FormRequest
@@ -25,13 +26,13 @@ class ItemRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>['required'|Rule::unique('item')->where(function ($query) {
-                $query->where('name', $this->name)
-                   ->where('brand_id', $this->brand_id);
-            })],
-            'image'=>'mimes:png,jpg,jpeg',
-            'brand_id'=>'integer',
-            'is_active'=>'integer|min:0|max:1',
+            // 'name'=>'required',
+            // 'image'=>'file|mimes:png,jpg,jpeg',
+            
+            // 'brand_id' => ['required', 'integer', Rule::unique('items')->where(function ($query) use (ItemRequest) {
+            //     return $query->where('name', $this->input('name'));
+            // })],
+            // 'is_active'=>'integer|min:0|max:1',
         ];
     }
 }

@@ -31,7 +31,7 @@
             padding: 5px;
             position: fixed;
             top: 95%;
-            left: 65%;
+            left: 45%;
             transform: translate(-50%, -50%);
         
         }
@@ -42,7 +42,7 @@
             padding: 5px;
             position: fixed;
             top: 95%;
-            left: 80%;
+            left: 60%;
             transform: translate(-50%, -50%);
             text-decoration-line: none;
         }
@@ -53,8 +53,32 @@
           padding: 5px;
           position: fixed;
           top: 95%;
-          left: 90%;
+          left: 70%;
+          margin-left:10px;
+          transform: translate(-50%, -50%);
+          text-decoration-line: none;
+      }
+      .footer-button-3 {
+          
+          background-color:black;
+          width: 10%;
+          padding: 5px;
+          position: fixed;
+          top: 95%;
+          left: 80%;
           margin-left:20px;
+          transform: translate(-50%, -50%);
+          text-decoration-line: none;
+      }
+      .footer-button-4 {
+          
+          background-color:black;
+          width: 10%;
+          padding: 5px;
+          position: fixed;
+          top: 95%;
+          left: 90%;
+          margin-left:30px;
           transform: translate(-50%, -50%);
           text-decoration-line: none;
       }
@@ -172,6 +196,7 @@
                    
                     <li><a href="/vendors"><i class="fa fa-table purple_color2"></i> <span>Vendors</span></a></li>
                     <li><a href="/brands"><i class="fa fa-object-group blue2_color"></i> <span>Brands</span></a></li>
+                    <li><a href="/items"><i class="fa fa-object-group blue_color"></i> <span>Items</span></a></li>
 
              </ul>
               </div>
@@ -245,6 +270,8 @@
         <p class="copyright">Copyright &copy; 2023, All Rights reserved</p>
         <a href="/users/create" class="footer-button ">Create User</a>
         <a href="/vendors/create" class="footer-button-2 ">Create Vendor</a>
+        <a href="/brands/create" class="footer-button-3 ">Create Brand</a>
+        <a href="/items/create" class="footer-button-4 ">Create Item</a>
     </footer>
     @endif
 

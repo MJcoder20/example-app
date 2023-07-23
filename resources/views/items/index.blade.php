@@ -13,7 +13,11 @@
         <div class="p-2" >
         <li class="list-group-item " >
             <div class="d-flex flex-row justify-content-start" style="font-size:20px;padding-top:25px;text-align: center;">
-                {{$item->name}}   -   {{ $item->brand_id }}   -   ({{ $item->image }})  
+                @if($item->image)
+                <img src="public/images/{{$item->image}}" style="height: 80px;width:100px;margin-right:20px">    
+                @else 
+                <span>No image found!</span>
+                @endif    -   {{$item->name}}   -   {{ $item->brand_id }}   -     
                 @if($item->is_active==1)
                 -   Active
              

@@ -19,7 +19,7 @@ use App\Http\Controllers\ManageUsersController;
 */
 
 //User routes
-Route::get('/',[ManageUsersController::class, 'index'])->name('index');
+Route::get('/',[ManageUsersController::class, 'index'])->name('index')->middleware('auth');
 Route::get('/users/create',[ManageUsersController::class, 'create'])->middleware('auth');
 Route::post('/',[ManageUsersController::class, 'store'])->middleware('auth');
 Route::get('/users/{user}/edit',[ManageUsersController::class, 'edit'])->middleware('auth');
@@ -53,6 +53,12 @@ Route::post('/items',[ItemController::class, 'store'])->middleware('auth');
 Route::get('/items/{item}/edit',[ItemController::class, 'edit'])->middleware('auth');
 Route::put('/items/{item}',[ItemController::class, 'update'])->middleware('auth');
 Route::delete('/items/{item}',[ItemController::class, 'destroy'])->middleware('auth');
+
+//image routes
+// Route::controller(ImageController::class)->group(function(){
+//     Route::get('/image-upload', 'index')->name('image.form');
+//     Route::post('/upload-image', 'storeImage')->name('image.store');
+// });
 
 Auth::routes();
 // Route::group(['middleware' => 'admin'], function(){

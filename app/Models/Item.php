@@ -18,6 +18,10 @@ class Item extends Model
         $this->belongTo('App\Models\Brand');
     }
 
+    public function inventories(){
+        $this->belongsToMany('App\Models\Inventory','inventory_items');
+    }
+
     public function scopeFilter(Builder $query,$request){
         return (new ItemFilter())->filter($query,$request);
     }

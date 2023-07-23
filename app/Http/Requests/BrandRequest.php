@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+
 use Illuminate\Foundation\Http\FormRequest;
 
 class BrandRequest extends FormRequest
@@ -25,8 +26,11 @@ class BrandRequest extends FormRequest
     {
         return [
             'name'=>'required|unique:brands',
-            'icon'=>'mimes:png,jpg,jpeg',
-            
+            'icon'=>'file|mimes:png,jpg,jpeg',
+            'notes'=>'string|unique:brands'
         ];
+        
     }
+
+    
 }

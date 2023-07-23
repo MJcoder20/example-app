@@ -4,7 +4,7 @@
     <div class="container">
         <h1 style="font-size:40px;font-weight:bold">Update Brand</h1>
         <div class="py-5 text-center" style="font-size:20px;">
-        <form action="/brands/{{$brand->id}}" method="post">
+        <form action="/brands/{{$brand->id}}" method="post" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -21,14 +21,23 @@
 
 
             <div class="row">
-                <label for="icon" class="col-sm-3 col-form-label">Icon</label>
+                <label for="icon"  class="col-sm-3 col-form-label">Current Brand Icon</label>
                 <div class="col-sm-9">
-                <input id="icon" type="image" name="icon" 
-                value="{{$brand->icon}}" 
+             
+                <img style="margin-left:-800px;" src="{{$brand->icon}}" />
+                <input id="icon" type="text" name="icon" value="{{$brand->icon}}" 
+                class="@error('icon') is_invalid @enderror form-control"/>
+               
+                </div>
+            </div>
+            <div class="row">
+                <label for="icon"  class="col-sm-3 col-form-label">New Brand Icon</label>
+                <div class="col-sm-9">
+                <input id="icon" type="file" name="icon" 
                 class="@error('icon') is_invalid @enderror form-control"/>
                 </div>
                 @error('icon')
-                    <div class="alert alert-danger">{{$message}}</div>
+                    <div  class="alert alert-danger">{{$message}}</div>
                 @enderror
             </div><br>
 

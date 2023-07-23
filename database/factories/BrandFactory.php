@@ -17,7 +17,10 @@ class BrandFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name'=>fake()->unique()->name(),
+            'notes'=>fake()->text(),
+            'icon'=>fake()->image('public/images', 640, 480, null, false),
+
         ];
     }
 }
