@@ -14,7 +14,7 @@
         <li class="list-group-item " >
             <div class="d-flex flex-row justify-content-start" style="font-size:20px;padding-top:25px;text-align: center;">
                 @if($brand->icon)
-                <img src="public/images/{{$brand->icon}}" style="height: 80px;width:100px;margin-right:20px">    
+                <img src="/public/images/{{$brand->icon}}" style="height: 80px;width:100px;margin-right:20px">    
                 @else 
                 <span>No image found!</span>
                 @endif   -   {{ $brand->name }}   -   {{ $brand->notes }}  
