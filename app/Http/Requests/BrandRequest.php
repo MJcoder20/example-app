@@ -27,7 +27,7 @@ class BrandRequest extends FormRequest
         return [
             'name'=>'required|unique:brands',
             'icon'=>'file|mimes:png,jpg,jpeg',
-            'notes'=>'string|unique:brands'
+            'notes'=>'string'
         ];
         
     }

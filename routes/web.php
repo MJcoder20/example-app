@@ -60,6 +60,7 @@ Route::delete('/items/{item}',[ItemController::class, 'destroy'])->middleware('a
 //     Route::post('/upload-image', 'storeImage')->name('image.store');
 // });
 
+
 Auth::routes();
 // Route::group(['middleware' => 'admin'], function(){
 

@@ -3,9 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Brand;
+
+
+// use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Http\File;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Intervention\Image\Image;
 use App\Http\Requests\BrandRequest;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -33,6 +39,7 @@ class BrandController extends Controller
         return view('brands.create');
     }
 
+
     /**
      * Store a newly created resource in storage.
      *
@@ -43,13 +50,13 @@ class BrandController extends Controller
     {
         $validated = $request->validated();
 
-        $icon=$request->file('icon');
-        if($icon){
-            $iconName = time().'.'.$icon->getClientOriginalExtension();  
+        if($request->hasFile('icon')){
+            $icon=$request->file('icon');
+            $iconName = 'brand-icon' . '-' . time().'.'.$icon->getClientOriginalExtension();  
             $icon->move(public_path('images'), $iconName);
         }
-
         $validated['icon']=$iconName;
+
         
         Brand::create($validated);
         return redirect('/brands');
