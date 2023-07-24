@@ -124,6 +124,8 @@ class ItemController extends Controller
      */
     public function destroy(Item $item)
     {
+        $path=public_path('images/');
+        unlink($path.$item->image);
         $item->delete();
         return redirect('/items');
     }

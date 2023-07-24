@@ -123,7 +123,8 @@ class BrandController extends Controller
      */
     public function destroy(Brand $brand)
     {
- 
+        $path=public_path('images/');
+        unlink($path.$brand->icon);
         $brand->delete();
         return redirect('/brands');
     }
