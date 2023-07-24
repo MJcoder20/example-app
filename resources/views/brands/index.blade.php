@@ -16,7 +16,8 @@
                 {{-- <img style="height: 80px;width:100px;"
                 src="{{$brand->icon ? asset('images/'.$brand->icon) : asset('/images/Caption-for-Profile.jpg')}}"/> --}}
                 
-                   {{ $brand->name }}   -   {{ $brand->notes }}  
+                   {{ $brand->name }}   
+                   {{-- -   {{ $brand->notes }}   --}}
            
         
         </div>

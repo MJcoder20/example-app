@@ -16,6 +16,6 @@ class ItemSeeder extends Seeder
      */
     public function run()
     {
-        Item::factory()->count(5)->for(Brand::factory()->create())->create();
+        Item::factory()->count(6)->for(Brand::factory()->create())->create();
     }
 }

@@ -43,7 +43,7 @@
         @endforeach
         </ul>
     </div>
-    {{-- {{ $users->links() }} --}}
+    {{ $users->links() }}
     @else
     <h1>You're not an admin</h1>
 </div>

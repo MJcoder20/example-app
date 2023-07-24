@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Inventory;
 use App\Models\Filters\VendorFilter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -29,7 +28,7 @@ class Vendor extends Model
     }
 
     public function inventories(): BelongsToMany{
-        return $this->belongsToMany(Inventory::class)->withTimestamps();;
+        return $this->belongsToMany('App\Models\Inventory')->withTimestamps();;
     }
 
     public function scopeFilter(Builder $builder, $request){
