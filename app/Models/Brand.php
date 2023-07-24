@@ -12,6 +12,7 @@ class Brand extends Model
     use HasFactory;
 
     protected $fillable = ['name','notes','icon'];
+    
     public $timestamps=true;
 
     public function items(){

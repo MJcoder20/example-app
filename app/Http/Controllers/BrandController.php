@@ -56,7 +56,6 @@ class BrandController extends Controller
             $icon->move(public_path('images'), $iconName);
             $validated['icon']=$iconName;
         }
-        
 
         
         Brand::create($validated);

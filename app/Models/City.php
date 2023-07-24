@@ -21,4 +21,8 @@ class City extends Model
         return $this->hasMany('App\Models\Address');
     }
 
+    public function inventories() {
+        return $this->hasMany('App\Models\Inventory');
+    }
+
 }

@@ -27,7 +27,11 @@ class DatabaseSeeder extends Seeder
                 VendorSeeder::class,
                 CountrySeeder::class,
                 CitySeeder::class,
-                AddressSeeder::class
+                AddressSeeder::class,
+                BrandSeeder::class,
+                InventorySeeder::class,
+                ItemSeeder::class,
+                
             ]);
     }
 }

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
             $table->foreignId('brand_id')->constrained('brands')->cascadeOnDelete();
+            $table->unique(['brand_id', 'name']);
         });
     }
 

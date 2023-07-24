@@ -15,10 +15,10 @@
             <h3 style="text-align:center;font-size:20px;font-weight:bold">
                 This item is 
                 @if($item->is_active==1)
-                -   Active
+                   Active
              
                 @else
-                -   Inactive
+                   Inactive
                 @endif
             </h3>
         </div>

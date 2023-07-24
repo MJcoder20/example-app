@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Inventory;
 use App\Models\Filters\VendorFilter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Vendor extends Model
 {
@@ -19,12 +21,15 @@ class Vendor extends Model
     ];
 
     public $timestamps = true;
-    // const CREATED_AT = 'created_at';
-    // const UPDATED_AT = 'updated_at';
+
 
     public function addresses(): MorphMany
     {
         return $this->morphMany(Address::class, 'addressable');
+    }
+
+    public function inventories(): BelongsToMany{
+        return $this->belongsToMany(Inventory::class)->withTimestamps();;
     }
 
     public function scopeFilter(Builder $builder, $request){

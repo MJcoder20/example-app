@@ -17,10 +17,20 @@ class ItemFactory extends Factory
      */
     public function definition()
     {
+        // $brand = Brand::inRandomOrder()->first();
+        $brand = Brand::factory();
+        $brand instanceof Brand ? $brandId = $brand->id : $brandId = null;
+        
+        $name = fake()->name();
+        
+        // Generate unique brandId-name combination
+        $brandIdAndName = fake()->unique()->regexify("/^$brandId-$name");
+        $name = explode('-', $brandIdAndName)[1];
+
         return [
-            'name'=>fake()->name(),
+            'name'=>$name,
             'image'=>fake()->image('public/images', 640, 480, null, false),
-            'brand_id'=>Brand::factory(),
+            'brand_id'=>$brandId,
         ];
     }
 }
