@@ -44,6 +44,7 @@ Route::post('/brands',[BrandController::class, 'store'])->middleware('auth');
 Route::get('/brands/{brand}/edit',[BrandController::class, 'edit'])->middleware('auth');
 Route::put('/brands/{brand}',[BrandController::class, 'update'])->middleware('auth');
 Route::delete('/brands/{brand}',[BrandController::class, 'destroy'])->middleware('auth');
+Route::get('/brands/{brand}',[BrandController::class, 'show'])->middleware('auth');
 
 
 // Item routes
@@ -53,6 +54,7 @@ Route::post('/items',[ItemController::class, 'store'])->middleware('auth');
 Route::get('/items/{item}/edit',[ItemController::class, 'edit'])->middleware('auth');
 Route::put('/items/{item}',[ItemController::class, 'update'])->middleware('auth');
 Route::delete('/items/{item}',[ItemController::class, 'destroy'])->middleware('auth');
+Route::get('/items/{item}',[ItemController::class, 'show'])->middleware('auth');
 
 //image routes
 // Route::controller(ImageController::class)->group(function(){

@@ -21,19 +21,19 @@
 
 
             <div class="row">
-                <label for="image"  class="col-sm-3 col-form-label">Current Image</label>
-                <div class="col-sm-9">
-             
-                <img style="margin-left:-800px;" src="{{$item->image}}" />
-                <input id="image" type="text" name="image" value="{{$item->image}}" 
-                class="@error('image') is_invalid @enderror form-control"/>
+                <label for="imageName"  class="col-sm-3 col-form-label">Current Image</label>
+                <div class="col-sm-9">          
+                <br><br><img style="height:150px;width:200px; transform: translate(-50%, -20%);"
+                src="{{$item->image ? asset('images/'.$item->image) : asset('/images/Caption-for-Profile.jpg')}}"/><br>
+                <input id="imageName" type="text" name="imageName" value="{{$item->image}}" 
+                class="form-control"/>
                
                 </div>
             </div>
             <div class="row">
                 <label for="image"  class="col-sm-3 col-form-label">New Image</label>
                 <div class="col-sm-9">
-                <input id="image" type="file" name="image" 
+                <input id="image" type="file" name="image" value="images/{{$item->image}}"
                 class="@error('image') is_invalid @enderror form-control"/>
                 </div>
                 @error('image')

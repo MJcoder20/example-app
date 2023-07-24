@@ -21,12 +21,12 @@
 
 
             <div class="row">
-                <label for="icon"  class="col-sm-3 col-form-label">Current Brand Icon</label>
-                <div class="col-sm-9">
-             
-                <img style="margin-left:-800px;" src="{{$brand->icon}}" />
-                <input id="icon" type="text" name="icon" value="{{$brand->icon}}" 
-                class="@error('icon') is_invalid @enderror form-control"/>
+                <label for="iconName"  class="col-sm-3 col-form-label">Current Brand Icon</label>
+                <div class="col-sm-9">          
+                <br><br><img style="height:150px;width:200px; transform: translate(-50%, -20%);"
+                src="{{$brand->icon ? asset('images/'.$brand->icon) : asset('/images/Caption-for-Profile.jpg')}}"/><br>
+                <input id="iconName" type="text" name="iconName" value="{{$brand->icon}}" 
+                class="form-control"/>
                
                 </div>
             </div>

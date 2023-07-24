@@ -13,15 +13,15 @@
         <div class="p-2" >
         <li class="list-group-item " >
             <div class="d-flex flex-row justify-content-start" style="font-size:20px;padding-top:25px;text-align: center;">
-                @if($brand->icon)
-                <img src="/public/images/{{$brand->icon}}" style="height: 80px;width:100px;margin-right:20px">    
-                @else 
-                <span>No image found!</span>
-                @endif   -   {{ $brand->name }}   -   {{ $brand->notes }}  
+                {{-- <img style="height: 80px;width:100px;"
+                src="{{$brand->icon ? asset('images/'.$brand->icon) : asset('/images/Caption-for-Profile.jpg')}}"/> --}}
+                
+                   {{ $brand->name }}   -   {{ $brand->notes }}  
            
         
         </div>
         <div class="d-flex  justify-content-end">
+            <br><a class="btn btn-outline-success" style="margin-right:20px;" href="/brands/{{$brand->id}}">Show</a>     
             <br><a class="btn btn-outline-info" style="margin-right:20px;" href="/brands/{{$brand->id}}/edit">Edit</a>     
             <form action="/brands/{{$brand->id}}" method="post">
                 @csrf

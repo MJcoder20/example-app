@@ -54,8 +54,9 @@ class BrandController extends Controller
             $icon=$request->file('icon');
             $iconName = 'brand-icon' . '-' . time().'.'.$icon->getClientOriginalExtension();  
             $icon->move(public_path('images'), $iconName);
+            $validated['icon']=$iconName;
         }
-        $validated['icon']=$iconName;
+        
 
         
         Brand::create($validated);
@@ -70,7 +71,7 @@ class BrandController extends Controller
      */
     public function show(Brand $brand)
     {
-        //
+        return view('brands.show',['brand'=>$brand]);
     }
 
     /**
@@ -93,16 +94,22 @@ class BrandController extends Controller
      * @param  \App\Models\Brand  $brand
      * @return \Illuminate\Http\Response
      */
-    public function update(BrandRequest $request, Brand $brand)
+    public function update(Request $request, Brand $brand)
     {
         
-        $validated=$request->validated();
-        $icon=$request->file('icon');
-        if($icon){
-            $iconName = time().'.'.$icon->getClientOriginalExtension();  
+        $validated=$request->validate([
+            'name'=>'string',
+            'icon'=>'nullable|file|mimes:png,jpg,jpeg',
+            'notes'=>'string'
+        ]);
+
+        if($request->hasFile('icon')){
+            $icon=$request->file('icon');
+            $iconName = 'brand-icon' . '-' .time().'.'.$icon->getClientOriginalExtension();  
             $icon->move(public_path('images'), $iconName);
+            $validated['icon']=$iconName;
         }
-        $validated['icon']=$iconName;
+        
 
         $brand->update($validated);
         return redirect('/brands');

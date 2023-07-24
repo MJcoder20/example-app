@@ -13,20 +13,14 @@
         <div class="p-2" >
         <li class="list-group-item " >
             <div class="d-flex flex-row justify-content-start" style="font-size:20px;padding-top:25px;text-align: center;">
-                @if($item->image)
-                <img src="/public/images/{{$item->image}}" style="height: 80px;width:100px;margin-right:20px">    
-                @else 
-                <span>No image found!</span>
-                @endif    -   {{$item->name}}   -   {{ $item->brand_id }}        
-                @if($item->is_active==1)
-                -   Active
-             
-                @else
-                -   Inactive
-                @endif
+                  {{-- <img style="height: 80px;width:100px;"
+                src="{{$item->image ? asset('images/'.$item->image) : asset('/images/Caption-for-Profile.jpg')}}"/> --}}
+                  
+                   {{$item->name}}   
         
         </div>
         <div class="d-flex  justify-content-end">
+            <br><a class="btn btn-outline-success" style="margin-right:20px;" href="/items/{{$item->id}}">Show</a>     
             <br><a class="btn btn-outline-info" style="margin-right:20px;" href="/items/{{$item->id}}/edit">Edit</a>     
             <form action="/items/{{$item->id}}" method="post">
                 @csrf
