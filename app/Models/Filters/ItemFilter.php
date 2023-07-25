@@ -15,24 +15,18 @@ class ItemFilter extends Model
         if (collect($request)->get('image')){
             $query->where('image', 'like', '%'.collect($request)->get('image').'%');
         }
-        // if(collect($request)->get('brand_id')!=null){
-        //     $query->where('brand_id', '=', collect($request)->get('brand_id'));
-        // }
         if (collect($request)->get('is_active')!=null){
             $query->where('is_active', '=', collect($request)->get('is_active'));
         }
         if(collect($request)->get('brand_id')!=null){
-            $query
-            ->join('brands','items.brand_id','=','brands.id')
-            ->select('items.*','brands.*')
-            ->where('brands.id','=',collect($request)->get('brand_id'));
+            $query->where('items.brand_id','=',collect($request)->get('brand_id'));
         }
         if(collect($request)->get('inventory_id')!=null){
             $query
             ->join('inventory_items','items.id','=','inventory_items.item_id')
             ->join('inventories','inventory_items.inventory_id','=','inventories.id')
-            ->select('items.*','inventories.*')
-            ->where('inventories.id','=',collect($request)->get('inventory_id'));
+            ->select('items.*','inventory_items.*')
+            ->where('inventory_items.inventory_id','=',collect($request)->get('inventory_id'));
         }
         if(collect($request)->get('vendor_id')!=null){
             $query
@@ -40,8 +34,8 @@ class ItemFilter extends Model
             ->join('inventories','inventory_items.inventory_id','=','inventories.id')
             ->join('vendor_inventories','inventories.id','=','vendor_inventories.inventory_id')
             ->join('vendors','vendor_inventories.vendor_id','=','vendors.id')
-            ->select('items.*','vendors.*')
-            ->where('vendors.id','=',collect($request)->get('vendor_id'));
+            ->select('items.*','vendor_inventories.*')
+            ->where('vendor_inventories.vendor_id','=',collect($request)->get('vendor_id'));
         }
         if(collect($request)->get('id')!=null){
             $query->
