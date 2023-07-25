@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\VendorController;
+use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ManageUsersController;
 
 /*
@@ -56,20 +57,21 @@ Route::put('/items/{item}',[ItemController::class, 'update'])->middleware('auth'
 Route::delete('/items/{item}',[ItemController::class, 'destroy'])->middleware('auth');
 Route::get('/items/{item}',[ItemController::class, 'show'])->middleware('auth');
 
-//image routes
-// Route::controller(ImageController::class)->group(function(){
-//     Route::get('/image-upload', 'index')->name('image.form');
-//     Route::post('/upload-image', 'storeImage')->name('image.store');
-// });
+
+// Inventory routes
+Route::get('/inventories',[InventoryController::class, 'index']);
+Route::get('/inventories/create',[InventoryController::class, 'create'])->middleware('auth');
+Route::post('/inventories',[InventoryController::class, 'store'])->middleware('auth');
+Route::get('/inventories/{inventory}/edit',[InventoryController::class, 'edit'])->middleware('auth');
+Route::put('/inventories/{inventory}',[InventoryController::class, 'update'])->middleware('auth');
+Route::delete('/inventories/{inventory}',[InventoryController::class, 'destroy'])->middleware('auth');
+Route::get('/inventories/{inventory}',[InventoryController::class, 'show'])->middleware('auth');
 
 
 Auth::routes();
 // Route::group(['middleware' => 'admin'], function(){
-
 //     //all the routes protected by the admin middleware 
 //     Route::get('/users/create',[ManageUsersController::class, 'create'])->middleware('auth');
-
-
 // });
 
 

@@ -18,7 +18,7 @@ class ItemFactory extends Factory
     public function definition()
     {
         // $brand = Brand::inRandomOrder()->first();
-        $brand = Brand::factory();
+        $brand = Brand::all()->pluck('id');
         $brand instanceof Brand ? $brandId = $brand->id : $brandId = null;
         
         $name = fake()->name();
@@ -26,6 +26,7 @@ class ItemFactory extends Factory
         // Generate unique brandId-name combination
         $brandIdAndName = fake()->unique()->regexify("/^$brandId-$name");
         $name = explode('-', $brandIdAndName)[1];
+
 
         return [
             'name'=>$name,

@@ -17,9 +17,11 @@ class InventoryFactory extends Factory
      */
     public function definition()
     {
+        $cityIDs = City::all()->pluck('id');
+
         return [
             'name'=>fake()->unique()->name(),
-            'city_id'=>City::factory(),
+            'city_id'=>fake()->randomElement($cityIDs),
             'phone'=>fake()->unique()->phoneNumber(),
             
         ];

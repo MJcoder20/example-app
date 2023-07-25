@@ -17,10 +17,11 @@ class CityFactory extends Factory
      */
     public function definition()
     {
+        $countryIDs = Country::all()->pluck('id');
 
         return [
             'name'=>fake()->unique()->city(),
-            'country_id'=>Country::factory(),
+            'country_id'=>fake()->randomElement($countryIDs),
         ];
     }
 }

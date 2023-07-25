@@ -197,6 +197,8 @@
                     <li><a href="/vendors"><i class="fa fa-table purple_color2"></i> <span>Vendors</span></a></li>
                     <li><a href="/brands"><i class="fa fa-object-group blue2_color"></i> <span>Brands</span></a></li>
                     <li><a href="/items"><i class="fa fa-object-group blue_color"></i> <span>Items</span></a></li>
+                    <li><a href="/inventories"><i class="fa fa-table purple_color"></i> <span>Inventories</span></a></li>
+
 
              </ul>
               </div>

@@ -19,7 +19,7 @@ class ManageUsersController extends Controller
     {
         $users = ManageUsers::filter(request()->all())->paginate(3);
         // $users = ManageUsers::paginate(3);
-        return view('index', ['users'=>$users]);
+        return view('users.index', ['users'=>$users]);
     
     }
 
@@ -29,7 +29,7 @@ class ManageUsersController extends Controller
     public function create()
     {
 
-         return view('create');
+         return view('users.create');
      
     }
 
@@ -50,7 +50,7 @@ class ManageUsersController extends Controller
     public function edit(ManageUsers $user)
     {
         if(Auth::user()->is_admin==1){
-            return view('edit',['user'=>$user]);
+            return view('users.edit',['user'=>$user]);
         }
     }
 
