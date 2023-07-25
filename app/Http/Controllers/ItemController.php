@@ -19,7 +19,7 @@ class ItemController extends Controller
      */
     public function index()
     {
-        $items = Item::filter(request()->all())->get();
+        $items = Item::filter(request()->all())->paginate(3);
         return view('items.index',['items'=>$items]);
     }
 

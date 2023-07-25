@@ -37,7 +37,7 @@
         @endforeach
         </ul>
     </div>
-  
+    {{$vendors->links()}}
 </div>
 </div>
 

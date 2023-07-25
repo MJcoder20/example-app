@@ -15,11 +15,8 @@ return new class extends Migration
     {
         Schema::create('cities', function (Blueprint $table) {
             $table->bigIncrements('id');
-            // $table->unsignedBigInteger('country_id'); 
             $table->string('name')->unique();
             $table->softDeletes();
-            // $table->foreign('country_id')
-            // ->references('id')->on('countries')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('country_id')->constrained('countries')->cascadeOnDelete(); 
         });
     }

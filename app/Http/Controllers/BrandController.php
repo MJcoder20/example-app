@@ -24,7 +24,7 @@ class BrandController extends Controller
      */
     public function index()
     {
-        $brands = Brand::filter(request()->all())->get();
+        $brands = Brand::filter(request()->all())->paginate(3);
         
         return view('brands.index',['brands'=>$brands]);
     }
@@ -57,6 +57,9 @@ class BrandController extends Controller
             $validated['icon']=$iconName;
         }
 
+        // $path = $request->file('icon')->storeAs(
+        //     'images', $request->id
+        // );
         
         Brand::create($validated);
         return redirect('/brands');

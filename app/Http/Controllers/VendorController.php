@@ -15,8 +15,7 @@ class VendorController extends Controller
     
     public function index()
     {
-        $vendors = Vendor::filter(request()->all())->get();
-
+        $vendors = Vendor::filter(request()->all())->paginate(3);
         return view('vendors.index', ['vendors'=>$vendors]);
     
     }
@@ -35,7 +34,6 @@ class VendorController extends Controller
        
         $validated = $request->validated();
         Vendor::create($validated);
-
         return redirect('/vendors');
 
     }
@@ -50,10 +48,8 @@ class VendorController extends Controller
 
     public function update(VendorRequest $request, Vendor $vendor){
 
-        $validated= $request->validated();
-        
+        $validated= $request->validated();      
         $vendor->update($validated);
-
         return redirect('/vendors');
     }
 

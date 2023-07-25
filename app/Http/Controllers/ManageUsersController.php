@@ -17,9 +17,8 @@ class ManageUsersController extends Controller
     
     public function index()
     {
-        // $users = ManageUsers::filter(request()->all())->get();
-        $users = ManageUsers::paginate(3);
-
+        $users = ManageUsers::filter(request()->all())->paginate(3);
+        // $users = ManageUsers::paginate(3);
         return view('index', ['users'=>$users]);
     
     }
