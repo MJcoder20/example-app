@@ -1,0 +1,33 @@
+<?php
+
+namespace App\Models\Filters;
+
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
+
+class VendorFilter extends Model
+{
+
+    public function filter($query, $request){
+        
+        if(collect($request)->get('email')){
+            $query->where('email', 'like', '%'.collect($request)->get('email').'%');
+        }
+        if (collect($request)->get('name')){
+            $query->where(DB::raw('CONCAT_WS(" ", first_name, last_name)'), 'like', collect($request)->get('name'));
+        }
+        
+        if (collect($request)->get('is_active')!=null){
+            $query->where('is_active', '=', collect($request)->get('is_active'));
+        }
+        if (collect($request)->get('phone')){
+            $query->where('phone', 'like',"%".collect($request)->get('phone')."%");
+        }
+        
+
+        return $query;
+
+    }
+
+    
+}

@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ManageUsersRequest;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class ManageUsersController extends Controller
 {
@@ -15,31 +17,20 @@ class ManageUsersController extends Controller
     
     public function index()
     {
-        // $collection = ManageUsers::collect(['username'=>'mjcoder','email','first_name','last_name','is_admin','is_active']);
-
-        // $users = ManageUsers::
-        // $users = QueryBuilder::for(ManageUsers::class)
-        // ->allowedFilters(['name', 'email'])
-        // ->get();
-        // $users = $collection::
-        // filter()
-        // ->paginate();
-
-        $users =DB::table('manage_users')
-        ->select('id', 'username', 'email', 'first_name', 'last_name', 'is_admin', 'is_active')
-        ->get();
-
-        return view('index', ['users'=>$users]);
-       
-        
+        $users = ManageUsers::filter(request()->all())->paginate(3);
+        // $users = ManageUsers::paginate(3);
+        return view('users.index', ['users'=>$users]);
+    
     }
+
+
 
    
     public function create()
     {
-        if(Auth::user()->is_admin==1){
-            return view('create');
-        }
+
+         return view('users.create');
+     
     }
 
    
@@ -58,9 +49,9 @@ class ManageUsersController extends Controller
     
     public function edit(ManageUsers $user)
     {
-
-        return view('edit',['user'=>$user]);
-        
+        if(Auth::user()->is_admin==1){
+            return view('users.edit',['user'=>$user]);
+        }
     }
 
     public function update(Request $request, ManageUsers $user){

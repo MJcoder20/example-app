@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Online Reservations') }}</title>
+    <title>{{ config('app.name', 'Online store') }}</title>
 
     <link rel="stylesheet" href="/css/main.css">
     <link
@@ -31,7 +31,7 @@
             padding: 5px;
             position: fixed;
             top: 95%;
-            left: 75%;
+            left: 45%;
             transform: translate(-50%, -50%);
         
         }
@@ -42,10 +42,46 @@
             padding: 5px;
             position: fixed;
             top: 95%;
-            left: 90%;
+            left: 60%;
             transform: translate(-50%, -50%);
             text-decoration-line: none;
         }
+        .footer-button-2 {
+          
+          background-color:black;
+          width: 10%;
+          padding: 5px;
+          position: fixed;
+          top: 95%;
+          left: 70%;
+          margin-left:10px;
+          transform: translate(-50%, -50%);
+          text-decoration-line: none;
+      }
+      .footer-button-3 {
+          
+          background-color:black;
+          width: 10%;
+          padding: 5px;
+          position: fixed;
+          top: 95%;
+          left: 80%;
+          margin-left:20px;
+          transform: translate(-50%, -50%);
+          text-decoration-line: none;
+      }
+      .footer-button-4 {
+          
+          background-color:black;
+          width: 10%;
+          padding: 5px;
+          position: fixed;
+          top: 95%;
+          left: 90%;
+          margin-left:30px;
+          transform: translate(-50%, -50%);
+          text-decoration-line: none;
+      }
   
        
     </style>
@@ -83,65 +119,54 @@
       <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 
-      <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-      <![endif]-->
-
-
-        {{-- <script type="text/javascript" src="../../js/jquery.slim.min.js"></script> --}}
-        {{-- <script type="text/javascript" src="../../js/bootstrap.min.js"></script> --}}
-
-    {{-- <script src="//unpkg.com/alpinejs" defer></script> --}}
-    {{-- <script src="https://cdn.tailwindcss.com"></script>  --}}
-    {{-- <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        laravel: "#ef3b2d",
-                    },
-                },
-            },
-        };
-    </script> --}}
-    {{-- <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>  --}}
-
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 <body class="dashboard dashboard_1">
-    
+<div class="full_container">
+    <div class="inner_container">
+
     <!-- Authentication Links -->
     @guest
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-     <!-- Left Side Of Navbar -->
-     <ul class="navbar-nav me-auto">
+   
+  
+<!-- topbar -->
+<div class="topbar">
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" style="color:white;" href="{{ url('/') }}">
+                {{ config('app.name', 'Online Store') }}
+            </a>
+     
+        
+         <ul class="flex space-x-6 mr-6 text-lg">
+          <li class="nav-item dropdown">
+            <!-- Right Side Of Navbar -->
+            <ul class="navbar-nav ms-auto">
 
-     </ul>
+                @if (Route::has('login'))
+                    <li class="nav-item">
+                        <a class="nav-link" style="color:white;" href="{{ route('login') }}">{{ __('Login') }}</a>
+                    </li>
+                @endif
+        
+                @if (Route::has('register'))
+                    <li class="nav-item">
+                        <a class="nav-link" style="color:white;" href="{{ route('register') }}">{{ __('Register') }}</a>
+                    </li>
+                @endif
+        
+            </ul>
+          </li>
+        </ul>
+        </div>
+        </nav>
+    </div>
 
-     <!-- Right Side Of Navbar -->
-     <ul class="navbar-nav ms-auto">
-
-        @if (Route::has('login'))
-            <li class="nav-item">
-                <a class="nav-link" style="color:white;" href="{{ route('login') }}">{{ __('Login') }}</a>
-            </li>
-        @endif
-
-        @if (Route::has('register'))
-            <li class="nav-item">
-                <a class="nav-link" style="color:white;" href="{{ route('register') }}">{{ __('Register') }}</a>
-            </li>
-        @endif
-
-         </ul>
-     </div>
 
     @else
 
-    <div class="full_container">
-        <div class="inner_container">
+    
            <!-- Sidebar  -->
            <nav id="sidebar">
               <div class="sidebar_blog_1">
@@ -164,12 +189,16 @@
               <div class="sidebar_blog_2">
                 
                  <ul class="list-unstyled components">
+
                     <li class="active">
                        <li><a href="/"><i class="fa fa-dashboard yellow_color"></i> <span>Users</span></a></li>           
                     </li>
                    
-                    <li><a href="/users/{{Auth::user()->id}}/edit"><i class="fa fa-table purple_color2"></i> <span>Edit User Information</span></a></li>
-                    <li><a href="{{ URL('info') }}"><i class="fa fa-object-group blue2_color"></i> <span>Personal Information</span></a></li>
+                    <li><a href="/vendors"><i class="fa fa-table purple_color2"></i> <span>Vendors</span></a></li>
+                    <li><a href="/brands"><i class="fa fa-object-group blue2_color"></i> <span>Brands</span></a></li>
+                    <li><a href="/items"><i class="fa fa-object-group blue_color"></i> <span>Items</span></a></li>
+                    <li><a href="/inventories"><i class="fa fa-table purple_color"></i> <span>Inventories</span></a></li>
+
 
              </ul>
               </div>
@@ -181,17 +210,17 @@
               <div class="topbar">
                  <nav class="navbar navbar-expand-lg navbar-light">
                     <div class="container">
-                        {{-- <a class="navbar-brand" style="color:white;" href="{{ url('/') }}">
-                            {{ config('app.name', 'Online Reservations') }}
-                        </a> --}}
+                        
                 <div class="full">
                 <button type="button" style="margin-left: -15px;" id="sidebarCollapse" class="sidebar_toggle"><i class="fa fa-bars"></i></button>
                 
                 <div style="text-align:center;margin-top:20px;margin-left:500px;">
-                   <form action="" >
+                   <form action="/" method="get" >
+                    @csrf
                        <input type="text" name="search" >
                        <input type="submit" name="search_btn" value="Search" >
                    </form>
+                  
                 </div>
                </div>
                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -199,28 +228,26 @@
                </button> 
 
               
-                       
-                                                   
-                           
-                           <li class="nav-item dropdown">
-                               <a id="navbarDropdown"  style="color:white;" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                   {{ Auth::user()->username }}
-                               </a>
+    
+                <li class="nav-item dropdown">
+                    <a id="navbarDropdown"  style="color:white;" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        {{ Auth::user()->username }}
+                    </a>
 
-                               <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                   <a class="dropdown-item" href="{{ route('logout') }}"
-                                      onclick="event.preventDefault();
-                                                    document.getElementById('logout-form').submit();">
-                                       {{ __('Logout') }}
-                                   </a>
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{ route('logout') }}"
+                            onclick="event.preventDefault();
+                                        document.getElementById('logout-form').submit();">
+                            {{ __('Logout') }}
+                        </a>
 
-                                   <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                       @csrf
-                                   </form>
-                               </div>
-                           </li>
-                          
-                       @endguest
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
+                    </div>
+                </li>
+                
+            @endguest
                    
            </div>
         </nav>
@@ -240,16 +267,19 @@
 
     
         
-    
     @if(Auth::user() && Auth::user()->is_admin==1)
     <footer>
         <p class="copyright">Copyright &copy; 2023, All Rights reserved</p>
         <a href="/users/create" class="footer-button ">Create User</a>
+        <a href="/vendors/create" class="footer-button-2 ">Create Vendor</a>
+        <a href="/brands/create" class="footer-button-3 ">Create Brand</a>
+        <a href="/items/create" class="footer-button-4 ">Create Item</a>
     </footer>
     @endif
 
 
      <!-- jQuery -->
+    
      <script src="{{ asset('js/jquery.min.js') }}"></script>
      <script src="{{ asset('js/popper.min.js') }}"></script>
      {{-- <script src="{{ asset('js/bootstrap.min.js')}}"></script> --}}
@@ -273,6 +303,9 @@
      <!-- custom js -->
      <script src="{{ asset('js/custom.js') }}"></script>
      <script src="{{ asset('js/chart_custom_style1.js') }}"></script>
+
+     {{-- <script type="text/javascript" src="js/filters.min.js"></script> --}}
+     <script src="https://mdbcdn.b-cdn.net/wp-content/themes/mdbootstrap4/docs-app/js/dist/mdb5/plugins/standard/filters.min.js"></script>
 
 </body>
 </html>

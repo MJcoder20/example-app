@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('manage_users', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('username')->unique();
             $table->string('email')->unique();
             $table->string('first_name');
@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
