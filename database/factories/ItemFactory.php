@@ -17,8 +17,8 @@ class ItemFactory extends Factory
      */
     public function definition()
     {
-        // $brand = Brand::inRandomOrder()->first();
-        $brand = Brand::all()->pluck('id');
+        $brand = Brand::inRandomOrder()->first();
+        // $brand = Brand::all()->pluck('id');
         $brand instanceof Brand ? $brandId = $brand->id : $brandId = null;
         
         $name = fake()->name();

@@ -20,7 +20,7 @@
         
         </div>
         <div class="d-flex  justify-content-end">
-            <br><a class="btn btn-outline-success" style="margin-right:20px;" href="/items/{{$item->id}}">Show</a>     
+            <br><a class="btn btn-outline-success" style="margin-right:20px;" href="/Items/{{$item->id}}">Show</a>     
             <br><a class="btn btn-outline-info" style="margin-right:20px;" href="/items/{{$item->id}}/edit">Edit</a>     
             <form action="/items/{{$item->id}}" method="post">
                 @csrf
@@ -35,7 +35,7 @@
         @endforeach
         </ul>
     </div>
-    {{$items->links()}}
+    {{-- {{$items->links()}} --}}
 </div>
 </div>
 

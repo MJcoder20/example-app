@@ -5,10 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use App\Http\Requests\ItemRequest;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\UpdateItemRequest;
-use Symfony\Component\Console\Input\Input;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
+
 
 class ItemController extends Controller
 {
@@ -19,9 +18,110 @@ class ItemController extends Controller
      */
     public function index()
     {
-        $items = Item::filter(request()->all())->paginate(3);
+        // $items = Item::filter(request()->all())->paginate(3);
+        $items = Item::filter(request()->all())->get();
         return view('items.index',['items'=>$items]);
     }
+
+
+    public function items(){
+        $items = Item::filter(request()->all())->paginate(3);
+
+        return view('items',['items'=>$items]);
+    }
+
+
+    public function cart(){
+        return view('cart');
+    }
+
+    public function add_to_cart(Item $item){
+        $item = DB::select('select * from items where id='.$item->id);
+        $quantity = DB::select('select * from inventory_items where item_id='.$item[0]->id);
+
+
+        $cart = Session::get('cart');
+        $cart[] = array(
+            "id" => $item[0]->id,
+            "name" => $item[0]->name,
+            "image" => $item[0]->image,
+            // "price"=>30,
+            "quantity" => 1,
+        );
+
+        Session::put('cart', $cart);
+        Session::flash('success','Item added to cart successfully!');
+        //dd(Session::get('cart'));
+        return redirect()->back();
+    }
+
+
+    public function updateCart(Request $cartdata)
+    {
+        $cart = Session::get('cart');
+
+        $cartQuantity = 1;
+
+        foreach ($cartdata->all() as $id => $val) 
+        {
+            if ($cartQuantity != 1) {
+                $cart[$id]['quantity'] = $val;
+                if ($val < 1) {
+                    unset($cart[$id]);
+                }
+            }
+            $cartQuantity++;
+        }
+        Session::put('cart', $cart);
+        return redirect()->back();
+    }
+
+
+    public function deleteCartItem($id)
+    {
+        $cart = Session::get('cart');
+        unset($cart[$id]);
+        Session::put('cart', $cart);
+        return redirect()->back();
+    }
+    
+
+    // public function add_to_cart(Item $item){
+    //     $quantity = DB::table('inventory_items')->select('inventory_items.quantity')->where('item_id','=',$item->id)->get();
+
+    //     $item = Item::find($item->id);
+    //     if(!$item) {
+    //         abort(404);
+    //     }
+    //     $cart = session()->get('cart');
+     
+    //     if(!$cart) {
+    //         $cart = [
+    //                 $item->id => [
+    //                     "item" => $item->name,
+    //                     "quantity" => 1,
+    //                     // "price" => $item->price,
+    //                 ]
+    //         ];
+    //         session()->put('cart', $cart);
+    //         return redirect()->back()->with('success', 'Item added to cart successfully!');
+    //     }
+
+    //     if(isset($cart[$item->id])) {
+    //         $cart[$item->id]['quantity']++;
+    //         session()->put('cart', $cart);
+    //         return redirect()->back()->with('success', 'Item added to cart successfully!');
+    //     }
+
+    //     $cart[$item->id] = [
+    //         "item" => $item->name,
+    //         "quantity" => 1,
+    //         // "price" => $item->price,
+            
+    //     ];
+    //     session()->put('cart', $cart);
+    //     return redirect()->back()->with('success', 'Item added to cart successfully!');
+    // }
 
     /**
      * Show the form for creating a new resource.

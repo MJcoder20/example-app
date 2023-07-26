@@ -20,7 +20,7 @@ class AddressFactory extends Factory
      */
     public function definition()
     {
-        $cityIDs = City::all()->pluck('id');
+        // $cityIDs = City::all()->pluck('id');
 
         return [
             'addressable_id'=>Vendor::factory()||ManageUsers::factory(),
@@ -28,7 +28,7 @@ class AddressFactory extends Factory
                 return (Vendor::find($attributes['addressable_id'])->type)||
                 (ManageUsers::find($attributes['addressable_id'])->type);
             },
-            'city_id'=>fake()->randomElement($cityIDs),
+            'city_id'=>City::factory(),
             'district'=>fake()->address(),
             'street'=>fake()->streetAddress(),
             'phone'=>fake()->unique()->phoneNumber(),

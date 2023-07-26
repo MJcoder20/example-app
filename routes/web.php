@@ -68,6 +68,14 @@ Route::delete('/inventories/{inventory}',[InventoryController::class, 'destroy']
 Route::get('/inventories/{inventory}',[InventoryController::class, 'show'])->middleware('auth');
 
 
+Route::get('/Items/{item}',[ItemController::class,'items']);
+Route::get('/cart',[ItemController::class, 'cart'])->middleware('auth');
+Route::get('/add-to-cart/{item}',[ItemController::class, 'add_to_cart'])->middleware('auth');
+Route::patch('/update-cart', [ItemController::class, 'updateCart'])->middleware('auth');
+Route::delete('/remove-from-cart', [ItemController::class, 'deleteCartItem'])->middleware('auth');
+
+
+
 Auth::routes();
 // Route::group(['middleware' => 'admin'], function(){
 //     //all the routes protected by the admin middleware 

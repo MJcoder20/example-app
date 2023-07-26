@@ -18,11 +18,9 @@ class AddressSeeder extends Seeder
      */
     public function run()
     {
-        Address::factory()->count(4)->for(
-            ManageUsers::factory(),'addressable'
-        )->for(
-            Vendor::factory(),'addressable'
-        )->for(City::factory()->create())
+        Address::factory()->count(4)->for(ManageUsers::factory(),'addressable')
+        ->for(Vendor::factory(),'addressable')
+        ->for(City::factory()->create())
         ->create();
     }
 }

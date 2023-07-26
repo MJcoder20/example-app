@@ -15,15 +15,12 @@ return new class extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->bigIncrements('id');
-            // $table->unsignedBigInteger('city_id');
             $table->morphs('addressable');          
             $table->string('district');
             $table->string('street');
             $table->string('phone')->unique();
             $table->timestamps();
             $table->softDeletes();
-            // $table->foreign('city_id')
-            // ->references('id')->on('cities')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('city_id')->constrained('cities')->cascadeOnDelete();
         });
     }
