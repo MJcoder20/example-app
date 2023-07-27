@@ -7,7 +7,7 @@
             @foreach($items as $item)
                 <div class="col-xs-18 col-sm-6 col-md-3">
                     <div class="thumbnail">
-                        <img style="height:150px;width:200px;margin-left:30px;margin-top:50px;"
+                        <img style="height:150px;width:200px;margin-left:30px;"
                         src="{{$item->image ? asset('images/'.$item->image) : asset('/images/Caption-for-Profile.jpg')}}" width="500" height="300">
                         <div class="caption" >
                             <h4 style="margin-left:30px;">{{ $item->name }}</h4>

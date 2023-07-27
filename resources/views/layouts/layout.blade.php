@@ -332,7 +332,7 @@
 
 
      <!-- jQuery -->
-    @yield('scripts')
+    
      <script src="{{ asset('js/jquery.min.js') }}"></script>
      <script src="{{ asset('js/popper.min.js') }}"></script>
      {{-- <script src="{{ asset('js/bootstrap.min.js')}}"></script> --}}
@@ -359,6 +359,6 @@
 
      {{-- <script type="text/javascript" src="js/filters.min.js"></script> --}}
      <script src="https://mdbcdn.b-cdn.net/wp-content/themes/mdbootstrap4/docs-app/js/dist/mdb5/plugins/standard/filters.min.js"></script>
-
+     @yield('scripts')
 </body>
 </html>
