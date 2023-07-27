@@ -71,7 +71,7 @@ Route::get('/inventories/{inventory}',[InventoryController::class, 'show'])->mid
 Route::get('/items',[ItemController::class,'items'])->middleware('auth');
 Route::get('/cart',[ItemController::class, 'cart'])->middleware('auth');
 Route::get('add-to-cart/{item}',[ItemController::class, 'add_to_cart'])->middleware('auth');
-Route::patch('update-cart', [ItemController::class, 'updateCart'])->middleware('auth');
+Route::put('update-cart', [ItemController::class, 'updateCart'])->middleware('auth');
 Route::delete('remove-from-cart', [ItemController::class, 'deleteCartItem'])->middleware('auth');
 
 

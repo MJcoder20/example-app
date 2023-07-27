@@ -33,65 +33,64 @@ class ItemController extends Controller
         return view('cart');
     }
 
-    public function add_to_cart(Item $item){
-        $item = DB::select('select * from items where id='.$item->id);
-        $quantity = DB::select('select * from inventory_items where item_id='.$item[0]->id);
-
-
-        $cart = Session::get('cart');
-        $cart[] = array(
-            "id" => $item[0]->id,
-            "name" => $item[0]->name,
-            "image" => $item[0]->image,
-            // "price"=>30,
-            "quantity" => 1,
-        );
-
-        Session::put('cart', $cart);
-        Session::flash('success','Item added to cart successfully!');
-        //dd(Session::get('cart'));
-        return redirect()->back();
-    }
-
-
-    // public function add_to_cart(Item $item){
+    // public function add_to_cart(Request $request,Item $item){
     //     $item = DB::select('select * from items where id='.$item->id);
-    //     // $item = Item::find($item[0]->id);
-    //     if(!$item[0]) {
-    //         abort(404);
-    //     }
-    //     $cart = session()->get('cart');
-     
-    //     if(!$cart) {
-    //         $cart = [
-    //             $item[0]->id => [
-    //                 "name" => $item[0]->name,
-    //                 "photo" => $item[0]->image,
-    //                 "quantity" => 1,
-    //                 // "price" => $product->price,
-                    
-    //             ]
-    //         ];
-    //         session()->put('cart', $cart);
-    //         return redirect()->back()->with('success', 'Item added to cart successfully!');
-    //     }
 
-    //     if(isset($cart[$item[0]->id])) {
-    //         $cart[$item[0]->id]['quantity']++;
-    //         session()->put('cart', $cart);
-    //         return redirect()->back()->with('success', 'Item added to cart successfully!');
-    //     }
+    //     $request->session()->get('cart');
 
-    //     $cart[$item[0]->id] = [
-    //         "item" => $item[0]->name,
+    //     $cart[] = array(
+    //         "id" => $item[0]->id,
+    //         "name" => $item[0]->name,
+    //         "image" => $item[0]->image,
+    //         // "price"=>30,
     //         "quantity" => 1,
-    //         "photo" => $item[0]->image,
-    //         // "price" => $item->price,
+    //     );
             
-    //     ];
-    //     session()->put('cart', $cart);
-    //     return redirect()->back()->with('success', 'Item added to cart successfully!');
+    //     Session::put('cart', $cart);
+    //     Session::flash('success','Item added to cart successfully!');
+    //     //dd(Session::get('cart'));
+    //     return redirect()->back();
     // }
+
+
+    public function add_to_cart(Item $item){
+        // $item = DB::select('select * from items where id='.$item->id);
+        $item = Item::find($item->id);
+        if(!$item) {
+            abort(404);
+        }
+        $cart = session()->get('cart');
+     
+        if(!$cart) {
+            $cart = [
+                $item->id => [
+                    "name" => $item->name,
+                    "image" => $item->image,
+                    "quantity" => 1,
+                    // "price" => $product->price,
+                    
+                ]
+            ];
+            session()->put('cart', $cart);
+            return redirect()->back()->with('success', 'Item added to cart successfully!');
+        }
+
+        if(isset($cart[$item->id])) {
+            $cart[$item->id]['quantity']++;
+            session()->put('cart', $cart);
+            return redirect()->back()->with('success', 'Item added to cart successfully!');
+        }
+
+        $cart[$item->id] = [
+            "name" => $item->name,
+            "quantity" => 1,
+            "image" => $item->image,
+            // "price" => $item->price,
+            
+        ];
+        session()->put('cart', $cart);
+        return redirect()->back()->with('success', 'Item added to cart successfully!');
+    }
 
 
     public function updateCart(Request $cartdata)
