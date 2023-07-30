@@ -71,8 +71,8 @@ Route::get('/inventories/{inventory}',[InventoryController::class, 'show'])->mid
 Route::get('/Items',[ItemController::class,'items'])->middleware('auth');
 Route::get('cart',[ItemController::class, 'cart'])->middleware('auth');
 Route::get('add-to-cart/{item}',[ItemController::class, 'add_to_cart'])->middleware('auth');
-Route::put('update-cart', [ItemController::class, 'updateCart'])->middleware('auth');
-Route::delete('remove-from-cart', [ItemController::class, 'deleteCartItem'])->middleware('auth');
+Route::put('update-cart/{item}', [ItemController::class, 'updateCart'])->middleware('auth');
+Route::delete('remove-from-cart/{item}', [ItemController::class, 'deleteCartItem'])->middleware('auth');
 Route::get('/Items/purchase',[ItemController::class,'purchase'])->middleware('auth');
 
 

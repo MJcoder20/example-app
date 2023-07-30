@@ -20,7 +20,9 @@ class Item extends Model
 
     protected $attributes =[
         'is_active'=>1,
-        'available'=>1
+        'available'=>1,
+        'total_purchases'=>0,
+        'total_sales'=>0
     ];
 
     public $timestamps=true;

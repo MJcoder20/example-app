@@ -36,28 +36,10 @@ class ItemController extends Controller
         return view('cart');
     }
 
-    // public function add_to_cart(Request $request,Item $item){
-    //     $item = DB::select('select * from items where id='.$item->id);
-
-    //     $request->session()->get('cart');
-
-    //     $cart[] = array(
-    //         "id" => $item[0]->id,
-    //         "name" => $item[0]->name,
-    //         "image" => $item[0]->image,
-    //         // "price"=>30,
-    //         "quantity" => 1,
-    //     );
-            
-    //     Session::put('cart', $cart);
-    //     Session::flash('success','Item added to cart successfully!');
-    //     //dd(Session::get('cart'));
-    //     return redirect()->back();
-    // }
 
 
     public function add_to_cart(Item $item){
-        // $item = DB::select('select * from items where id='.$item->id);
+
         $item = Item::find($item->id);
         if(!$item) {
             abort(404);
@@ -66,12 +48,8 @@ class ItemController extends Controller
      
 
         if(!$cart) {
-            DB::insert('insert into sessions (name, quantity) values (?, ?)', [$item->name, $item->quantity]);
-            // DB::table('sessions')->insert([
-            //     'item' => $item->name,
-            //     'quantity'=>1,
-            // ]);
-
+            DB::insert('insert into sessions (item, quantity) values (?, ?)', [$item->name, 1]);
+            
             $cart = [
                 $item->id => [
                     "name" => $item->name,
@@ -89,11 +67,10 @@ class ItemController extends Controller
          
 
         if(isset($cart[$item->id])) {
-            $quantity = $cart[$item->id]['quantity']++;
-            DB::table('sessions')->update([
-                'item' => $item->name,
-                'quantity'=>$quantity,
-             ]);
+            $name = $cart[$item->id]['name'];
+            $quantity = ++$cart[$item->id]['quantity'];
+          
+            DB::update('update sessions set quantity = ? where item = ?', [$quantity,$name]);
             session()->put('cart', $cart);
             return redirect()->back()->with('success', 'Item added to cart successfully!');
         }
@@ -106,7 +83,7 @@ class ItemController extends Controller
             
         ];
 
-        DB::insert('insert into sessions (name, quantity) values (?, ?)', [$item->name, 1]);
+        DB::insert('insert into sessions (item, quantity) values (?, ?)', [$item->name, 1]);
 
         session()->put('cart', $cart);
         return redirect()->back()->with('success', 'Item added to cart successfully!');
@@ -172,6 +149,9 @@ class ItemController extends Controller
         if ($quantity < 50) {
             // Send the email notification to the vendor
             $vendor->notify(new VendorNotification($item));
+            if($quantity==0){
+                echo "There are no items in the inventory";
+            }
         }
 
         DB::table('items')

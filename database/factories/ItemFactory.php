@@ -32,8 +32,8 @@ class ItemFactory extends Factory
             'name'=>$name,
             'image'=>fake()->image('public/images', 640, 480, null, false),
             'brand_id'=>$brandId,
-            'total_purchases'=> random_int(10, 50),
-            'total_sales'=> random_int(100,500),
+            // 'total_purchases'=> random_int(10, 50),
+            // 'total_sales'=> random_int(100,500),
             'price' => random_int(10,80),
         ];
     }
