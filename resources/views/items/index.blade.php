@@ -9,6 +9,7 @@
     <br><br>
     <div class="d-flex flex-column">     
         <ul class="list-group">
+            <a href="{{ url('/Items') }}" class="btn btn-warning">Item Shopping</a>
         @foreach($items as $item)
         <div class="p-2" >
         <li class="list-group-item " >

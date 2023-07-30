@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
+use App\Models\Vendor;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use App\Notifications\VendorNotification;
+use Illuminate\Database\Eloquent\Builder;
 
 
 class ItemController extends Controller
@@ -18,7 +21,7 @@ class ItemController extends Controller
      */
     public function index()
     {
-        $items = Item::filter(request()->all())->paginate(3);
+        $items = Item::filter(request()->all())->get();
         return view('items.index',['items'=>$items]);
     }
 
@@ -61,22 +64,36 @@ class ItemController extends Controller
         }
         $cart = session()->get('cart');
      
+
         if(!$cart) {
+            DB::insert('insert into sessions (name, quantity) values (?, ?)', [$item->name, $item->quantity]);
+            // DB::table('sessions')->insert([
+            //     'item' => $item->name,
+            //     'quantity'=>1,
+            // ]);
+
             $cart = [
                 $item->id => [
                     "name" => $item->name,
                     "image" => $item->image,
                     "quantity" => 1,
-                    // "price" => $product->price,
+                    "price" => $item->price,
                     
                 ]
             ];
+
             session()->put('cart', $cart);
-            return redirect()->back()->with('success', 'Item added to cart successfully!');
+            return redirect()->back()->with('success', 'Item added to cart successfully!');    
         }
 
+         
+
         if(isset($cart[$item->id])) {
-            $cart[$item->id]['quantity']++;
+            $quantity = $cart[$item->id]['quantity']++;
+            DB::table('sessions')->update([
+                'item' => $item->name,
+                'quantity'=>$quantity,
+             ]);
             session()->put('cart', $cart);
             return redirect()->back()->with('success', 'Item added to cart successfully!');
         }
@@ -85,9 +102,12 @@ class ItemController extends Controller
             "name" => $item->name,
             "quantity" => 1,
             "image" => $item->image,
-            // "price" => $item->price,
+            "price" => $item->price,
             
         ];
+
+        DB::insert('insert into sessions (name, quantity) values (?, ?)', [$item->name, 1]);
+
         session()->put('cart', $cart);
         return redirect()->back()->with('success', 'Item added to cart successfully!');
     }
@@ -109,6 +129,12 @@ class ItemController extends Controller
             }
             $cartQuantity++;
         }
+
+        DB::table('sessions')->update([
+            'item' => $cartdata->name,
+            'quantity'=>$cartQuantity,
+         ]);
+
         Session::put('cart', $cart);
         return redirect()->back();
     }
@@ -117,12 +143,76 @@ class ItemController extends Controller
     public function deleteCartItem($id)
     {
         $cart = Session::get('cart');
+        DB::delete('delete from sessions where id='.$cart[$id]);
         unset($cart[$id]);
         Session::put('cart', $cart);
         return redirect()->back();
     }
-    
 
+
+    public function purchaseItem(Item $item,int $count){
+
+        $quantity = DB::table('items')
+        ->join('vendor_items','items.id','=','vendor_items.item_id')
+        ->where('vendor_items.item_id','=',$item->id)
+        ->where('vendor_items.quantity','=','select max(quantity) from inventory_items')->get();
+
+        $vendor_id = DB::table('vendor_items')
+        ->where('vendor_items.item_id', '=', $item->id)
+        ->where('vendor_items.quantity', '=', $quantity)
+        ->select('vendor_items.vendor_id')->get();
+
+        $item = Item::findOrFail($item->id);
+        $vendor = Vendor::findOrFail($vendor_id);
+
+        $quantity = DB::table('items')
+        ->join('inventory_items','items.id','=','inventory_items.item_id')
+        ->where('inventory_items.quantity','=','select max(quantity) from inventory_items')->get();
+
+        if ($quantity < 50) {
+            // Send the email notification to the vendor
+            $vendor->notify(new VendorNotification($item));
+        }
+
+        DB::table('items')
+        ->join('inventory_items', 'items.id', '=', 'inventory_items.item_id')
+        ->where('items.id', '=', $item->id)
+        ->join('inventories','inventory_items.inventory_id','=','inventories.id')
+        ->where('inventory_items.quantity','=','select max(quantity) from inventory_items')
+        ->update(
+        [
+            'inventory_items.quantity'=>$quantity-$count
+        ]);
+
+        $purchases = DB::table('items')->where('items.id', '=', $item->id)->select('items.total_purchases')->get();
+        $price = DB::table('items')->where('items.id', '=', $item->id)->select('items.price')->get();
+
+
+        DB::table('items')->where('items.id', '=', $item->id)
+        ->update([
+            'items.total_purchases'=>$purchases+$count
+        ]);
+
+        $newPurchases = DB::table('items')->where('items.id', '=', $item->id)->select('items.total_purchases')->get();
+
+        DB::table('items')->where('items.id', '=', $item->id)
+        ->update([
+            'items.total_sales'=>$newPurchases*$price
+        ]);
+   
+
+    }
+
+    public function purchase(){
+     
+        $items = DB::table('sessions')->select('items.*')->get();
+
+        foreach($items as $item){
+            $this->purchaseItem($item, $item->quantity);
+        }
+        
+        return response()->json(['message' => 'Purchase completed successfully']);
+    }
     
 
     /**
@@ -152,6 +242,10 @@ class ItemController extends Controller
                 return $query->where('name', $request->input('name'));
             })],
             'is_active'=>'integer|min:0|max:1',
+            'available'=>'integer|min:0|max:1',
+            'price'=>'required|float|min:1',
+            'total_purchases'=>'integer|min:0',
+            'total_sales'=>'float|min:0',
         ]);
 
         if($request->file('image')){
@@ -204,6 +298,10 @@ class ItemController extends Controller
                 return $query->where('name', $request->input('name'));
             })->ignore($item->id)],
             'is_active'=>'integer|min:0|max:1',
+            'available'=>'integer|min:0|max:1',
+            'price'=>'float|min:1',
+            'total_purchases'=>'integer|min:0',
+            'total_sales'=>'float|min:0',
         ]);
        
         if($request->file('image')){

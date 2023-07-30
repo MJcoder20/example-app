@@ -13,10 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('vendor_inventories', function (Blueprint $table) {
-            $table->foreignId('vendor_id')->constrained('vendors')->cascadeOnDelete();
+        Schema::create('purchase_orders', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->foreignId('user_id')->constrained('manage_users')->cascadeOnDelete();
+            $table->foreignId('item_id')->constrained('items')->cascadeOnDelete();
             $table->foreignId('inventory_id')->constrained('inventories')->cascadeOnDelete();
-            $table->softDeletes();
+            $table->tinyInteger('status');
+            $table->timestamps();
         });
     }
 
@@ -27,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('vendor_inventories');
+        Schema::dropIfExists('purchase_orders');
     }
 };

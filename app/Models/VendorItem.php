@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class VendorInventory extends Pivot
+class VendorItem extends Pivot
 {
     use HasFactory;
 
-    public $table = "vendor_inventories";
+    public $table = "vendor_items";
 
-    protected $fillable=['vendor_id','inventory_id'];
+    protected $fillable=['vendor_id','item_id','quantity'];
 
     public $timestamps=false;
 

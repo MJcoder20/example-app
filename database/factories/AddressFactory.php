@@ -25,8 +25,8 @@ class AddressFactory extends Factory
         return [
             'addressable_id'=>Vendor::factory()||ManageUsers::factory(),
             'addressable_type'=>function (array $attributes) {
-                return (Vendor::find($attributes['addressable_id'])->type)||
-                (ManageUsers::find($attributes['addressable_id'])->type);
+                return (class_basename(Vendor::find($attributes['addressable_id'])->type))||
+                (class_basename(ManageUsers::find($attributes['addressable_id'])->type));
             },
             'city_id'=>City::factory(),
             'district'=>fake()->address(),

@@ -33,6 +33,10 @@ class ManageUsers extends Authenticatable
         return $this->morphMany(Address::class, 'addressable');
     }
 
+    public function purchase_orders(){
+        return $this->hasMany(PurchaseOrder::class);
+    }
+
     public function scopeFilter(Builder $builder, $request){
         return (new UserFilter())->filter($builder, $request);
     }

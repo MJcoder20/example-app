@@ -2,15 +2,15 @@
 
 namespace Database\Factories;
 
+use App\Models\Item;
 use App\Models\Vendor;
-use App\Models\Inventory;
-use App\Models\VendorInventory;
+use App\Models\VendorItem;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
  */
-class VendorInventoryFactory extends Factory
+class VendorItemFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,16 +18,17 @@ class VendorInventoryFactory extends Factory
      * @return array<string, mixed>
      */
 
-     protected $model = VendorInventory::class;
+     protected $model = VendorItem::class;
 
     public function definition()
     {
         $vendorIDs = Vendor::all()->pluck('id');
-        $inventoryIDs = Inventory::all()->pluck('id');
+        $itemIDs = Item::all()->pluck('id');
 
         return [
             'vendor_id'=>fake()->randomElement($vendorIDs),
-            'inventory_id' => fake()->randomElement($inventoryIDs),
+            'item_id' => fake()->randomElement($itemIDs),
+            'quantity' => random_int(10, 50)
         ];
     }
 }

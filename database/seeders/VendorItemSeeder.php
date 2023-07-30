@@ -2,13 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\Vendor;
-use App\Models\Inventory;
-use App\Models\VendorInventory;
+
+use App\Models\VendorItem;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-class VendorInventorySeeder extends Seeder
+class VendorItemSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,6 +16,6 @@ class VendorInventorySeeder extends Seeder
      */
     public function run()
     {
-        VendorInventory::factory()->count(4)->create();
+        VendorItem::factory()->count(4)->create();
     }
 }

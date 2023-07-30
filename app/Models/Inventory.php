@@ -28,12 +28,12 @@ class Inventory extends Model
         return $this->belongsTo('App\Models\City');
     }
 
-    public function vendors(): BelongsToMany{
-        return $this->belongsToMany('App\Models\Vendor')->withTimestamps();;
-    }
-
     public function items(): BelongsToMany{
         return $this->belongsToMany('App\Models\Item')->withTimestamps();;
+    }
+
+    public function purchase_orders(){
+        return $this->hasMany(PurchaseOrder::class);
     }
 
     public function scopeFilter(Builder $query,$request){

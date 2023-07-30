@@ -16,12 +16,16 @@ return new class extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            $table->float('price');
             $table->string('image');
             $table->tinyInteger('is_active');
-            $table->timestamps();
-            $table->softDeletes();
+            $table->tinyInteger('available');
+            $table->integer('total_purchases');
+            $table->float('total_sales');
             $table->foreignId('brand_id')->constrained('brands')->cascadeOnDelete();
             $table->unique(['brand_id', 'name']);
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

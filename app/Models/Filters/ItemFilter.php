@@ -18,6 +18,15 @@ class ItemFilter extends Model
         if (collect($request)->get('is_active')!=null){
             $query->where('is_active', '=', collect($request)->get('is_active'));
         }
+        if(collect($request)->get('price')!=null){
+            $query->where('items.price','=',collect($request)->get('price'));
+        }
+        if(collect($request)->get('total_purchases')!=null){
+            $query->where('items.total_purchases','=',collect($request)->get('total_purchases'));
+        }
+        if(collect($request)->get('total_sales')!=null){
+            $query->where('items.total_sales','=',collect($request)->get('total_sales'));
+        }
         if(collect($request)->get('brand_id')!=null){
             $query->where('items.brand_id','=',collect($request)->get('brand_id'));
         }
