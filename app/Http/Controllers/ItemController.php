@@ -90,38 +90,32 @@ class ItemController extends Controller
     }
 
 
-    public function updateCart(Request $cartdata)
+    public function updateCart(Request $request,Item $item)
     {
         $cart = Session::get('cart');
 
-        $cartQuantity = 1;
+        $cartQuantity = $request->input('quantity');
 
-        foreach ($cartdata->all() as $id => $val) 
-        {
-            if ($cartQuantity != 1) {
-                $cart[$id]['quantity'] = $val;
-                if ($val < 1) {
-                    unset($cart[$id]);
-                }
+        DB::update('update sessions set quantity = ? where item = ?', [$cartQuantity,$item->name]);
+
+        if ($cartQuantity != 1) {
+            $cart[$item->id]['quantity'] = $cartQuantity;
+            if ($cartQuantity < 1) {
+                unset($cart[$item->id]);
             }
-            $cartQuantity++;
         }
-
-        DB::table('sessions')->update([
-            'item' => $cartdata->name,
-            'quantity'=>$cartQuantity,
-         ]);
 
         Session::put('cart', $cart);
         return redirect()->back();
     }
 
 
-    public function deleteCartItem($id)
+    public function deleteCartItem(Item $item)
     {
         $cart = Session::get('cart');
-        DB::delete('delete from sessions where id='.$cart[$id]);
-        unset($cart[$id]);
+        DB::delete('delete from sessions where id='.$item->id);
+        // DB::table('sessions')->where('id', $item->id)->delete();
+        unset($cart[$item->id]);
         Session::put('cart', $cart);
         return redirect()->back();
     }

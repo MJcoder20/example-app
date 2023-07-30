@@ -27,12 +27,24 @@
                     </td>
                     <td data-th="Price">${{ $details['price'] }}</td>
                     <td data-th="Quantity">
-                        <input type="number" value="{{ $details['quantity'] }}" class="form-control quantity" />
+                        <form action="update-cart/{{$id}}" method="post" enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT')
+                        <input type="number" name="quantity" value="{{ $details['quantity'] }}" class="form-control quantity" />
                     </td>
                     <td data-th="Subtotal" class="text-center">${{ $details['price'] * $details['quantity'] }}</td>
                     <td class="actions" data-th="">
-                        <button class="btn btn-info btn-sm update-cart" data-id="{{ $id }}"><i class="fa fa-refresh"></i></button>
-                        <button class="btn btn-danger btn-sm remove-from-cart" data-id="{{ $id }}"><i class="fa fa-trash-o"></i></button>
+                        
+                            <button type="submit" class="btn btn-info btn-sm update-cart"><i class="fa fa-refresh"></i></button>
+                            {{-- <button class="btn btn-info btn-sm update-cart" data-id="{{ $id }}"><i class="fa fa-refresh"></i></button> --}}
+                        </form>
+                        <form action="remove-from-cart/{{$id}}" method="post">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-danger btn-sm remove-from-cart"><i class="fa fa-trash-o"></i></button>
+                            {{-- <button class="btn btn-danger btn-sm remove-from-cart" data-id="{{ $id }}"><i class="fa fa-trash-o"></i></button> --}}
+                        </form>
+                        
                     </td>
                 </tr>
             @endforeach
@@ -47,13 +59,18 @@
             <td><a href="{{ url('/Items') }}" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
             <td colspan="2" class="hidden-xs"></td>
             <td class="hidden-xs text-center"><strong>Total ${{ $total }}</strong></td>
-            <td><a href="{{ url('/Items/purchase') }}" class="btn btn-warning"> Complete Purchase</a></td>
-        </tr>
+            <td>
+                <form action="/Items/purchase" method="post">
+                    @csrf
+                    <button class="btn btn-warning">Complete Purchase</button>
+                </form>
+            </td>
+            </tr>
         </tfoot>
     </table>
 @endsection
 @section('scripts')
-    <script type="text/javascript">
+    {{-- <script type="text/javascript">
         $(".update-cart").click(function (e) {
            e.preventDefault();
            var ele = $(this);
@@ -80,5 +97,5 @@
                 });
             }
         });
-    </script>
+    </script> --}}
 @endsection
