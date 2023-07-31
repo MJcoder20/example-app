@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
+use App\Models\Brand;
 use App\Models\Vendor;
+use App\Models\Inventory;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
@@ -28,7 +30,11 @@ class ItemController extends Controller
 
     public function items(){
         $items = Item::filter(request()->all())->get();
-        return view('items',['items'=>$items]);
+        $brands = Brand::filter(request()->all())->get();
+        $vendors = Vendor::filter(request()->all())->get();
+        $inventories = Inventory::filter(request()->all())->get();
+        return view('items',['items'=>$items,'brands'=>$brands,
+        'vendors'=>$vendors,'inventories'=>$inventories]);
     }
 
 
@@ -48,7 +54,7 @@ class ItemController extends Controller
      
 
         if(!$cart) {
-            DB::insert('insert into sessions (item, quantity) values (?, ?)', [$item->name, 1]);
+            // DB::insert('insert into sessions (item, quantity) values (?, ?)', [$item->name, 1]);
             
             $cart = [
                 $item->id => [
@@ -68,9 +74,8 @@ class ItemController extends Controller
 
         if(isset($cart[$item->id])) {
             $name = $cart[$item->id]['name'];
-            $quantity = ++$cart[$item->id]['quantity'];
-          
-            DB::update('update sessions set quantity = ? where item = ?', [$quantity,$name]);
+            $quantity = ++$cart[$item->id]['quantity'];       
+            // DB::update('update sessions set quantity = ? where item = ?', [$quantity,$name]);
             session()->put('cart', $cart);
             return redirect()->back()->with('success', 'Item added to cart successfully!');
         }
@@ -83,7 +88,7 @@ class ItemController extends Controller
             
         ];
 
-        DB::insert('insert into sessions (item, quantity) values (?, ?)', [$item->name, 1]);
+        // DB::insert('insert into sessions (item, quantity) values (?, ?)', [$item->name, 1]);
 
         session()->put('cart', $cart);
         return redirect()->back()->with('success', 'Item added to cart successfully!');
@@ -96,7 +101,7 @@ class ItemController extends Controller
 
         $cartQuantity = $request->input('quantity');
 
-        DB::update('update sessions set quantity = ? where item = ?', [$cartQuantity,$item->name]);
+        // DB::update('update sessions set quantity = ? where item = ?', [$cartQuantity,$item->name]);
 
         if ($cartQuantity != 1) {
             $cart[$item->id]['quantity'] = $cartQuantity;
@@ -113,8 +118,7 @@ class ItemController extends Controller
     public function deleteCartItem(Item $item)
     {
         $cart = Session::get('cart');
-        DB::delete('delete from sessions where id='.$item->id);
-        // DB::table('sessions')->where('id', $item->id)->delete();
+        // DB::delete('delete from sessions where id='.$item->id);
         unset($cart[$item->id]);
         Session::put('cart', $cart);
         return redirect()->back();

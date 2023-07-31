@@ -215,9 +215,9 @@
                 <button type="button" style="margin-left: -15px;" id="sidebarCollapse" class="sidebar_toggle"><i class="fa fa-bars"></i></button>
                 
                 <div style="text-align:center;margin-top:20px;margin-left:500px;">
-                   <form action="/" method="get" >
+                   <form action="">
                     @csrf
-                       <input type="text" name="search" >
+                       <input type="text" name="name" >
                        <input type="submit" name="search_btn" value="Search" >
                    </form>
                   
