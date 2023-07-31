@@ -33,13 +33,9 @@ class ItemObserver
      */
     public function updated(Item $item)
     {
-        //
+        
     }
 
-    public function onEmailUpdating(Item $item, string $newValue, string $oldValue)
-    {
-      // Your logic goes here...
-    }
 
     /**
      * Handle the Item "deleted" event.

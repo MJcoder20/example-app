@@ -9,10 +9,12 @@ use App\Models\Inventory;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
+use App\Mail\LowItemQuantityNotification;
 use App\Notifications\VendorNotification;
 use Illuminate\Database\Eloquent\Builder;
-
 
 class ItemController extends Controller
 {
@@ -125,36 +127,44 @@ class ItemController extends Controller
     }
 
 
-    public function purchaseItem(Item $item,int $count){
+    public function purchaseItem($item,int $count){
 
+        //get max quantity
         $quantity = DB::table('items')
         ->join('vendor_items','items.id','=','vendor_items.item_id')
-        ->where('vendor_items.item_id','=',$item->id)
-        ->where('vendor_items.quantity','=','select max(quantity) from inventory_items')->get();
+        ->where('vendor_items.item_id','=',$item)
+        ->where('vendor_items.quantity','=','select max(quantity) from inventory_items')->value('quantity');
 
+        //get vendor who provided previous quantity
         $vendor_id = DB::table('vendor_items')
-        ->where('vendor_items.item_id', '=', $item->id)
+        ->where('vendor_items.item_id', '=', $item)
         ->where('vendor_items.quantity', '=', $quantity)
-        ->select('vendor_items.vendor_id')->get();
+        ->value('vendor_items.vendor_id');
 
-        $item = Item::findOrFail($item->id);
+        $item = Item::findOrFail($item);
         $vendor = Vendor::findOrFail($vendor_id);
 
-        $quantity = DB::table('items')
-        ->join('inventory_items','items.id','=','inventory_items.item_id')
-        ->where('inventory_items.quantity','=','select max(quantity) from inventory_items')->get();
-
+        //check if quantity of items is less than 50 to notify vendor
         if ($quantity < 50) {
-            // Send the email notification to the vendor
-            $vendor->notify(new VendorNotification($item));
+            
+            // $vendor->notify(new VendorNotification($item));
+            Mail::to($vendor)
+            ->queue(new LowItemQuantityNotification());
+
             if($quantity==0){
                 echo "There are no items in the inventory";
+                DB::table('items')
+                ->where('items.id', '=', $item)
+                ->update([
+                    'available'=>0
+                ]);
             }
         }
 
+        //update inventory quantity according to amount of items purchased
         DB::table('items')
         ->join('inventory_items', 'items.id', '=', 'inventory_items.item_id')
-        ->where('items.id', '=', $item->id)
+        ->where('items.id', '=', $item)
         ->join('inventories','inventory_items.inventory_id','=','inventories.id')
         ->where('inventory_items.quantity','=','select max(quantity) from inventory_items')
         ->update(
@@ -162,34 +172,47 @@ class ItemController extends Controller
             'inventory_items.quantity'=>$quantity-$count
         ]);
 
-        $purchases = DB::table('items')->where('items.id', '=', $item->id)->select('items.total_purchases')->get();
-        $price = DB::table('items')->where('items.id', '=', $item->id)->select('items.price')->get();
+        $purchases = DB::table('items')->where('items.id', '=', $item)->select('items.total_purchases')->get();
+        $price = DB::table('items')->where('items.id', '=', $item)->select('items.price')->get();
 
-
-        DB::table('items')->where('items.id', '=', $item->id)
+        //update total_purchases column
+        DB::table('items')->where('items.id', '=', $item)
         ->update([
             'items.total_purchases'=>$purchases+$count
         ]);
 
-        $newPurchases = DB::table('items')->where('items.id', '=', $item->id)->select('items.total_purchases')->get();
+        $newPurchases = DB::table('items')->where('items.id', '=', $item)->select('items.total_purchases')->get();
 
-        DB::table('items')->where('items.id', '=', $item->id)
+        //update total_sales column
+        DB::table('items')->where('items.id', '=', $item)
         ->update([
             'items.total_sales'=>$newPurchases*$price
         ]);
-   
+
+
+        //insert into purchase_orders table
+        $inventory_id = DB::table('items')
+        ->join('inventory_items', 'items.id', '=', 'inventory_items.item_id')
+        ->where('items.id', '=', $item)
+        ->value('inventory_items.inventory_id');
+
+        DB::insert('insert into purchase_orders (user_id, item_id, inventory_id) values (?, ?, ?)', [Auth::id(),$item, $inventory_id]);
+
 
     }
 
     public function purchase(){
      
-        $items = DB::table('sessions')->select('items.*')->get();
+        // $items = DB::table('sessions')->select('items.*')->get();
+        $cart = Session::get('cart');
 
-        foreach($items as $item){
-            $this->purchaseItem($item, $item->quantity);
+        foreach($cart as $item => $value){
+            $this->purchaseItem($item, $value['quantity']); 
+            unset($cart[$item]);
         }
-        
-        return response()->json(['message' => 'Purchase completed successfully']);
+        Session::put('cart',$cart);
+        return redirect('cart');
+        // return response()->json(['message' => 'Purchase completed successfully']);
     }
     
 

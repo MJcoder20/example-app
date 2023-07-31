@@ -60,9 +60,9 @@
             <td colspan="2" class="hidden-xs"></td>
             <td class="hidden-xs text-center"><strong>Total ${{ $total }}</strong></td>
             <td>
-                <form action="/Items/purchase" method="post">
+                <form action="cart" method="post">
                     @csrf
-                    <button class="btn btn-warning">Complete Purchase</button>
+                    <button type="submit" class="btn btn-warning">Complete Purchase</button>
                 </form>
             </td>
             </tr>
