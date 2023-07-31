@@ -56,7 +56,7 @@ class ItemController extends Controller
      
 
         if(!$cart) {
-            // DB::insert('insert into sessions (item, quantity) values (?, ?)', [$item->name, 1]);
+            DB::insert('insert into sessions (item, quantity) values (?, ?)', [$item->name, 1]);
             
             $cart = [
                 $item->id => [
@@ -77,7 +77,7 @@ class ItemController extends Controller
         if(isset($cart[$item->id])) {
             $name = $cart[$item->id]['name'];
             $quantity = ++$cart[$item->id]['quantity'];       
-            // DB::update('update sessions set quantity = ? where item = ?', [$quantity,$name]);
+            DB::update('update sessions set quantity = ? where item = ?', [$quantity,$name]);
             session()->put('cart', $cart);
             return redirect()->back()->with('success', 'Item added to cart successfully!');
         }
@@ -90,7 +90,7 @@ class ItemController extends Controller
             
         ];
 
-        // DB::insert('insert into sessions (item, quantity) values (?, ?)', [$item->name, 1]);
+        DB::insert('insert into sessions (item, quantity) values (?, ?)', [$item->name, 1]);
 
         session()->put('cart', $cart);
         return redirect()->back()->with('success', 'Item added to cart successfully!');
@@ -103,7 +103,7 @@ class ItemController extends Controller
 
         $cartQuantity = $request->input('quantity');
 
-        // DB::update('update sessions set quantity = ? where item = ?', [$cartQuantity,$item->name]);
+        DB::update('update sessions set quantity = ? where item = ?', [$cartQuantity,$item->name]);
 
         if ($cartQuantity != 1) {
             $cart[$item->id]['quantity'] = $cartQuantity;
@@ -120,7 +120,7 @@ class ItemController extends Controller
     public function deleteCartItem(Item $item)
     {
         $cart = Session::get('cart');
-        // DB::delete('delete from sessions where id='.$item->id);
+        DB::delete('delete from sessions where id='.$item->id);
         unset($cart[$item->id]);
         Session::put('cart', $cart);
         return redirect()->back();
@@ -161,6 +161,16 @@ class ItemController extends Controller
             }
         }
 
+
+         //insert into purchase_orders table
+         $inventory_id = DB::table('items')
+         ->join('inventory_items', 'items.id', '=', 'inventory_items.item_id')
+         ->where('items.id', '=', $item)
+         ->value('inventory_items.inventory_id');
+ 
+         DB::insert('insert into purchase_orders (user_id, item_id, inventory_id) values (?, ?, ?)', [Auth::id(),$item, $inventory_id]); 
+
+
         //update inventory quantity according to amount of items purchased
         DB::table('items')
         ->join('inventory_items', 'items.id', '=', 'inventory_items.item_id')
@@ -172,38 +182,29 @@ class ItemController extends Controller
             'inventory_items.quantity'=>$quantity-$count
         ]);
 
-        $purchases = DB::table('items')->where('items.id', '=', $item)->select('items.total_purchases')->get();
-        $price = DB::table('items')->where('items.id', '=', $item)->select('items.price')->get();
+        // $purchases = DB::table('items')->where('items.id', '=', $item)->select('items.total_purchases')->get();
+        // $price = DB::table('items')->where('items.id', '=', $item)->select('items.price')->get();
 
-        //update total_purchases column
-        DB::table('items')->where('items.id', '=', $item)
-        ->update([
-            'items.total_purchases'=>$purchases+$count
-        ]);
+        // //update total_purchases column
+        // DB::table('items')->where('items.id', '=', $item)
+        // ->update([
+        //     'items.total_purchases'=>$purchases+$count
+        // ]);
 
-        $newPurchases = DB::table('items')->where('items.id', '=', $item)->select('items.total_purchases')->get();
+        // $newPurchases = DB::table('items')->where('items.id', '=', $item)->select('items.total_purchases')->get();
 
-        //update total_sales column
-        DB::table('items')->where('items.id', '=', $item)
-        ->update([
-            'items.total_sales'=>$newPurchases*$price
-        ]);
+        // //update total_sales column
+        // DB::table('items')->where('items.id', '=', $item)
+        // ->update([
+        //     'items.total_sales'=>$newPurchases*$price
+        // ]);
 
 
-        //insert into purchase_orders table
-        $inventory_id = DB::table('items')
-        ->join('inventory_items', 'items.id', '=', 'inventory_items.item_id')
-        ->where('items.id', '=', $item)
-        ->value('inventory_items.inventory_id');
-
-        DB::insert('insert into purchase_orders (user_id, item_id, inventory_id) values (?, ?, ?)', [Auth::id(),$item, $inventory_id]);
-
+       
 
     }
 
     public function purchase(){
-     
-        // $items = DB::table('sessions')->select('items.*')->get();
         $cart = Session::get('cart');
 
         foreach($cart as $item => $value){
@@ -211,7 +212,7 @@ class ItemController extends Controller
             unset($cart[$item]);
         }
         Session::put('cart',$cart);
-        return redirect('cart');
+        return redirect()->back();
         // return response()->json(['message' => 'Purchase completed successfully']);
     }
     
@@ -238,7 +239,6 @@ class ItemController extends Controller
           
             'name'=>'required|string',
             'image'=>'file|mimes:png,jpg,jpeg',
-            // 'brand_id'=>'integer',
             'brand_id' => ['required', 'integer', Rule::unique('items')->where(function ($query) use ($request) {
                 return $query->where('name', $request->input('name'));
             })],

@@ -73,7 +73,7 @@ Route::get('cart',[ItemController::class, 'cart'])->middleware('auth');
 Route::get('add-to-cart/{item}',[ItemController::class, 'add_to_cart'])->middleware('auth');
 Route::put('update-cart/{item}', [ItemController::class, 'updateCart'])->middleware('auth');
 Route::delete('remove-from-cart/{item}', [ItemController::class, 'deleteCartItem'])->middleware('auth');
-Route::post('cart',[ItemController::class,'purchase'])->middleware('auth');
+Route::get('/cart/purchase',[ItemController::class,'purchase'])->middleware('auth');
 
 
 
