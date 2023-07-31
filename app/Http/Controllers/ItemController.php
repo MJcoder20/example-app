@@ -6,6 +6,7 @@ use App\Models\Item;
 use App\Models\Brand;
 use App\Models\Vendor;
 use App\Models\Inventory;
+use App\Jobs\SendEmailJob;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
@@ -126,6 +127,12 @@ class ItemController extends Controller
         return redirect()->back();
     }
 
+    public function sendMail(Vendor $vendor){
+        Mail::to($vendor->email)
+            ->queue(new LowItemQuantityNotification());
+        // SendEmailJob::dispatch($vendor);
+        return "An email was sent to the vendor.";
+    }
 
     public function purchaseItem($item,int $count){
 
@@ -148,8 +155,7 @@ class ItemController extends Controller
         if ($quantity < 50) {
             
             // $vendor->notify(new VendorNotification($item));
-            Mail::to($vendor)
-            ->queue(new LowItemQuantityNotification());
+            $this->sendEmail($vendor);
 
             if($quantity==0){
                 echo "There are no items in the inventory";

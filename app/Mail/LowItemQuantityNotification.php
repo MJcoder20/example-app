@@ -44,7 +44,7 @@ class LowItemQuantityNotification extends Mailable
     public function content()
     {
         return new Content(
-            view: 'items.index',
+            view: 'items.lowQuantityMail',
         );
     }
 
