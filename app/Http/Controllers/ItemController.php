@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use App\Mail\LowItemQuantityNotification;
+use App\Models\PurchaseOrder;
 use App\Notifications\VendorNotification;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -42,7 +43,8 @@ class ItemController extends Controller
 
 
     public function cart(){
-        return view('cart');
+        $cart = Session::get('cart');
+        return view('cart',['cart'=>$cart]);
     }
 
 
@@ -101,9 +103,7 @@ class ItemController extends Controller
     public function updateCart(Request $request,Item $item)
     {
         $cart = Session::get('cart');
-
         $cartQuantity = $request->input('quantity');
-
         DB::update('update sessions set quantity = ? where item = ?', [$cartQuantity,$item->name]);
 
         if ($cartQuantity != 1) {
@@ -130,95 +130,63 @@ class ItemController extends Controller
     public function sendMail(Vendor $vendor){
         Mail::to($vendor->email)
             ->queue(new LowItemQuantityNotification());
-        // SendEmailJob::dispatch($vendor);
         return "An email was sent to the vendor.";
     }
 
-    public function purchaseItem($item,int $count){
-
-        //get max quantity
-        $quantity = DB::table('items')
-        ->join('vendor_items','items.id','=','vendor_items.item_id')
-        ->where('vendor_items.item_id','=',$item)
-        ->where('vendor_items.quantity','=','select max(quantity) from inventory_items')->value('quantity');
-
-        //get vendor who provided previous quantity
-        $vendor_id = DB::table('vendor_items')
-        ->where('vendor_items.item_id', '=', $item)
-        ->where('vendor_items.quantity', '=', $quantity)
-        ->value('vendor_items.vendor_id');
-
-        $item = Item::findOrFail($item);
-        $vendor = Vendor::findOrFail($vendor_id);
-
-        //check if quantity of items is less than 50 to notify vendor
-        if ($quantity < 50) {
-            
-            // $vendor->notify(new VendorNotification($item));
-            $this->sendEmail($vendor);
-
-            if($quantity==0){
-                echo "There are no items in the inventory";
-                DB::table('items')
-                ->where('items.id', '=', $item)
-                ->update([
-                    'available'=>0
-                ]);
-            }
-        }
-
-
-         //insert into purchase_orders table
-         $inventory_id = DB::table('items')
-         ->join('inventory_items', 'items.id', '=', 'inventory_items.item_id')
-         ->where('items.id', '=', $item)
-         ->value('inventory_items.inventory_id');
- 
-         DB::insert('insert into purchase_orders (user_id, item_id, inventory_id) values (?, ?, ?)', [Auth::id(),$item, $inventory_id]); 
-
-
-        //update inventory quantity according to amount of items purchased
-        DB::table('items')
-        ->join('inventory_items', 'items.id', '=', 'inventory_items.item_id')
-        ->where('items.id', '=', $item)
-        ->join('inventories','inventory_items.inventory_id','=','inventories.id')
-        ->where('inventory_items.quantity','=','select max(quantity) from inventory_items')
-        ->update(
-        [
-            'inventory_items.quantity'=>$quantity-$count
-        ]);
-
-        // $purchases = DB::table('items')->where('items.id', '=', $item)->select('items.total_purchases')->get();
-        // $price = DB::table('items')->where('items.id', '=', $item)->select('items.price')->get();
-
-        // //update total_purchases column
-        // DB::table('items')->where('items.id', '=', $item)
-        // ->update([
-        //     'items.total_purchases'=>$purchases+$count
-        // ]);
-
-        // $newPurchases = DB::table('items')->where('items.id', '=', $item)->select('items.total_purchases')->get();
-
-        // //update total_sales column
-        // DB::table('items')->where('items.id', '=', $item)
-        // ->update([
-        //     'items.total_sales'=>$newPurchases*$price
-        // ]);
-
-
-       
-
-    }
+    // public function purchaseItem($item,int $count){
+    // }
 
     public function purchase(){
+
         $cart = Session::get('cart');
 
-        foreach($cart as $item => $value){
-            $this->purchaseItem($item, $value['quantity']); 
-            unset($cart[$item]);
-        }
-        Session::put('cart',$cart);
-        return redirect()->back();
+        foreach($cart as $item_id => $value){
+            //get max quantity
+            $quantity = DB::table('items')
+            ->join('vendor_items', 'items.id', '=', 'vendor_items.item_id')
+            ->where('vendor_items.item_id', '=', $item_id)
+            ->where('vendor_items.quantity', '=', DB::raw('(select max(quantity) from inventory_items)'))
+            ->value('quantity');
+
+            //get vendor who provided previous quantity
+            $vendor_id = DB::table('vendor_items')
+            ->where('vendor_items.item_id', '=', $item_id)
+            ->where('vendor_items.quantity', '=', $quantity)
+            ->value('vendor_items.vendor_id');
+
+            $item = Item::findOrFail($item_id);
+            $vendor = Vendor::findOrFail($vendor_id);
+
+            //check if quantity of items is less than 50 to notify vendor
+            if ($quantity < 50) {        
+                $this->sendEmail($vendor);
+                if($quantity==0){
+                    echo "There are no items in the inventory";
+                    $item->available=0;
+                    $item->save();
+                }
+            }
+
+            //insert into purchase_orders table
+            $inventory_id = DB::table('items')
+            ->join('inventory_items', 'items.id', '=', 'inventory_items.item_id')
+            ->where('items.id', '=', $item_id)
+            ->value('inventory_items.inventory_id');
+    
+            $order = new PurchaseOrder();
+            $order->user=Auth::id();
+            $order->item=$item_id;
+            $order->inventory=$inventory_id;
+            $order->save();
+           
+          
+
+            DB::delete('delete from sessions where id='.$item_id);
+            unset($cart[$item_id]);
+        
+    }
+        Session::forget('cart');
+        return redirect()->back()->with(['message' => 'Purchase completed successfully']);
         // return response()->json(['message' => 'Purchase completed successfully']);
     }
     

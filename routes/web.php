@@ -73,15 +73,10 @@ Route::get('cart',[ItemController::class, 'cart'])->middleware('auth');
 Route::get('add-to-cart/{item}',[ItemController::class, 'add_to_cart'])->middleware('auth');
 Route::put('update-cart/{item}', [ItemController::class, 'updateCart'])->middleware('auth');
 Route::delete('remove-from-cart/{item}', [ItemController::class, 'deleteCartItem'])->middleware('auth');
-Route::get('/cart/purchase',[ItemController::class,'purchase'])->middleware('auth');
 Route::get('/items/lowQuantityMail',[ItemController::class,'sendMail'])->middleware('auth');
 
+Route::get('cart/purchases',[ItemController::class,'purchase'])->middleware('auth');
 
 
 Auth::routes();
-// Route::group(['middleware' => 'admin'], function(){
-//     //all the routes protected by the admin middleware 
-//     Route::get('/users/create',[ManageUsersController::class, 'create'])->middleware('auth');
-// });
-
 

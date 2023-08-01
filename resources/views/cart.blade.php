@@ -46,27 +46,31 @@
                         </form>
                         
                     </td>
+                   
                 </tr>
-            @endforeach
+            
 
-        @endif
+            @endforeach
+            @endif
         </tbody>
         <tfoot>
         <tr class="visible-xs">
-            <td class="text-center"><strong>Total {{ $total }}</strong></td>
+            {{-- <td class="text-center"><strong>Total {{ $total }}</strong></td> --}}
         </tr>
         <tr>
             <td><a href="{{ url('/Items') }}" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
             <td colspan="2" class="hidden-xs"></td>
             <td class="hidden-xs text-center"><strong>Total ${{ $total }}</strong></td>
             <td>
-                <form action="/cart/purchase" method="get">
+                <form action="" method="get">
                     @csrf
-                    <button type="submit" class="btn btn-warning">Complete Purchase</button>
+                    <button class="btn btn-warning">Complete Purchase</button>
                 </form>
             </td>
             </tr>
         </tfoot>
+        
+       
     </table>
 @endsection
 @section('scripts')
