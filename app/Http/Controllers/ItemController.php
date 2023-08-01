@@ -43,8 +43,7 @@ class ItemController extends Controller
 
 
     public function cart(){
-        $cart = Session::get('cart');
-        return view('cart',['cart'=>$cart]);
+        return view('cart');
     }
 
 
@@ -133,14 +132,13 @@ class ItemController extends Controller
         return "An email was sent to the vendor.";
     }
 
-    // public function purchaseItem($item,int $count){
-    // }
-
     public function purchase(){
 
         $cart = Session::get('cart');
 
+        
         foreach($cart as $item_id => $value){
+            if(isset($cart[$item_id])) {
             //get max quantity
             $quantity = DB::table('items')
             ->join('vendor_items', 'items.id', '=', 'vendor_items.item_id')
@@ -170,22 +168,24 @@ class ItemController extends Controller
             //insert into purchase_orders table
             $inventory_id = DB::table('items')
             ->join('inventory_items', 'items.id', '=', 'inventory_items.item_id')
-            ->where('items.id', '=', $item_id)
+            ->where('items.id', '=', $item->id)
             ->value('inventory_items.inventory_id');
     
+            // DB::insert('insert into purchase_orders (user_id, item_id, inventory_id) values (?, ?, ?)', [Auth::id(),$item->id, $inventory_id]);
             $order = new PurchaseOrder();
             $order->user=Auth::id();
-            $order->item=$item_id;
+            $order->item=$item->id;
             $order->inventory=$inventory_id;
             $order->save();
+
           
-            DB::delete('delete from sessions where id='.$item_id);
-            unset($cart[$item_id]);
+            DB::delete('delete from sessions where id='.$item->id);
+            unset($cart[$item->id]);
         
+            }
         }
         Session::forget('cart');
         return redirect()->back()->with(['message' => 'Purchase completed successfully']);
-        // return response()->json(['message' => 'Purchase completed successfully']);
     }
     
 
