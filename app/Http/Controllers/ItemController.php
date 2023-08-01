@@ -178,13 +178,11 @@ class ItemController extends Controller
             $order->item=$item_id;
             $order->inventory=$inventory_id;
             $order->save();
-           
           
-
             DB::delete('delete from sessions where id='.$item_id);
             unset($cart[$item_id]);
         
-    }
+        }
         Session::forget('cart');
         return redirect()->back()->with(['message' => 'Purchase completed successfully']);
         // return response()->json(['message' => 'Purchase completed successfully']);
