@@ -132,10 +132,10 @@ class ItemController extends Controller
         return "An email was sent to the vendor.";
     }
 
-    public function purchase(){
-
-        $cart = Session::get('cart');
-
+    public function purchase(Request $request){
+        // dd($request);
+        $cart = $request->session('cart');
+        // $cart = $request->session('cart');
         
         foreach($cart as $item_id => $value){
             if(isset($cart[$item_id])) {
@@ -171,13 +171,17 @@ class ItemController extends Controller
             ->where('items.id', '=', $item->id)
             ->value('inventory_items.inventory_id');
     
-            // DB::insert('insert into purchase_orders (user_id, item_id, inventory_id) values (?, ?, ?)', [Auth::id(),$item->id, $inventory_id]);
+            DB::insert('insert into purchase_orders (user_id, item_id, inventory_id) values (?, ?, ?)', [Auth::id(),$item->id, $inventory_id,1]);
             $order = new PurchaseOrder();
             $order->user=Auth::id();
             $order->item=$item->id;
             $order->inventory=$inventory_id;
-            $order->save();
+            
+            $order->user()->attach(Auth::id());
+            $order->item()->attach($item->id);
+            $order->inventory()->attach($inventory_id);
 
+            $order->save();
           
             DB::delete('delete from sessions where id='.$item->id);
             unset($cart[$item->id]);
