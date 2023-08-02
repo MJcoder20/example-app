@@ -7,14 +7,15 @@ use App\Models\Brand;
 use App\Models\Vendor;
 use App\Models\Inventory;
 use App\Jobs\SendEmailJob;
+use App\Models\ManageUsers;
 use Illuminate\Http\Request;
+use App\Models\PurchaseOrder;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use App\Mail\LowItemQuantityNotification;
-use App\Models\PurchaseOrder;
 use App\Notifications\VendorNotification;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -133,15 +134,14 @@ class ItemController extends Controller
     }
 
     public function purchase(Request $request){
-        // dd($request);
+
         $cart = $request->session('cart');
-        // $cart = $request->session('cart');
         
         foreach($cart as $item_id => $value){
             if(isset($cart[$item_id])) {
+                dd($cart[$item_id]);
             //get max quantity
-            $quantity = DB::table('items')
-            ->join('vendor_items', 'items.id', '=', 'vendor_items.item_id')
+            $quantity = DB::table('vendor_items')
             ->where('vendor_items.item_id', '=', $item_id)
             ->where('vendor_items.quantity', '=', DB::raw('(select max(quantity) from inventory_items)'))
             ->value('quantity');
@@ -154,9 +154,9 @@ class ItemController extends Controller
 
             $item = Item::findOrFail($item_id);
             $vendor = Vendor::findOrFail($vendor_id);
-
+       
             //check if quantity of items is less than 50 to notify vendor
-            if ($quantity < 50) {        
+            if ($quantity < 50 && $vendor->is_active==1) {        
                 $this->sendEmail($vendor);
                 if($quantity==0){
                     echo "There are no items in the inventory";
@@ -165,31 +165,32 @@ class ItemController extends Controller
                 }
             }
 
-            //insert into purchase_orders table
-            $inventory_id = DB::table('items')
-            ->join('inventory_items', 'items.id', '=', 'inventory_items.item_id')
-            ->where('items.id', '=', $item->id)
-            ->value('inventory_items.inventory_id');
-    
-            DB::insert('insert into purchase_orders (user_id, item_id, inventory_id) values (?, ?, ?)', [Auth::id(),$item->id, $inventory_id,1]);
-            $order = new PurchaseOrder();
-            $order->user=Auth::id();
-            $order->item=$item->id;
-            $order->inventory=$inventory_id;
             
-            $order->user()->attach(Auth::id());
-            $order->item()->attach($item->id);
-            $order->inventory()->attach($inventory_id);
+            $inventory_id = DB::table('inventory_items')
+            ->where('inventory_items.item_id', '=', $item->id)
+            ->value('inventory_id');
 
-            $order->save();
-          
-            DB::delete('delete from sessions where id='.$item->id);
-            unset($cart[$item->id]);
-        
-            }
+            $inventory =Inventory::findOrFail($inventory_id);                    
+            $user = ManageUsers::findOrFail(Auth::id()); 
+
+            // $order = new PurchaseOrder();
+            // $order->user_id=Auth::id();
+            // $order->item_id=$item->id;
+            // $order->inventory_id=$inventory->id;
+            // $order->status=0;
+            // $order->save();
+            
+            // DB::insert('insert into purchase_orders (user_id, item_id, inventory_id, status) values (?, ?, ?, ?)', [Auth::id(),$item->id, $inventory->id,0]); 
+      
+            $user->items()->attach($item->id);
+            $user->inventories()->attach($inventory->id);
+            
         }
+        }
+       
+        DB::delete('delete from sessions');
         Session::forget('cart');
-        return redirect()->back()->with(['message' => 'Purchase completed successfully']);
+        return redirect('/Items')->with(['message' => 'Purchase completed successfully']);
     }
     
 

@@ -32,30 +32,24 @@ class Item extends Model
         return $this->belongsTo('App\Models\Brand');
     }
 
+    public function users(): BelongsToMany{
+        return $this->belongsToMany('App\Models\ManageUsers','App\Models\PurchaseOrder','item_id','user_id')
+        ->withTimestamps();
+    }
+
+    public function purchase_inventories(): BelongsToMany{
+        return $this->belongsToMany('App\Models\Inventory','App\Models\PurchaseOrder','item_id','inventory_id')
+        ->withTimestamps();;
+    }
+
     public function inventories(): BelongsToMany{
-        return $this->belongsToMany('App\Models\Inventory')->withTimestamps();;
+        return $this->belongsToMany('App\Models\Inventory','App\Models\InventoryItem')->withTimestamps();;
     }
 
     public function vendors(): BelongsToMany{
         return $this->belongsToMany('App\Models\Vendor')->withTimestamps();;
     }
 
-    public function purchase_orders(){
-        return $this->hasMany(PurchaseOrder::class);
-    }
-
-    // public function isInventoryItemsLessThan50(Builder $query)
-    // {
-    //     $query
-    //         ->join('inventory_items','items.id','=','inventory_items.item_id')
-    //         ->join('inventories','inventory_items.inventory_id','=','inventories.id')
-    //         ->select('items.*','inventories.*')
-    //         ->where('inventory_items.quantity','<','50')->get();
-    //     if(!$query){
-    //         return true;
-    //     }
-    //     return false;
-    // }
 
     public function scopeFilter(Builder $query,$request){
         return (new ItemFilter())->filter($query,$request);

@@ -36,9 +36,10 @@ class UserLoginNotification
         $user = $event->user;
 
         $saveLoginHistory = DB::table('login_history')->insert([
-            'name'=>$user->username,
+            'name'=>$user->first_name.' '.$user->last_name,
             'email' => $user->email,
-            'created_at'=>$current_timestamp
+            'created_at'=>$current_timestamp,
+            
         ]);
 
         return $saveLoginHistory;

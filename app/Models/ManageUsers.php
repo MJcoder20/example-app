@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class ManageUsers extends Authenticatable
 { 
@@ -33,9 +34,16 @@ class ManageUsers extends Authenticatable
         return $this->morphMany(Address::class, 'addressable');
     }
 
-    public function purchase_orders(){
-        return $this->hasMany(PurchaseOrder::class);
+    public function items(): BelongsToMany{
+        return $this->belongsToMany('App\Models\Item','App\Models\PurchaseOrder','user_id','item_id')
+        ->withTimestamps();
     }
+
+    public function inventories(): BelongsToMany{
+        return $this->belongsToMany('App\Models\Inventory','App\Models\PurchaseOrder','user_id','inventory_id')
+        ->withTimestamps();
+    }
+
 
     public function scopeFilter(Builder $builder, $request){
         return (new UserFilter())->filter($builder, $request);
