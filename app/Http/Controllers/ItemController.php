@@ -139,7 +139,7 @@ class ItemController extends Controller
         
         foreach($cart as $item_id => $value){
             if(isset($cart[$item_id])) {
-                dd($cart[$item_id]);
+               
             //get max quantity
             $quantity = DB::table('vendor_items')
             ->where('vendor_items.item_id', '=', $item_id)
@@ -179,7 +179,7 @@ class ItemController extends Controller
             // $order->inventory_id=$inventory->id;
             // $order->status=0;
             // $order->save();
-            
+
             // DB::insert('insert into purchase_orders (user_id, item_id, inventory_id, status) values (?, ?, ?, ?)', [Auth::id(),$item->id, $inventory->id,0]); 
       
             $user->items()->attach($item->id);
