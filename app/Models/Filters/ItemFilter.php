@@ -36,7 +36,7 @@ class ItemFilter extends Model
         if(collect($request)->get('brand')){
             $brands = collect($request)->get('brand');
             foreach ($brands as $brand) {
-                $query->where('items.brand_id','=',$brand);
+                $query->orWhere('items.brand_id','=',$brand);
             }
         }
         if(collect($request)->get('vendor')){
@@ -46,7 +46,7 @@ class ItemFilter extends Model
             ->join('vendors','vendor_items.vendor_id','=','vendors.id')
             ->select('items.*','vendor_items.*');
             foreach ($vendors as $vendor) {
-                $query->where('vendor_items.vendor_id','=',$vendor);
+                $query->orWhere('vendor_items.vendor_id','=',$vendor);
             }
         }
         if(collect($request)->get('inventory')){
@@ -56,7 +56,7 @@ class ItemFilter extends Model
                 ->join('inventories','inventory_items.inventory_id','=','inventories.id')
                 ->select('items.*','inventory_items.*');
             foreach($inventories as $inventory) {
-                $query->where('inventory_items.inventory_id','=',$inventory);
+                $query->orWhere('inventory_items.inventory_id','=',$inventory);
         
             }
         }

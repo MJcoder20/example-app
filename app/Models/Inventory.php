@@ -29,12 +29,20 @@ class Inventory extends Model
     }
 
     public function items(): BelongsToMany{
-        return $this->belongsToMany('App\Models\Item')->withTimestamps();;
+        return $this->belongsToMany('App\Models\Item','App\Models\InventoryItem')
+        ->withTimestamps();
     }
 
-    public function purchase_orders(){
-        return $this->hasMany(PurchaseOrder::class);
+    public function purchase_items(): BelongsToMany{
+        return $this->belongsToMany('App\Models\Item','App\Models\PurchaseOrder','inventory_id','item_id')
+        ->withTimestamps();
     }
+
+    public function users(): BelongsToMany{
+        return $this->belongsToMany('App\Models\ManageUsers','App\Models\PurchaseOrder','inventory_id','user_id')
+        ->withTimestamps();
+    }
+
 
     public function scopeFilter(Builder $query,$request){
         return (new InventoryFilter())->filter($query,$request);

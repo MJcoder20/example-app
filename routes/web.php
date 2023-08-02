@@ -75,7 +75,7 @@ Route::put('update-cart/{item}', [ItemController::class, 'updateCart'])->middlew
 Route::delete('remove-from-cart/{item}', [ItemController::class, 'deleteCartItem'])->middleware('auth');
 Route::get('/items/lowQuantityMail',[ItemController::class,'sendMail'])->middleware('auth');
 
-Route::get('cart/purchases',[ItemController::class,'purchase'])->middleware('auth');
+Route::post('cart/purchases',[ItemController::class,'purchase'])->middleware('auth');
 
 
 Auth::routes();
