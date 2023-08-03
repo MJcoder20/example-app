@@ -157,40 +157,33 @@ class ItemController extends Controller
     }
 
     public function purchase(Request $request){
-
         $cart = $request->session('cart');
+        $cartItems = DB::table('sessions')->get();
 
-        if(isset($cart)) {
-        foreach($cart as $item_id => $value){
-            
-              
-               
+        if($cartItems) {
+        foreach($cartItems as $cartItem ){
+            $it=DB::table('items')->where('name',$cartItem->item)->first();              
+            $item = Item::find($it->id);
             //get max quantity
             // $quantity = InventoryItem::where('item_id', $item_id)->max('quantity');
-            $quantity = DB::table('inventory_items')
-            ->where('item_id', '=', $item_id)
+            $inven_items = DB::table('inventory_items')
+            ->where('item_id', '=', $item->id)
             ->where('quantity', '=', DB::raw('(select max(quantity) from inventory_items)'))
-            ->value('quantity')->first();
-            
-            $item = Item::find($item_id);
-
-            $inventory_id = DB::table('inventory_items')
-            ->where('inventory_items.item_id', '=', $item->id)
-            ->where('inventory_items.quantity', '=', $quantity)
-            ->value('inventory_id');
-
-            // $inventory = Inventory::whereHas('items', function($q,$item,$quantity) {
-            //     $q->where('inventory_items.item_id', $item->id);
-            //     $q->where('inventory_items.quantity',$quantity);
-            // })
-            // ->get();
+            ->first();
 
 
-            $inventory =Inventory::find($inventory_id);                    
-            $user = ManageUsers::find(Auth::id()); 
-      
-            $user->items()->attach($item->id,['inventory_id'=>$inventory->id]);
-            // DB::insert('insert into purchase_orders (user_id, item_id, inventory_id) values (?, ?, ?)', [$user->id,$item->id,$inventory->id]);
+            if( $inven_items!=null){
+                
+                $inventory =Inventory::find(collect($inven_items)->get('inventory_id'));                    
+                $user = ManageUsers::find(Auth::id()); 
+          
+                if($item!=null && $inventory!=null && $user!=null){
+                    $user->items()->syncWithPivotValues($item->id,['inventory_id'=>$inventory->id]);
+                    // DB::insert('insert into purchase_orders (user_id, item_id, inventory_id) values (?, ?, ?)', [$user->id,$item->id,$inventory->id]);
+    
+                }
+            }
+           
 
             
         }
