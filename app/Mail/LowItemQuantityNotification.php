@@ -19,7 +19,7 @@ class LowItemQuantityNotification extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(public Item $item)
     {
    
     }
@@ -45,6 +45,9 @@ class LowItemQuantityNotification extends Mailable
     {
         return new Content(
             view: 'items.lowQuantityMail',
+            with: [
+                'itemName' => $this->item->name,
+            ],
         );
     }
 

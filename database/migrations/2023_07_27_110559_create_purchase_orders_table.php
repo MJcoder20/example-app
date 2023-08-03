@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('purchase_orders', function (Blueprint $table) {
-            $table->id();
+            // $table->id();
             $table->foreignId('user_id')->constrained('manage_users')->cascadeOnDelete();
             $table->foreignId('item_id')->constrained('items')->cascadeOnDelete();
             $table->foreignId('inventory_id')->constrained('inventories')->cascadeOnDelete();
