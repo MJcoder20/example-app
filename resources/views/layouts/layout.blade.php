@@ -125,7 +125,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-
+      
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
@@ -310,7 +310,13 @@
     </div>
 </div>
 <div class="container page">
-    @include('flash-message')
+    @if ( Session::has('flash_message') )
+
+    <div class="alert {{ Session::get('flash_type') }}">
+        <h3>{{ Session::get('flash_message') }}</h3>
+    </div>
+    
+    @endif
     @yield('content')
 </div>
     
@@ -333,9 +339,6 @@
     @endif
 
 
-    {{-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script> --}}
-    
      <!-- jQuery -->
     
      <script src="{{ asset('js/jquery.min.js') }}"></script>

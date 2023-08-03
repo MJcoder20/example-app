@@ -50,29 +50,45 @@ class ItemController extends Controller
     }
 
 
+    public function sendMail(Item $item,Vendor $vendor){
+        Mail::to($vendor->email)
+            ->queue(new LowItemQuantityNotification($item));
+        return "An email was sent to the vendor.";
+    }
+
 
     public function add_to_cart(Item $item){
 
         $item = Item::find($item->id);
 
-        $quantity = InventoryItem::where('item_id', $item->id)->max('quantity');
+        $inven_items = DB::table('inventory_items')
+            ->where('item_id', '=', $item->id)
+            ->orderByDesc('quantity')
+            ->first();
+        
+        $quantity=collect($inven_items)->get('quantity');
      
-        $vendor_id = DB::table('vendor_items')
+        $vendors= DB::table('vendor_items')
         ->where('vendor_items.item_id', '=', $item->id)
         ->where('vendor_items.quantity', '=', $quantity)
-        ->value('vendor_items.vendor_id');
-        $vendor = Vendor::find($vendor_id);
-        // check if quantity of items is less than 50 to notify vendor
-        if($vendor!=null){
-            if ($quantity < 50 && $vendor->is_active==1) {        
-                $this->sendEmail($vendor);
+        ->get();
+        if(collect($vendors)->get('vendor_id')){
+        foreach($vendors as $v){
+            $vendor = Vendor::find(collect($v)->get('vendor_id'));
+            // check if quantity of items is less than 50 to notify vendor
+            if($vendor!=null){
+                if ($quantity < 50 && $vendor->is_active==1) {        
+                    $this->sendEmail($vendor);
                 if($quantity==0){
                     echo "There are no items in the inventory";
                     $item->available=0;
                     $item->save();
                 }
+                }
             }
         }
+    }
+        
         
 
         if(!$item || $item->available==0) {
@@ -150,11 +166,7 @@ class ItemController extends Controller
         return redirect()->back();
     }
 
-    public function sendMail(Vendor $vendor){
-        Mail::to($vendor->email)
-            ->queue(new LowItemQuantityNotification());
-        return "An email was sent to the vendor.";
-    }
+    
 
     public function purchase(Request $request){
         // $cart = $request->session('cart');
@@ -164,7 +176,7 @@ class ItemController extends Controller
         foreach($cartItems as $cartItem ){
             $it=DB::table('items')->where('name',$cartItem->item)->first();              
             $item = Item::find($it->id);
-            
+
             //get max quantity
             $inven_items = DB::table('inventory_items')
             ->where('item_id', '=', $item->id)
@@ -189,7 +201,7 @@ class ItemController extends Controller
        
         DB::delete('delete from sessions');
         Session::forget('cart');
-        return redirect('/Items')->with('success' , 'Purchase completed successfully');
+        return redirect('/Items')->with('success','Purchase completed successfully');
     }
     
 

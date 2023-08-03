@@ -39,11 +39,11 @@ class SendEmails extends Command
                 $vendors = DB::table('vendor_items')->where('item_id','=',$item->id)->pluck('vendor_id');
                 foreach($vendors as $vendor){
                     Mail::to(Vendor::find($vendor->vendor_id))
-                    ->queue(new LowItemQuantityNotification());
+                    ->queue(new LowItemQuantityNotification($item));
                 }
             }else{
                 Mail::to($v)
-                    ->queue(new LowItemQuantityNotification());
+                    ->queue(new LowItemQuantityNotification($item));
             }
         }
             
