@@ -34,7 +34,7 @@ class Item extends Model
 
     public function users(): BelongsToMany{
         return $this->belongsToMany('App\Models\ManageUsers','App\Models\PurchaseOrder','item_id','user_id')
-        ->withPivot('inventory_id');
+        ->withPivot('inventory_id')->withTimestamps();
     }
 
     // public function purchase_inventories(): BelongsToMany{

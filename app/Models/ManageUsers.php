@@ -34,9 +34,7 @@ class ManageUsers extends Authenticatable
 
     public function items(): BelongsToMany{
         return $this->belongsToMany('App\Models\Item','App\Models\PurchaseOrder','user_id','item_id')
-        ->withPivot('inventory_id')
-        // ->join('inventories','inventory_id','=','inventories.id')
-        ;
+        ->withPivot('inventory_id')->withTimestamps();
     }
 
     // public function inventories(): BelongsToMany{

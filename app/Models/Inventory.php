@@ -40,7 +40,7 @@ class Inventory extends Model
 
     public function users(): BelongsToMany{
         return $this->belongsToMany('App\Models\ManageUsers','App\Models\PurchaseOrder','inventory_id','user_id')
-        ->withPivot('item_id');
+        ->withPivot('item_id')->withTimestamps();
     }
 
 

@@ -157,41 +157,39 @@ class ItemController extends Controller
     }
 
     public function purchase(Request $request){
-        $cart = $request->session('cart');
+        // $cart = $request->session('cart');
         $cartItems = DB::table('sessions')->get();
 
         if($cartItems) {
         foreach($cartItems as $cartItem ){
             $it=DB::table('items')->where('name',$cartItem->item)->first();              
             $item = Item::find($it->id);
+            
             //get max quantity
-            // $quantity = InventoryItem::where('item_id', $item_id)->max('quantity');
             $inven_items = DB::table('inventory_items')
             ->where('item_id', '=', $item->id)
-            ->where('quantity', '=', DB::raw('(select max(quantity) from inventory_items)'))
+            ->orderByDesc('quantity')
             ->first();
-
-
-            if( $inven_items!=null){
+            
+      
+            if($inven_items!=null){
                 
                 $inventory =Inventory::find(collect($inven_items)->get('inventory_id'));                    
                 $user = ManageUsers::find(Auth::id()); 
           
                 if($item!=null && $inventory!=null && $user!=null){
-                    $user->items()->syncWithPivotValues($item->id,['inventory_id'=>$inventory->id]);
-                    // DB::insert('insert into purchase_orders (user_id, item_id, inventory_id) values (?, ?, ?)', [$user->id,$item->id,$inventory->id]);
+                    $user->items()->attach($item->id,['inventory_id'=>$inventory->id]);
     
                 }
             }
            
 
-            
         }
         }
        
         DB::delete('delete from sessions');
         Session::forget('cart');
-        return redirect('/Items')->with(['message' => 'Purchase completed successfully']);
+        return redirect('/Items')->with('success' , 'Purchase completed successfully');
     }
     
 

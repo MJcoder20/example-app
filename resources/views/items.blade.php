@@ -1,4 +1,5 @@
 @extends('layouts.layout')
+
 @section('title', 'Items')
 @section('content')
 <section wire:id="Xj0uNwiURG74q0pEfJIG" class="padding-y">
