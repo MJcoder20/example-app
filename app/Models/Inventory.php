@@ -33,14 +33,14 @@ class Inventory extends Model
         ->withTimestamps();
     }
 
-    public function purchase_items(): BelongsToMany{
-        return $this->belongsToMany('App\Models\Item','App\Models\PurchaseOrder','inventory_id','item_id')
-        ->withTimestamps();
-    }
+    // public function purchase_items(): BelongsToMany{
+    //     return $this->belongsToMany('App\Models\Item','App\Models\PurchaseOrder','inventory_id','item_id')
+    //     ->withTimestamps();
+    // }
 
     public function users(): BelongsToMany{
         return $this->belongsToMany('App\Models\ManageUsers','App\Models\PurchaseOrder','inventory_id','user_id')
-        ->withTimestamps();
+        ->withPivot('item_id');
     }
 
 

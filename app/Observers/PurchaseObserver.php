@@ -2,9 +2,10 @@
 
 namespace App\Observers;
 
+use App\Models\Item;
+use App\Models\Session;
 use App\Models\PurchaseOrder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
 
 class PurchaseObserver
 {
@@ -16,14 +17,15 @@ class PurchaseObserver
      */
     public function created(PurchaseOrder $purchaseOrder)
     {
-        $cart = Session::get('cart');
+        $item = Item::find($purchaseOrder->item_id);
+        $session = Session::find($item->name);
 
-        if(isset($cart[$purchaseOrder->item_id])){
+        if($session){
 
             $quantity = DB::table('vendor_items')
             ->where('vendor_items.item_id', '=', $purchaseOrder->item_id)
             ->where('vendor_items.quantity', '=', DB::raw('(select max(quantity) from inventory_items)'))
-            ->value('quantity');
+            ->value('quantity')->first();
 
             //update inventory quantity according to amount of items purchased
             DB::table('inventory_items')
@@ -31,7 +33,7 @@ class PurchaseObserver
             ->join('inventories', 'inventory_items.inventory_id', '=', 'inventories.id')
             ->where('inventory_items.quantity', '=', DB::raw('(select max(quantity) from inventory_items)'))
             ->update([
-                'inventory_items.quantity' => $quantity - $cart[$purchaseOrder->item_id]['quantity']
+                'inventory_items.quantity' => $quantity - $session->quantity
             ]);
 
             $purchases = DB::table('items')->where('items.id', '=',  $purchaseOrder->item_id)->select('items.total_purchases')->get();
@@ -39,7 +41,7 @@ class PurchaseObserver
 
             DB::table('items')->where('items.id', '=', $purchaseOrder->item_id)
             ->update([
-                'items.total_purchases'=>$purchases+$cart[$purchaseOrder->item_id]['quantity']
+                'items.total_purchases'=>$purchases+$session->quantity
             ]);
 
             $newPurchases = DB::table('items')
@@ -52,6 +54,7 @@ class PurchaseObserver
 
         }
 
+        
 
     }
 

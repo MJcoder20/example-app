@@ -15,8 +15,6 @@ class ManageUsers extends Authenticatable
     use HasFactory;
 
     public $timestamps = true;
-    // const CREATED_AT = 'created_at';
-    // const UPDATED_AT = 'updated_at';
 
     protected $fillable = ['username','first_name','last_name','email','password','is_admin','is_active'];
     protected $attributes = [
@@ -36,13 +34,15 @@ class ManageUsers extends Authenticatable
 
     public function items(): BelongsToMany{
         return $this->belongsToMany('App\Models\Item','App\Models\PurchaseOrder','user_id','item_id')
-        ->withTimestamps();
+        ->withPivot('inventory_id')
+        // ->join('inventories','inventory_id','=','inventories.id')
+        ;
     }
 
-    public function inventories(): BelongsToMany{
-        return $this->belongsToMany('App\Models\Inventory','App\Models\PurchaseOrder','user_id','inventory_id')
-        ->withTimestamps();
-    }
+    // public function inventories(): BelongsToMany{
+    //     return $this->belongsToMany('App\Models\Inventory','App\Models\PurchaseOrder','user_id','inventory_id')
+    //     ->withPivot('item_id','status')->withTimestamps();
+    // }
 
 
     public function scopeFilter(Builder $builder, $request){
