@@ -117,6 +117,7 @@
       <link rel="stylesheet" type="text/css" href="{{asset('css/bootstrap.min.css')}}">
       <link rel="stylesheet" type="text/css" href="https://mdbcdn.b-cdn.net/wp-content/themes/mdbootstrap4/docs-app/css/dist/mdb5/standard/core.min.css">
       <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 
 
     <!-- Scripts -->
@@ -257,7 +258,8 @@
               <!-- end topbar -->
               <!-- dashboard inner -->
                  {{-- <h1 style="width:50%;margin:auto;margin-top:100px;">Welcome to Student Gate!</h1> --}}             
-                <main class="py-4"> 
+                <main class="py-4">
+                 @include('flash-message') 
                  @yield('content')
                 </main>
               <!-- end dashboard inner -->
@@ -277,7 +279,9 @@
     </footer>
     @endif
 
-
+    {{-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> --}}
+    {{-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script> --}}
+    
      <!-- jQuery -->
     
      <script src="{{ asset('js/jquery.min.js') }}"></script>

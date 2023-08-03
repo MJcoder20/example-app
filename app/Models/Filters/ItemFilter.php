@@ -68,15 +68,7 @@ class ItemFilter extends Model
             ->select('items.*','inventories.*')
             ->where('inventory_items.quantity','>','50');
         }
-     
-        // if(collect($request)->get('id')!=null){
-        //     $query
-        //     ->join('inventory_items','items.id','=','inventory_items.item_id')
-        //     ->join('inventories','inventory_items.inventory_id','=','inventories.id')
-        //     ->select('items.*','inventories.*')
-        //     ->where('items.id','>','50');
-        // }
-        
+   
 
         return $query;
 
