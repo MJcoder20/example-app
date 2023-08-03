@@ -2,9 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Item;
 use App\Models\Vendor;
 use App\Support\DripEmailer;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\LowItemQuantityNotification;
 
@@ -15,7 +17,7 @@ class SendEmails extends Command
      *
      * @var string
      */
-    protected $signature = 'mail:send {vendor}{item?}';
+    protected $signature = 'mail:send {--vendor}{item*}';
 
     /**
      * The console command description.
@@ -27,11 +29,26 @@ class SendEmails extends Command
     
     public function handle(): void
     {
-
-        $vendor = $this->argument('vendor');
-       
-        Mail::to(Vendor::find($vendor)->email)
-            ->queue(new LowItemQuantityNotification());
+        $items = $this->argument('item');
+        $v = $this->option('vendor');
+        foreach($items as $i){
+            $item = DB::table('items')->where('name','LIKE',"%".$i."%")->get();
+            $item = Item::find(collect($item)->get('id'));
+            if($item!=null){
+            if($v==null ){
+                $vendors = DB::table('vendor_items')->where('item_id','=',$item->id)->value('vendor_id');
+                foreach($vendors as $vendor){
+                    Mail::to(Vendor::find(collect($vendor)->get('id')))
+                    ->queue(new LowItemQuantityNotification());
+                }
+            }else{
+                Mail::to($v)
+                    ->queue(new LowItemQuantityNotification());
+            }
+        }
+            
+        }
+        
         
         
         $this->info('Emails sent successfully! ');

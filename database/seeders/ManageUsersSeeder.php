@@ -17,9 +17,9 @@ class ManageUsersSeeder extends Seeder
     {
         ManageUsers::factory()->create([
             'username'=>'mjcoder',
-            'email'=>'test@test.com',
-            'first_name'=>'Marah',
-            'last_name'=>'jouda',
+            'email'=>'testj9369@gmail.com',
+            'first_name'=>'test',
+            'last_name'=>'j',
             'is_active'=>1,
             'is_admin'=>1,
             'password'=>bcrypt('$M1a2r3a4$')
