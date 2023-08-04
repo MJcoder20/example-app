@@ -168,12 +168,12 @@ class ItemController extends Controller
 
     
 
-    public function purchase(Request $request){
-        // $cart = $request->session('cart');
+    public function purchase(){
+
         $cartItems = DB::table('sessions')->get();
 
         if($cartItems) {
-        foreach($cartItems as $cartItem ){
+        foreach($cartItems as $cartItem){
             $it=DB::table('items')->where('name',$cartItem->item)->first();              
             $item = Item::find($it->id);
 
@@ -183,18 +183,15 @@ class ItemController extends Controller
             ->orderByDesc('quantity')
             ->first();
             
-      
-            if($inven_items!=null){
-                
-                $inventory =Inventory::find(collect($inven_items)->get('inventory_id'));                    
-                $user = ManageUsers::find(Auth::id()); 
-          
-                if($item!=null && $inventory!=null && $user!=null){
-                    $user->items()->attach($item->id,['inventory_id'=>$inventory->id]);
-    
-                }
+     
+            $inventory =Inventory::find(collect($inven_items)->get('inventory_id'));                    
+            $user = ManageUsers::find(Auth::id()); 
+        
+            if($item!=null && $inventory!=null && $user!=null){
+                $user->items()->attach($item->id,['inventory_id'=>$inventory->id]);
+
             }
-           
+          
 
         }
         }
