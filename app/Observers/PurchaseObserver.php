@@ -22,36 +22,35 @@ class PurchaseObserver
 
         if(collect($session)->get('quantity')){
 
-            $ven_items = DB::table('vendor_items')
-            ->where('item_id', '=', $item->item_id)
-            ->orderByDesc('quantity')
-            ->first();
-
             $inven_items = DB::table('inventory_items')
             ->where('item_id', '=', $item->id)
             ->orderByDesc('quantity')
             ->first();
 
+            $qty = collect($inven_items)->get('quantity') - collect($session)->get('quantity');
+
             //update inventory quantity according to amount of items purchased
             DB::table('inventory_items')
             ->where('inventory_items.inventory_id', '=', collect($inven_items)->get('inventory_id'))
             ->update([
-                'quantity' => collect($inven_items)->get('quantity') - collect($session)->get('quantity')
+                'quantity' => $qty
             ]);
 
             $pitem = DB::table('items')->where('items.id', '=',  $purchaseOrder->item_id)->get();
+            $total_purchases = collect($pitem)->get('total_purchases') + collect($session)->get('quantity');
 
             DB::table('items')->where('items.id', '=', $purchaseOrder->item_id)
             ->update([
-                'total_purchases'=>collect($pitem)->get('total_purchases') + collect($session)->get('quantity')
+                'total_purchases'=> $total_purchases
             ]);
 
             $newpitem = DB::table('items')
             ->where('items.id', '=', $purchaseOrder->item_id)->get();
+            $total_sales = $total_purchases * collect($newpitem)->get('price');
 
             DB::table('items')->where('items.id', '=', $purchaseOrder->item_id)
             ->update([
-                'total_sales'=>collect($newpitem)->get('total_purchases') * collect($newpitem)->get('price')
+                'total_sales'=> $total_sales
             ]);
 
         }
