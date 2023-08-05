@@ -18,14 +18,27 @@ class ItemFilter extends Model
         if (collect($request)->get('is_active')!=null){
             $query->where('is_active', '=', collect($request)->get('is_active'));
         }
-        // if(request('pricefilter')){
-        //     $price=request('pricefilter');
-        //     if($price=='0,25'){
-        //         
-        //         $query->whereBetween('price',[1, 24]);
-        //     }
-        //     // $query->where('items.price','=',collect($request)->get('price'));
-        // }
+        if(collect($request)->get('pricefilter')){
+            $price=collect($request)->get('pricefilter');
+
+            if($price=='0,25'){ 
+                $query->whereBetween('price',[1, 24]);
+            }
+            else if($price=='25,50'){
+                $query->whereBetween('price',[25, 49]);
+            }
+            else if($price=='50,100'){
+                $query->whereBetween('price',[50, 99]);
+            }
+            else if($price=='100,200'){
+                $query->whereBetween('price',[100, 199]);
+            }
+            else{
+                $query->where('price','>',199);
+            }
+            
+
+        }
         if(collect($request)->get('total_purchases')!=null){
             $query->where('items.total_purchases','=',collect($request)->get('total_purchases'));
         }

@@ -11,7 +11,7 @@
         <div id="aside_filter" class="collapse card d-lg-block mb-5">
             <form action="">
                 
-            {{-- <article class="filter-group">
+            <article class="filter-group">
                 <header class="card-header d-flex justify-content-between">
                     <a href="#" class="title" data-bs-toggle="collapse" data-bs-target="#collapse_aside2">
                         Price
@@ -54,7 +54,7 @@
                     <!-- card-body.// -->
                 </div>
                 <!-- collapse.// -->
-            </article> --}}
+            </article>
     
             
             <article class="filter-group">
