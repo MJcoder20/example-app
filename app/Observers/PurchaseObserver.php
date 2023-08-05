@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\Item;
 use App\Models\Session;
+use App\Models\Inventory;
 use App\Models\PurchaseOrder;
 use Illuminate\Support\Facades\DB;
 
@@ -22,39 +23,43 @@ class PurchaseObserver
 
         if(collect($session)->get('quantity')){
 
+            $quantity = collect($session)->get('quantity');
+            
             $inven_items = DB::table('inventory_items')
-            ->where('item_id', '=', $item->id)
+            ->where('item_id', '=', $purchaseOrder->item_id)
             ->orderByDesc('quantity')
             ->first();
 
-            $qty = collect($inven_items)->get('quantity') - collect($session)->get('quantity');
+                
+            $qty = collect($inven_items)->get('quantity') - $quantity;
 
-            //update inventory quantity according to amount of items purchased
-            DB::table('inventory_items')
-            ->where('inventory_items.inventory_id', '=', collect($inven_items)->get('inventory_id'))
-            ->update([
-                'quantity' => $qty
-            ]);
+            $inv = Inventory::find($purchaseOrder->inventory_id);
+            $inv->items()->updateExistingPivot($item->id,['quantity'=>$qty]);
 
-            $pitem = DB::table('items')->where('items.id', '=',  $purchaseOrder->item_id)->get();
-            $total_purchases = collect($pitem)->get('total_purchases') + collect($session)->get('quantity');
+            $pitem = DB::table("items")->where('id','=', $purchaseOrder->item_id)->first();
+            
 
-            DB::table('items')->where('items.id', '=', $purchaseOrder->item_id)
+            $total_purchases = collect($pitem)->get('total_purchases') + $quantity;
+        
+            DB::table('items')->where('id', '=', $purchaseOrder->item_id)
             ->update([
                 'total_purchases'=> $total_purchases
             ]);
 
             $newpitem = DB::table('items')
-            ->where('items.id', '=', $purchaseOrder->item_id)->get();
+            ->where('id', '=', $purchaseOrder->item_id)->first();
             $total_sales = $total_purchases * collect($newpitem)->get('price');
 
-            DB::table('items')->where('items.id', '=', $purchaseOrder->item_id)
+
+            DB::table("items")
+            ->where('id','=',$purchaseOrder->item_id)
             ->update([
                 'total_sales'=> $total_sales
             ]);
-
+            
+            
         }
-
+        
         
 
     }

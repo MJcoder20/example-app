@@ -21,7 +21,7 @@ return new class extends Migration
             $table->tinyInteger('is_active');
             $table->tinyInteger('available');
             $table->integer('total_purchases');
-            $table->float('total_sales');
+            $table->double('total_sales');
             $table->foreignId('brand_id')->constrained('brands')->cascadeOnDelete();
             $table->unique(['brand_id', 'name']);
             $table->timestamps();

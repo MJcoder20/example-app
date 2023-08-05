@@ -28,7 +28,7 @@ class VendorItemFactory extends Factory
         return [
             'vendor_id'=>fake()->randomElement($vendorIDs),
             'item_id' => fake()->randomElement($itemIDs),
-            'quantity' => random_int(10, 50)
+            'quantity' => random_int(10, 150)
         ];
     }
 }

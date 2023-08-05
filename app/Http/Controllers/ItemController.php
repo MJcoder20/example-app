@@ -59,8 +59,6 @@ class ItemController extends Controller
 
     public function add_to_cart(Item $item){
 
-        $item = Item::find($item->id);
-
         $inven_items = DB::table('inventory_items')
             ->where('item_id', '=', $item->id)
             ->orderByDesc('quantity')
@@ -69,53 +67,43 @@ class ItemController extends Controller
         $quantity=collect($inven_items)->get('quantity');
      
         $vendors= DB::table('vendor_items')
-        ->where('vendor_items.item_id', '=', $item->id)
-        ->where('vendor_items.quantity', '=', $quantity)
+        ->where('item_id', '=', $item->id)
+        ->where('quantity', '=', $quantity)
         ->get();
-        if(collect($vendors)->get('vendor_id')){
+
         foreach($vendors as $v){
             $vendor = Vendor::find(collect($v)->get('vendor_id'));
             // check if quantity of items is less than 50 to notify vendor
-            if($vendor!=null){
-                if ($quantity < 50 && $vendor->is_active==1) {        
-                    $this->sendEmail($vendor);
-                if($quantity==0){
-                    echo "There are no items in the inventory";
-                    $item->available=0;
-                    $item->save();
-                }
-                }
+      
+            if ($quantity < 50 && $vendor->is_active==1) {        
+                $this->sendEmail($vendor);
+            if($quantity==0){
+                echo "There are no items in the inventory";
+                $item->available=0;
+                $item->save();
             }
-        }
-    }
-        
-        
+            }
+            
+        } 
 
         if(!$item || $item->available==0) {
             abort(404);
         }
-        $cart = session()->get('cart');
-     
 
+        $cart = session()->get('cart');
         if(!$cart) {
-            DB::insert('insert into sessions (item, quantity) values (?, ?)', [$item->name, 1]);
-            
+            DB::insert('insert into sessions (item, quantity) values (?, ?)', [$item->name, 1]);        
             $cart = [
                 $item->id => [
                     "name" => $item->name,
                     "image" => $item->image,
                     "quantity" => 1,
-                    "price" => $item->price,
-                    
+                    "price" => $item->price,    
                 ]
             ];
-
             session()->put('cart', $cart);
             return redirect()->back()->with('success', 'Item added to cart successfully!');    
         }
-
-         
-
         if(isset($cart[$item->id])) {
             $name = $cart[$item->id]['name'];
             $quantity = ++$cart[$item->id]['quantity'];       
@@ -131,9 +119,7 @@ class ItemController extends Controller
             "price" => $item->price,
             
         ];
-
         DB::insert('insert into sessions (item, quantity) values (?, ?)', [$item->name, 1]);
-
         session()->put('cart', $cart);
         return redirect()->back()->with('success', 'Item added to cart successfully!');
     }
@@ -172,7 +158,6 @@ class ItemController extends Controller
 
         $cartItems = DB::table('sessions')->get();
 
-        if($cartItems) {
         foreach($cartItems as $cartItem){
             $it=DB::table('items')->where('name',$cartItem->item)->first();              
             $item = Item::find($it->id);
@@ -181,20 +166,16 @@ class ItemController extends Controller
             $inven_items = DB::table('inventory_items')
             ->where('item_id', '=', $item->id)
             ->orderByDesc('quantity')
-            ->first();
-            
+            ->first();        
      
             $inventory =Inventory::find(collect($inven_items)->get('inventory_id'));                    
             $user = ManageUsers::find(Auth::id()); 
         
             if($item!=null && $inventory!=null && $user!=null){
                 $user->items()->attach($item->id,['inventory_id'=>$inventory->id]);
-
             }
-          
-
-        }
-        }
+        
+        } 
        
         DB::delete('delete from sessions');
         Session::forget('cart');

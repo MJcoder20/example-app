@@ -29,7 +29,7 @@ class Inventory extends Model
     }
 
     public function items(): BelongsToMany{
-        return $this->belongsToMany('App\Models\Item','App\Models\InventoryItem')
+        return $this->belongsToMany('App\Models\Item','App\Models\InventoryItem')->withPivot('quantity')
         ->withTimestamps();
     }
 
