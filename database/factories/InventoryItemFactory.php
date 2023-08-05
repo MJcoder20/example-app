@@ -27,7 +27,7 @@ class InventoryItemFactory extends Factory
         return [
             'inventory_id'=>fake()->randomElement($inventoryIDs),
             'item_id' => fake()->randomElement($itemIDs),
-            'quantity' => random_int(10, 50)
+            'quantity' => random_int(10, 150)
         ];
     }
 }
