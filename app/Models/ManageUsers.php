@@ -36,7 +36,7 @@ class ManageUsers extends Authenticatable
 
     public function items(): BelongsToMany{
         return $this->belongsToMany('App\Models\Item','App\Models\PurchaseOrder','user_id','item_id')
-        ->withPivot('inventory_id')->withTimestamps();
+        ->withPivot('inventory_id','status')->withTimestamps();
     }
 
     // public function inventories(): BelongsToMany{
@@ -50,6 +50,8 @@ class ManageUsers extends Authenticatable
     }
    
     
-    
-    
+  
+    // public function setRememberToken($token){
+    //     $this->rememberTokenName = $token;
+    // }
 }

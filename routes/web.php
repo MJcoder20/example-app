@@ -77,6 +77,7 @@ Route::get('/items/lowQuantityMail',[ItemController::class,'sendMail'])->middlew
 
 Route::post('cart/purchases',[ItemController::class,'purchase'])->middleware('auth');
 
+Route::post('password/reset',[ForgotPasswordController::class,'reset']);
 
 Auth::routes();
 

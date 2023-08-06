@@ -118,8 +118,7 @@
       <link rel="stylesheet" type="text/css" href="https://mdbcdn.b-cdn.net/wp-content/themes/mdbootstrap4/docs-app/css/dist/mdb5/standard/core.min.css">
       <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    
-
+     
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
@@ -259,14 +258,8 @@
               <!-- dashboard inner -->
                  {{-- <h1 style="width:50%;margin:auto;margin-top:100px;">Welcome to Student Gate!</h1> --}}             
                 <main class="py-4">
-                    @if ( Session::has('flash_message') )
-
-                    <div class="alert {{ Session::get('flash_type') }}">
-                        <h3>{{ Session::get('flash_message') }}</h3>
-                    </div>
-                    
-                    @endif 
-                 @yield('content')
+                    {{-- @include('flash-message') --}}
+                    @yield('content')
                 </main>
               <!-- end dashboard inner -->
            </div>
@@ -283,6 +276,7 @@
         <a href="/brands/create" class="footer-button-3 ">Create Brand</a>
         <a href="/items/create" class="footer-button-4 ">Create Item</a>
     </footer>
+
     @endif
 
    

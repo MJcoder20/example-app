@@ -14,6 +14,7 @@ use App\Models\InventoryItem;
 use App\Models\PurchaseOrder;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
@@ -102,14 +103,14 @@ class ItemController extends Controller
                 ]
             ];
             session()->put('cart', $cart);
-            return redirect()->back()->with('success', 'Item added to cart successfully!');    
+            return redirect()->back()->with('message', 'Item added to cart successfully!');    
         }
         if(isset($cart[$item->id])) {
             $name = $cart[$item->id]['name'];
             $quantity = ++$cart[$item->id]['quantity'];       
             DB::update('update sessions set quantity = ? where item = ?', [$quantity,$name]);
             session()->put('cart', $cart);
-            return redirect()->back()->with('success', 'Item added to cart successfully!');
+            return redirect()->back()->with('message', 'Item added to cart successfully!');
         }
 
         $cart[$item->id] = [
@@ -121,13 +122,14 @@ class ItemController extends Controller
         ];
         DB::insert('insert into sessions (item, quantity) values (?, ?)', [$item->name, 1]);
         session()->put('cart', $cart);
-        return redirect()->back()->with('success', 'Item added to cart successfully!');
+        return redirect()->back()->with('message', 'Item added to cart successfully!');
     }
 
 
-    public function updateCart(Request $request,Item $item)
-    {
+    public function updateCart(Request $request,Item $item){
+    
         $cart = Session::get('cart');
+
         $cartQuantity = $request->input('quantity');
         DB::update('update sessions set quantity = ? where item = ?', [$cartQuantity,$item->name]);
 
@@ -139,7 +141,7 @@ class ItemController extends Controller
         }
 
         Session::put('cart', $cart);
-        return redirect()->back();
+        return redirect()->back()->with('message','Item quantity updated');
     }
 
 
@@ -149,7 +151,7 @@ class ItemController extends Controller
         DB::delete('delete from sessions where id='.$item->id);
         unset($cart[$item->id]);
         Session::put('cart', $cart);
-        return redirect()->back();
+        return redirect()->back()->with('message','Item removed from cart successfully');
     }
 
     
@@ -157,6 +159,9 @@ class ItemController extends Controller
     public function purchase(){
 
         $cartItems = DB::table('sessions')->get();
+        $i=0;
+        $items = [];
+        $inventories = [];
 
         foreach($cartItems as $cartItem){
             $it=DB::table('items')->where('name',$cartItem->item)->first();              
@@ -168,18 +173,28 @@ class ItemController extends Controller
             ->orderByDesc('quantity')
             ->first();        
      
-            $inventory =Inventory::find(collect($inven_items)->get('inventory_id'));                    
+            $inventory =Inventory::find(collect($inven_items)->get('inventory_id')); 
             $user = ManageUsers::find(Auth::id()); 
         
             if($item!=null && $inventory!=null && $user!=null){
                 $user->items()->attach($item->id,['inventory_id'=>$inventory->id]);
-            }
-        
+                // PurchaseOrder::create([
+                //     'user_id'=>Auth::id(),
+                //     'item_id'=>$item->id,
+                //     'inventory_id'=>$inventory->id
+                // ]);
+            }                   
+          
+           
         } 
+        // $user = ManageUsers::find(Auth::id());
+        // for($j=0; $j<count($items); $j++){
+            // $user->items()->attach($items[$j],['inventory_id'=>$inventories[$j]]);
+        // }
        
-        DB::delete('delete from sessions');
+        DB::delete('delete from sessions ');
         Session::forget('cart');
-        return redirect('/Items')->with('success','Purchase completed successfully');
+        return redirect('/Items')->with('success','Purchase completed successfully!');
     }
     
 
@@ -224,7 +239,7 @@ class ItemController extends Controller
         
 
         Item::create($validated);
-        return redirect('/items');
+        return redirect('/items')->with('message','Item created successfully!');
     }
 
     /**
@@ -280,7 +295,7 @@ class ItemController extends Controller
        
 
         $item->update($validated);
-        return redirect('/items');
+        return redirect('/items')->with('message','Item updated successfully');
     }
 
     /**
@@ -294,6 +309,6 @@ class ItemController extends Controller
         $path=public_path('images/');
         unlink($path.$item->image);
         $item->delete();
-        return redirect('/items');
+        return redirect('/items')->with('message','Item deleted successfully');
     }
 }
