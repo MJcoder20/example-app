@@ -21,7 +21,7 @@ class ForgotPasswordController extends Controller
     |
     */
 
-    // use SendsPasswordResetEmails;
+    use SendsPasswordResetEmails;
 
     public function reset(Request $request, ManageUsers $user){
         $validated = $request->validate([
