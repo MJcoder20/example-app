@@ -125,7 +125,9 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-      
+       
+
+ 
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
@@ -309,16 +311,24 @@
         </div>
     </div>
 </div>
-<div class="container page">
-    @if ( Session::has('flash_message') )
 
-    <div class="alert {{ Session::get('flash_type') }}">
-        <h3>{{ Session::get('flash_message') }}</h3>
-    </div>
-    
-    @endif
-    @yield('content')
-</div>
+            <div class="container page">
+                {{-- <div class="flash-message">
+                    @foreach (['danger', 'warning', 'success', 'info'] as $msg)
+                      @if(Session::has('alert-' . $msg))
+                      <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }}</p>
+                      @endif
+                    @endforeach
+                  </div> --}}
+                  @if(session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                  @endif
+
+                @yield('content')
+
+            </div>
     
                 </main>
               <!-- end dashboard inner -->
@@ -367,6 +377,6 @@
 
      {{-- <script type="text/javascript" src="js/filters.min.js"></script> --}}
      <script src="https://mdbcdn.b-cdn.net/wp-content/themes/mdbootstrap4/docs-app/js/dist/mdb5/plugins/standard/filters.min.js"></script>
-     @yield('scripts')
+     
 </body>
 </html>

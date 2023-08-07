@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Models\Item;
 use App\Models\Session;
 use App\Models\Inventory;
+use App\Models\InventoryItem;
 use App\Models\PurchaseOrder;
 use Illuminate\Support\Facades\DB;
 
@@ -20,19 +21,16 @@ class PurchaseObserver
     {
         $item = Item::find($purchaseOrder->item_id);
         $session = DB::table('sessions')->where('item',$item->name)->first();
-
-        if(collect($session)->get('quantity')){
+   
 
             $quantity = collect($session)->get('quantity');
-            
             $inven_items = DB::table('inventory_items')
             ->where('item_id', '=', $purchaseOrder->item_id)
             ->orderByDesc('quantity')
-            ->first();
+            ->first();  
 
-                
             $qty = collect($inven_items)->get('quantity') - $quantity;
-
+           
             $inv = Inventory::find($purchaseOrder->inventory_id);
             $inv->items()->updateExistingPivot($item->id,['quantity'=>$qty]);
 
@@ -55,11 +53,7 @@ class PurchaseObserver
             ->where('id','=',$purchaseOrder->item_id)
             ->update([
                 'total_sales'=> $total_sales
-            ]);
-            
-            
-        }
-        
+            ]);        
         
 
     }
@@ -72,7 +66,7 @@ class PurchaseObserver
      */
     public function updated(PurchaseOrder $purchaseOrder)
     {
-        //
+       // 
     }
 
     /**

@@ -35,21 +35,19 @@ class SendEmails extends Command
             $item = DB::table('items')->where('name',$i)->first();
             $item = Item::find(collect($item)->get('id'));
             if($item!=null){
-            if($v==null ){
-                $vendors = DB::table('vendor_items')->where('item_id','=',$item->id)->pluck('vendor_id');
-                foreach($vendors as $vendor){
-                    Mail::to(Vendor::find($vendor->vendor_id))
-                    ->queue(new LowItemQuantityNotification($item));
+                if($v==null ){
+                    $vendors = DB::table('vendor_items')->where('item_id','=',$item->id)->pluck('vendor_id');
+                    foreach($vendors as $vendor){
+                        Mail::to(Vendor::find($vendor->vendor_id))
+                        ->queue(new LowItemQuantityNotification($item));
+                    }
+                }else{
+                    Mail::to($v)
+                        ->queue(new LowItemQuantityNotification($item));
                 }
-            }else{
-                Mail::to($v)
-                    ->queue(new LowItemQuantityNotification($item));
             }
-        }
             
         }
-        
-        
         
         $this->info('Emails sent successfully! ');
     }

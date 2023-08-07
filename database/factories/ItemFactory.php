@@ -34,7 +34,7 @@ class ItemFactory extends Factory
             'brand_id'=>$brandId,
             // 'total_purchases'=> random_int(10, 50),
             // 'total_sales'=> random_int(100,500),
-            'price' => random_int(10,80),
+            'price' => random_int(10,200),
         ];
     }
 }
