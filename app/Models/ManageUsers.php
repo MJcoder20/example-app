@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Http\Request;
+use Laravel\Sanctum\HasApiTokens;
 use App\Models\Filters\UserFilter;
+use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -11,10 +13,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class ManageUsers extends Authenticatable
+class ManageUsers extends Authenticatable implements CanResetPassword
 { 
-    use HasFactory;
-    use Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     public $timestamps = true;
 

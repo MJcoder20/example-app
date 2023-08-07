@@ -14,6 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('vendor_items', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('vendor_id')->constrained('vendors')->cascadeOnDelete();
             $table->foreignId('item_id')->constrained('items')->cascadeOnDelete();
             $table->integer('quantity');

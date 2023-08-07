@@ -159,9 +159,6 @@ class ItemController extends Controller
     public function purchase(){
 
         $cartItems = DB::table('sessions')->get();
-        $i=0;
-        $items = [];
-        $inventories = [];
 
         foreach($cartItems as $cartItem){
             $it=DB::table('items')->where('name',$cartItem->item)->first();              
@@ -178,19 +175,10 @@ class ItemController extends Controller
         
             if($item!=null && $inventory!=null && $user!=null){
                 $user->items()->attach($item->id,['inventory_id'=>$inventory->id]);
-                // PurchaseOrder::create([
-                //     'user_id'=>Auth::id(),
-                //     'item_id'=>$item->id,
-                //     'inventory_id'=>$inventory->id
-                // ]);
             }                   
-          
-           
+                 
         } 
-        // $user = ManageUsers::find(Auth::id());
-        // for($j=0; $j<count($items); $j++){
-            // $user->items()->attach($items[$j],['inventory_id'=>$inventories[$j]]);
-        // }
+
        
         DB::delete('delete from sessions ');
         Session::forget('cart');

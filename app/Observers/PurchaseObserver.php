@@ -22,21 +22,15 @@ class PurchaseObserver
         $item = Item::find($purchaseOrder->item_id);
         $session = DB::table('sessions')->where('item',$item->name)->first();
    
-        
+
             $quantity = collect($session)->get('quantity');
             $inven_items = DB::table('inventory_items')
             ->where('item_id', '=', $purchaseOrder->item_id)
             ->orderByDesc('quantity')
-            ->first();
-
-            // if($quantity==1){
-            //     InventoryItem::find(collect($inven_items)->get('inventory_id'))->decrement('quantity');
-            // }else{
-
-            // }
+            ->first();  
 
             $qty = collect($inven_items)->get('quantity') - $quantity;
-
+           
             $inv = Inventory::find($purchaseOrder->inventory_id);
             $inv->items()->updateExistingPivot($item->id,['quantity'=>$qty]);
 
@@ -72,7 +66,7 @@ class PurchaseObserver
      */
     public function updated(PurchaseOrder $purchaseOrder)
     {
-        //
+       // 
     }
 
     /**

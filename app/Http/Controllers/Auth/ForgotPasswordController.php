@@ -23,15 +23,5 @@ class ForgotPasswordController extends Controller
 
     use SendsPasswordResetEmails;
 
-    public function reset(Request $request, ManageUsers $user){
-        $validated = $request->validate([
-            'email'=>'required|email',
-            'password'=>'required|same:confirm_password|min:9|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/|regex:/[@$!%*#?&]/',
-            'confirm_password' => 'required'
-        ]);
-        $validated['password']=bcrypt($validated['password']);
-        $user->update($validated);
-
-        return redirect('/');
-    }
+ 
 }

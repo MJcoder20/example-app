@@ -34,7 +34,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        PurchaseOrder::observe(PurchaseObserver::class);
+        // PurchaseOrder::observe(PurchaseObserver::class);
     }
 
     /**
