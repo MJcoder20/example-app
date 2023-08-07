@@ -61,7 +61,7 @@ return [
 
     'providers' => [
         'manage_users' => [
-            'driver' => 'eloquent',
+            'driver' => 'database',
             'model' => App\Models\ManageUsers::class,
         ],
 
