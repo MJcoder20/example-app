@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="row">
-    <aside class="col-lg-3">
+    {{-- <aside class="col-lg-3">
         
     
         <!-- ===== Card for sidebar filter ===== -->
@@ -41,7 +41,7 @@
         <!-- ===== Card for sidebar filter .// ===== -->
         
     </form>
-    </aside>
+    </aside> --}}
 <div class="container">
     <div class="py-5 text-center">
 
@@ -62,13 +62,15 @@
         
         </div>
         <div class="d-flex  justify-content-end">
-            <br><a class="btn btn-outline-success" style="margin-right:20px;" href="/brands/{{$brand->id}}">Show</a>     
+            <br><a class="btn btn-outline-success" style="margin-right:20px;" href="/brands/{{$brand->id}}">Show</a>  
+            @if(Auth::user()->is_admin==1)   
             <br><a class="btn btn-outline-info" style="margin-right:20px;" href="/brands/{{$brand->id}}/edit">Edit</a>     
             <form action="/brands/{{$brand->id}}" method="post">
                 @csrf
                 @method('DELETE')
                 <button class="btn btn-outline-danger ">{{ __('Delete') }}</button>
             </form>
+            @endif
         </div>
       
         </li>

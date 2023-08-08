@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
-use App\Models\ManageUsers;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use App\Providers\RouteServiceProvider;
@@ -52,7 +51,7 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
 
-            'username'=>'required|string|unique:manage_users|min:5',
+            'username'=>'required|string|unique:users|min:5',
             'email'=>'required|string|email|unique:manage_users',
             'first_name'=>'min:3|max:15',
             'last_name'=>'min:3|max:15',   
@@ -65,11 +64,11 @@ class RegisterController extends Controller
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
-     * @return \App\Models\ManageUsers
+     * @return \App\Models\User
      */
     protected function create(array $data)
     {
-        return ManageUsers::create([
+        return User::create([
             'username' => $data['username'],
             'email' => $data['email'],
             'first_name' => $data['first_name'],

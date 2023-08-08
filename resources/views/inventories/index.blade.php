@@ -17,13 +17,15 @@
         
         </div>
         <div class="d-flex  justify-content-end">
-            <br><a class="btn btn-outline-success" style="margin-right:20px;" href="/inventories/{{$inventory->id}}">Show</a>     
+            <br><a class="btn btn-outline-success" style="margin-right:20px;" href="/inventories/{{$inventory->id}}">Show</a> 
+            @if(Auth::user()->is_admin==1)    
             <br><a class="btn btn-outline-info" style="margin-right:20px;" href="/inventories/{{$inventory->id}}/edit">Edit</a>     
             <form action="/inventories/{{$inventory->id}}" method="post">
                 @csrf
                 @method('DELETE')
                 <button class="btn btn-outline-danger ">{{ __('Delete') }}</button>
             </form>
+            @endif
         </div>
       
         </li>

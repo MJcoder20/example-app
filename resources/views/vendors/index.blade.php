@@ -22,6 +22,7 @@
             @endif
         
         </div>
+        @if(Auth::user()->is_admin==1)
         <div class="d-flex  justify-content-end">
             <br><a class="btn btn-outline-info" style="margin-right:20px;" href="/vendors/{{$vendor->id}}/edit">Edit</a>     
             <form action="/vendors/{{$vendor->id}}" method="post">
@@ -30,6 +31,8 @@
                 <button class="btn btn-outline-danger ">{{ __('Delete') }}</button>
             </form>
         </div>
+        @endif
+        
       
         </li>
         </div>

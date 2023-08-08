@@ -27,6 +27,7 @@ class ManageUsers extends Authenticatable
     protected $hidden = [
         'password',
         'confirm_password',
+        'remember_token'
     ];
 
     public function addresses(): MorphMany

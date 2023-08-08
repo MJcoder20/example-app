@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Models\ManageUsers;
+use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -22,7 +22,7 @@ class UserLogin
      *
      * @return void
      */
-    public function __construct(ManageUsers $user)
+    public function __construct(User $user)
     {
         $this->user=$user;
     }
