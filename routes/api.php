@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 /*
@@ -27,6 +28,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/', [UserController::class, 'index']);
     Route::get('/items', [ItemController::class, 'index']);
     Route::post('/logout', [AuthController::class,'logout']);
     Route::post('/refresh', [AuthController::class,'refresh']);

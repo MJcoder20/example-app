@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Models\User;
 use App\Events\UserLogin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;

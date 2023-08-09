@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use App\Models\User;
 use App\Events\UserLogin;
@@ -17,7 +17,10 @@ class AuthController extends Controller
 {
  
 
-    
+    public function loginForm(){
+        return view("auth.login");
+    }
+
     public function login(Request $request)
     {
         $validated =$request->validate([

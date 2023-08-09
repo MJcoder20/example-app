@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
+use App\Models\User;
 use App\Models\Brand;
 use App\Models\Vendor;
 use App\Models\Inventory;
@@ -171,7 +172,7 @@ class ItemController extends Controller
             ->first();        
      
             $inventory =Inventory::find(collect($inven_items)->get('inventory_id')); 
-            $user = ManageUsers::find(Auth::id()); 
+            $user = User::find(Auth::id()); 
         
             if($item!=null && $inventory!=null && $user!=null){
                 $user->items()->attach($item->id,['inventory_id'=>$inventory->id]);

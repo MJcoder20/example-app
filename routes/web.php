@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use App\Models\ManageUsers;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -7,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Password;
 use App\Http\Controllers\BrandController;
 use Illuminate\Auth\Events\PasswordReset;
@@ -26,13 +28,13 @@ use App\Http\Controllers\ManageUsersController;
 */
 
 //User routes
-Route::get('/',[ManageUsersController::class, 'index'])->name('index')->middleware('auth');
-Route::get('/users/create',[ManageUsersController::class, 'create'])->middleware('auth');
-Route::post('/',[ManageUsersController::class, 'store'])->middleware('auth');
-Route::get('/users/{user}/edit',[ManageUsersController::class, 'edit'])->middleware('auth');
-Route::put('/users/{user}',[ManageUsersController::class, 'update'])->middleware('auth');
-Route::delete('/users/{user}',[ManageUsersController::class, 'destroy'])->middleware('auth');
-// Route::post('/users/search',[ManageUsersController::class, 'search'])->middleware('auth');
+Route::get('/',[UserController::class, 'index'])->name('index')->middleware('auth');
+Route::get('/users/create',[UserController::class, 'create'])->middleware('auth');
+Route::post('/',[UserController::class, 'store'])->middleware('auth');
+Route::get('/users/{user}/edit',[UserController::class, 'edit'])->middleware('auth');
+Route::put('/users/{user}',[UserController::class, 'update'])->middleware('auth');
+Route::delete('/users/{user}',[UserController::class, 'destroy'])->middleware('auth');
+// Route::post('/users/search',[UserController::class, 'search'])->middleware('auth');
 
 
 // Vendor routes
@@ -114,7 +116,7 @@ Route::post('/reset-password', function (Request $request) {
  
     $status = Password::reset(
         $request->only('email', 'password', 'password_confirm', 'token'),
-        function (ManageUsers $user, string $password) {
+        function (User $user, string $password) {
             $user->forceFill([
                 'password' => Hash::make($password)
             ])->setRememberToken(Str::random(60));

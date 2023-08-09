@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Laravel\Sanctum\Sanctum;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Filters\UserFilter;
 use Illuminate\Notifications\Notifiable;
@@ -58,10 +59,10 @@ class User extends Authenticatable
         ->withPivot('inventory_id','status')->withTimestamps();
     }
 
-    public function tokens()
-    {
-        return $this->morphMany(\Laravel\Sanctum\PersonalAccessToken::class,'tokenable');
-    }
+    // public function tokens(): MorphMany
+    // {
+    //     return $this->morphMany(Sanctum::$personalAccessTokenModel, 'tokenable');
+    // }
 
 
     public function scopeFilter(Builder $builder, $request){
