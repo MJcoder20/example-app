@@ -28,6 +28,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         PurchaseOrder::observe(PurchaseObserver::class);
-        Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
+        // Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
     }
 }

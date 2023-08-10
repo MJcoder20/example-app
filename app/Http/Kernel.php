@@ -6,6 +6,10 @@ use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
 {
+    // protected $middlewareAliases = [
+    //     'abilities' => \Laravel\Sanctum\Http\Middleware\CheckAbilities::class,
+    //     'ability' => \Laravel\Sanctum\Http\Middleware\CheckForAnyAbility::class,
+    // ];
     /**
      * The application's global HTTP middleware stack.
      *
@@ -14,6 +18,8 @@ class Kernel extends HttpKernel
      * @var array<int, class-string|string>
      */
     protected $middleware = [
+        \App\Http\Middleware\Cors::class,
+        \App\Http\Middleware\ForceJsonResponse::class,
         \Fruitcake\Cors\HandleCors::class,
         \Illuminate\Session\Middleware\StartSession::class,
         // \App\Http\Middleware\TrustHosts::class,
@@ -49,6 +55,7 @@ class Kernel extends HttpKernel
         //   ],
 
         'api' => [
+       
             \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
@@ -64,6 +71,10 @@ class Kernel extends HttpKernel
      * @var array<string, class-string|string>
      */
     protected $routeMiddleware = [
+        'cors' => \App\Http\Middleware\Cors::class,
+        'json.response' => \App\Http\Middleware\ForceJsonResponse::class,
+        // 'abilities' => \Laravel\Sanctum\Http\Middleware\CheckAbilities::class,
+        // 'ability' => \Laravel\Sanctum\Http\Middleware\CheckForAnyAbility::class,
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,

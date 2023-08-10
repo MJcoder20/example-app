@@ -46,7 +46,8 @@ return [
     |
     */
 
-    'expiration' => 60 * 24 * 7,
+    'expiration' => now()->addHours(2),     //Two hours
+    'rt_expiration' => now()->addDays(7),  // 7 Days
 
     /*
     |--------------------------------------------------------------------------

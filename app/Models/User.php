@@ -3,9 +3,10 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Laravel\Sanctum\Sanctum;
-use Laravel\Sanctum\HasApiTokens;
+use DateTimeInterface;
+
 use App\Models\Filters\UserFilter;
+use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -59,9 +60,14 @@ class User extends Authenticatable
         ->withPivot('inventory_id','status')->withTimestamps();
     }
 
-    // public function tokens(): MorphMany
+
+    public function AauthAcessToken(){
+        return $this->hasMany('\App\OauthAccessToken');
+    }
+
+    // public function refresh_tokens(): MorphMany
     // {
-    //     return $this->morphMany(Sanctum::$personalAccessTokenModel, 'tokenable');
+    //     return $this->morphMany('App\Models\RefreshToken', 'tokenable');
     // }
 
 
