@@ -175,7 +175,9 @@
                             <div class="caption" style="text-align:center">
                                 <h4 style="margin-left:30px;">{{ $item->name }}</h4>
                                 <p><strong>Price: </strong> {{ $item->price }}$</p>
+                                {{-- @if(Auth::user()) --}}
                                 <p class="btn-holder" ><a href="{{ url('add-to-cart/'.$item->id) }}" class="btn btn-warning btn-block text-center" role="button">Add to cart</a> </p>
+                                {{-- @endif --}}
                             </div>
                         </div>
                     </div>

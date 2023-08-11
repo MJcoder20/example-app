@@ -43,7 +43,6 @@ class LoginController extends Controller
     protected function authenticated() {
 
         $user = Auth::user();
-
         event(new UserLogin($user));
     }
 }

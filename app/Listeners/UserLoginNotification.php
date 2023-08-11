@@ -2,9 +2,10 @@
 
 namespace App\Listeners;
 
+use App\Models\User;
 use App\Events\UserLogin;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
+use Carbon\Carbon;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Queue\InteractsWithQueue;

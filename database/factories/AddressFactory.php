@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\City;
+use App\Models\User;
 use App\Models\Vendor;
 use App\Models\Address;
 use App\Models\ManageUsers;
@@ -26,7 +27,7 @@ class AddressFactory extends Factory
             'addressable_id'=>Vendor::factory()||ManageUsers::factory(),
             'addressable_type'=>function (array $attributes) {
                 return (class_basename(Vendor::find($attributes['addressable_id'])->type))||
-                (class_basename(ManageUsers::find($attributes['addressable_id'])->type));
+                (class_basename(User::find($attributes['addressable_id'])->type));
             },
             'city_id'=>City::factory(),
             'district'=>fake()->address(),

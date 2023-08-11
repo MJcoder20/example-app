@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\City;
+use App\Models\User;
 use App\Models\Vendor;
 use App\Models\Address;
 use App\Models\ManageUsers;
@@ -18,7 +19,7 @@ class AddressSeeder extends Seeder
      */
     public function run()
     {
-        Address::factory()->count(4)->for(ManageUsers::factory(),'addressable')
+        Address::factory()->count(4)->for(User::factory(),'addressable')
         ->for(Vendor::factory(),'addressable')
         ->for(City::factory()->create())
         ->create();

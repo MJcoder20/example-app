@@ -39,7 +39,7 @@ class VendorItemObserver
         $item->available=1;
         $item->save();
 
-        $users = DB::table('manage_users')->value('email')->get();
+        $users = DB::table('users')->value('email')->get();
 
         Notification::send($users, new ItemAvailable($item));
 

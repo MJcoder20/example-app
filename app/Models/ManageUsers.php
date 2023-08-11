@@ -5,15 +5,14 @@ namespace App\Models;
 use Illuminate\Http\Request;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Filters\UserFilter;
-use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Foundation\Auth\ManageUsers as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class ManageUsers extends Authenticatable implements CanResetPassword
+class ManageUsers extends Authenticatable 
 { 
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -28,6 +27,7 @@ class ManageUsers extends Authenticatable implements CanResetPassword
     protected $hidden = [
         'password',
         'confirm_password',
+        'remember_token'
     ];
 
     public function addresses(): MorphMany

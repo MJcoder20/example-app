@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use Laravel\Sanctum\Sanctum;
 use App\Models\PurchaseOrder;
 use App\Observers\PurchaseObserver;
 use Illuminate\Support\ServiceProvider;
+use App\Models\Sanctum\PersonalAccessToken;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,5 +28,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         PurchaseOrder::observe(PurchaseObserver::class);
+        // Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
     }
 }

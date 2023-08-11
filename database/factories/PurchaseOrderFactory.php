@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Item;
+use App\Models\User;
 use App\Models\Inventory;
 use App\Models\ManageUsers;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -20,7 +21,7 @@ class PurchaseOrderFactory extends Factory
     public function definition()
     {
         return [
-            'user_id'=>ManageUsers::factory(),
+            'user_id'=>User::factory(),
             'item_id'=>Item::factory(),
             'inventory_id'=>Inventory::factory(),
         ];
