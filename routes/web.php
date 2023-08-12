@@ -4,6 +4,7 @@ use App\Models\User;
 use App\Models\ManageUsers;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Laravel\Passport\Passport;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
@@ -86,7 +87,7 @@ Route::get('/items/lowQuantityMail',[ItemController::class,'sendMail'])->middlew
 Route::post('cart/purchases',[ItemController::class,'purchase'])->middleware('auth');
 
 
-Auth::routes();
+// Auth::routes();
 
 Route::get('/forgot-password', function () {
     return view('auth.passwords.email');

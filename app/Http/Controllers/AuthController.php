@@ -19,36 +19,6 @@ use App\Http\Requests\ManageUsersRequest;
 
 class AuthController extends Controller
 {
- 
-    public function redirect(){
-        $queries = http_build_query([
-            'client_id' => '6',
-            'redirect_uri' => 'http://client.test/oauth/callback',
-            'response_type' => 'code',
-            'scope' => 'view-posts',
-        ]);
-        return redirect ('http:l/server.test/oauth/authorize?'.$queries);
-    }
-
-    public function callback (Request $request){
-
-        $response = Http::post('http://server.test/oauth/token',[
-            'grant_type' => 'authorization_code',
-            'client_id' => '6',
-            'client_secret' => 'Q40j7g38efaYZVpdbpHJTQm47YyFm16180GtcoZ0',
-            'redirect_uri' => 'http://client.test/oauth/callback',
-            'code' => $request->code
-        ]);
-        
-        $response = $response->json();
-        $request->user()->token()->delete();
-        $request->user()->token()->create([
-            'access_token' => $response['access_token']
-        ]);
-            
-        return redirect('/home');
-    }
-
 
     public function login(Request $request)
     {
@@ -77,11 +47,10 @@ class AuthController extends Controller
             'access_token'=>$token,
             // 'access_token' => $accessToken,
             // 'refresh_token' => $refreshToken,
-            // 'expired_at' => $token->accessToken->expires_at,
             'token_type' => 'Bearer',
         ];
 
-       return response($response,201);
+       return response($response,200);
 
     }
 
@@ -106,7 +75,7 @@ class AuthController extends Controller
             'token_type' => 'Bearer',
         ];
 
-        return response($response,201);
+        return response($response,200);
     
     }
 
@@ -139,7 +108,7 @@ class AuthController extends Controller
             'user'=>$user,
             'access_token' => $token,
             'token_type' => 'Bearer',
-        ]);
+        ],200);
     }
 
 
@@ -148,9 +117,16 @@ class AuthController extends Controller
     public function logout()
     {
         $user = User::find(Auth::id());
-        $user->token()->revoke();
+        
+        if($user){
+            $user->token()->revoke();
+            // $user->AauthAcessToken()->delete();
+            return response()->json([
+                'message' => 'Successfully logged out',
+            ]);
+        }
         return response()->json([
-            'message' => 'Successfully logged out',
+            'message' => 'What user!',
         ]);
     }
 

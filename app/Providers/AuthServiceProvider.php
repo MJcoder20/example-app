@@ -4,7 +4,11 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 
+use Laravel\Passport\Token;
+use Laravel\Passport\Client;
+use Laravel\Passport\AuthCode;
 use Laravel\Passport\Passport;
+use Laravel\Passport\PersonalAccessClient;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -28,11 +32,10 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         // Passport::loadKeysFrom(__DIR__.'/../secrets/oauth');
-        // Passport::routes();
-        Passport::tokensCan([
-            'view-posts'=>'View Posts',
-            'view-user'=>'View User'
-        ]);
+        Passport::useTokenModel(Token::class); 
+        Passport::useClientModel(Client::class); 
+        Passport::useAuthCodeModel(AuthCode::class); 
+        Passport::usePersonalAccessClientModel(PersonalAccessClient::class);
         Passport::tokensExpireIn(now()->addHours(2));
         Passport::refreshTokensExpireIn(now()->addHours(5));
         Passport::personalAccessTokensExpireIn(now()->addDays(6));
