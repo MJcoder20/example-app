@@ -20,7 +20,7 @@ class Kernel extends HttpKernel
     protected $middleware = [
         \App\Http\Middleware\Cors::class,
         \App\Http\Middleware\ForceJsonResponse::class,
-        \Fruitcake\Cors\HandleCors::class,
+        // \Fruitcake\Cors\HandleCors::class,
         \Illuminate\Session\Middleware\StartSession::class,
         // \App\Http\Middleware\TrustHosts::class,
         \App\Http\Middleware\TrustProxies::class,
@@ -56,7 +56,7 @@ class Kernel extends HttpKernel
 
         'api' => [
        
-            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+            // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
       

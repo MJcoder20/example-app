@@ -3,10 +3,10 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use DateTimeInterface;
 
 use App\Models\Filters\UserFilter;
 use Laravel\Passport\HasApiTokens;
+use Illuminate\Container\Container;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -61,9 +61,16 @@ class User extends Authenticatable
     }
 
 
-    public function AauthAcessToken(){
-        return $this->hasMany('\App\OauthAccessToken');
-    }
+    // public function createRefreshToken($name, array $scopes = [])
+    // {
+    //     return Container::getInstance()->make(PersonalAccessTokenFactory::class)->make(
+    //         $this->getKey(), $name, $scopes
+    //     );
+    // }
+
+    // public function AauthAcessToken(){
+    //     return $this->hasMany('\App\OauthAccessToken');
+    // }
 
     // public function refresh_tokens(): MorphMany
     // {

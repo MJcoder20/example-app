@@ -3,19 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Events\UserLogin;
-use App\Enums\TokenAbility;
-use Laravel\Passport\Token;
-
+use GuzzleHttp\Client;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Laravel\Passport\Passport;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\RefreshToken;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Http;
+use Laravel\Passport\ClientRepository;
 use App\Http\Requests\ManageUsersRequest;
-
+use Laravel\Passport\RefreshTokenRepository;
+use Laravel\Passport\RefreshTokenRepositoryInterface;
 
 class AuthController extends Controller
 {
@@ -35,18 +35,36 @@ class AuthController extends Controller
             ], 401);
         }
 
+        $token = $user->createToken('access_token');
 
-        $token = $user->createToken('access_token')->accessToken;
+         // Create refresh token
+        // $refreshToken = $user->createToken('refresh-token',[''],now()->addHours(5));
+        
+        // DB::table('oauth_refresh_tokens')->insert(['access_token_id'=>$token]);
 
-        // $accessToken = $user->createToken('access_token', [TokenAbility::ACCESS_API], config('sanctum.expiration'))->accessToken;
-        // $refreshToken = $user->createToken('refresh_token', [TokenAbility::ISSUE_ACCESS_TOKEN], config('sanctum.rt_expiration'))->accessToken;
+     
+        // Passport::refreshToken()->create(['access_token_id'=>$token->id,]);
+
+        // $http = new Client;
+
+        // $response = $http->post('http://127.0.0.1:8000/oauth/token', [
+        //     'form_params' => [
+        //         'grant_type' => 'refresh_token',
+        //         'refresh_token' => 'the-refresh-token',
+        //         'client_id' => 'client-id',
+        //         'client_secret' => 'client-secret',
+        //         'scope' => '',
+        //     ],
+        // ]);
+
+        // return json_decode((string) $response->getBody(), true);
+
 
         $response = [
             'message' => 'User Logged In Successfully',
             'user'=>$user,
-            'access_token'=>$token,
-            // 'access_token' => $accessToken,
-            // 'refresh_token' => $refreshToken,
+            'access_token'=>$token->accessToken,
+            // 'refresh_token'=>$refreshToken->accessToken,
             'token_type' => 'Bearer',
         ];
 
@@ -64,9 +82,6 @@ class AuthController extends Controller
 
         $user = User::create($validated);
         $token = $user->createToken('access_token')->accessToken;
-        // $token = $user->createToken('access_token',[TokenAbility::ACCESS_API], config('sanctum.expiration'))->accessToken;
-        // $user->remember_token = $token;
-        // $user->save();
 
         $response = [
             'message' => 'User created Successfully',
@@ -75,7 +90,7 @@ class AuthController extends Controller
             'token_type' => 'Bearer',
         ];
 
-        return response($response,200);
+        return response($response,201);
     
     }
 
@@ -116,44 +131,37 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        $user = User::find(Auth::id());
-        
-        if($user){
-            $request->user()->token()->revoke();
-            // $request->user()->AauthAcessToken()->delete();
-            return response()->json([
-                'message' => 'Successfully logged out',
-            ]);
-        }
-        return response()->json([
-            'message' => 'What user!',
+        $user = $request->user();
+        DB::table('oauth_access_tokens')->where('user_id',$user->id)->update([
+            'revoked'=>true
         ]);
+        return response()->json([
+            'message' => 'Successfully logged out',
+        ]);
+       
     }
 
 
 
 
-    public function refresh()
+    public function refresh(Request $request)
     {
-        $user = User::find(Auth::id());
-        $accessToken=$user->token();
-        // $user->AauthAcessToken()->delete();
-        // DB::table('oauth_refresh_tokens')
-        // ->where('access_token_id', $accessToken->id)
-        // ->update([
-        //     'revoked' => true
-        // ]);
-        $accessToken->revoke();
-        $token = $user->createToken('access_token')->accessToken;
-        // $accessToken = $user->createToken('access_token', [TokenAbility::ACCESS_API], config('sanctum.expiration'))->accessToken;
+        // $user = User::find(Auth::id());
+        $user = $request->user();
+     
+        DB::table('oauth_access_tokens')->where('user_id',$user->id)->delete();
+        $token = $user->createToken('access_token');
     
         return response()->json([
             'user' => $user,
             'authorization' => [
-                'token' => $token,
-                // 'access_token' => $accessToken,
+                'token' => $token->accessToken,
                 'type' => 'bearer',
             ]
         ]);
     }
+
+
+
+
 }
