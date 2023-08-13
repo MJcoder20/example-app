@@ -4,18 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use GuzzleHttp\Client;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Laravel\Passport\Passport;
 use Illuminate\Support\Facades\DB;
-use Laravel\Passport\RefreshToken;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Laravel\Passport\ClientRepository;
+use Illuminate\Support\Facades\Http;
 use App\Http\Requests\ManageUsersRequest;
-use Laravel\Passport\RefreshTokenRepository;
-use Laravel\Passport\RefreshTokenRepositoryInterface;
+use Laravel\Passport\Bridge\RefreshToken;
+use Laravel\Passport\Events\RefreshTokenCreated;
+use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
+
 
 class AuthController extends Controller
 {
@@ -36,39 +35,41 @@ class AuthController extends Controller
         }
 
         $token = $user->createToken('access_token');
-
-         // Create refresh token
-        // $refreshToken = $user->createToken('refresh-token',[''],now()->addHours(5));
-        
-        // DB::table('oauth_refresh_tokens')->insert(['access_token_id'=>$token]);
-
-     
-        // Passport::refreshToken()->create(['access_token_id'=>$token->id,]);
+        $refreshToken = $user->createToken('refresh-token');
+        DB::table('oauth_access_tokens')->where('user_id',$user->id)
+        ->where('name','refresh-token')->update([
+            'expires_at'=>now()->addHours(5)
+        ]);
 
         // $http = new Client;
-
         // $response = $http->post('http://127.0.0.1:8000/oauth/token', [
-        //     'form_params' => [
-        //         'grant_type' => 'refresh_token',
-        //         'refresh_token' => 'the-refresh-token',
-        //         'client_id' => 'client-id',
-        //         'client_secret' => 'client-secret',
-        //         'scope' => '',
-        //     ],
+        //     'grant_type' => 'password',
+        //     'client_id' => '4',
+        //     'client_secret' => 'aBM6wQWaH8jb8o0rihMqhFzF4pWwaCaUMimmMHoK',
+        //     'username' => $validated['email'],
+        //     'password' => $validated['password'],
+        //     'scope' => '',
         // ]);
 
-        // return json_decode((string) $response->getBody(), true);
+        // $result = json_decode($response->getBody(), true);
+        // if (!$response) {
+        //     return response()->json(['error' => 'Unauthorized'], 401);
+        // }
+        
+        // return response()->json($result);
+
 
 
         $response = [
             'message' => 'User Logged In Successfully',
             'user'=>$user,
             'access_token'=>$token->accessToken,
-            // 'refresh_token'=>$refreshToken->accessToken,
+            'refresh_token'=>$refreshToken->accessToken,
             'token_type' => 'Bearer',
         ];
 
        return response($response,200);
+        
 
     }
 
@@ -82,11 +83,17 @@ class AuthController extends Controller
 
         $user = User::create($validated);
         $token = $user->createToken('access_token')->accessToken;
+        $refreshToken = $user->createToken('refresh-token')->accessToken;
+        DB::table('oauth_access_tokens')->where('user_id',$user->id)
+        ->where('name','refresh-token')->update([
+            'expires_at'=>now()->addHours(5)
+        ]);
 
         $response = [
             'message' => 'User created Successfully',
             'user'=>$user,
             'access_token' => $token,
+            'refresh_token'=>$refreshToken,
             'token_type' => 'Bearer',
         ];
 
@@ -98,12 +105,13 @@ class AuthController extends Controller
     
 
     public function reset(Request $request){
+
         $validated =$request->validate([
             'email' => 'required|email',
             'password' => 'required|string|same:confirm_password',
         ]);
 
-        $user = User::where('email', $validated['email'])->firstOrFail();
+        $user = User::where('email', $validated['email'])->first();
 
         if(!$user){
             return response()->json([
@@ -135,6 +143,8 @@ class AuthController extends Controller
         DB::table('oauth_access_tokens')->where('user_id',$user->id)->update([
             'revoked'=>true
         ]);
+        DB::table('oauth_access_tokens')->where('user_id',$user->id)->delete();
+
         return response()->json([
             'message' => 'Successfully logged out',
         ]);
@@ -146,19 +156,46 @@ class AuthController extends Controller
 
     public function refresh(Request $request)
     {
-        // $user = User::find(Auth::id());
         $user = $request->user();
+        
+        $tokens = DB::table('oauth_access_tokens')->where('user_id',$user->id)->get();
+        // $alltokens = collect($tokens)->get('expires_at');
+        
+        foreach($tokens as $token){
+            if(collect($token)->get('expires_at') < now()){
+                if(collect($token)->get('name')=='access_token'){
+                    DB::table('oauth_access_tokens')->where('user_id',$user->id)->update([
+                        'revoked'=>true
+                    ]);
+                    DB::table('oauth_access_tokens')->where('user_id',$user->id)->delete();
+
+                    $user->createToken('access_token')->accessToken;
+
+                }else{
+                    DB::table('oauth_access_tokens')->where('user_id',$user->id)->update([
+                        'revoked'=>true
+                    ]);
+                    DB::table('oauth_access_tokens')->where('user_id',$user->id)->delete();
+
+                    $user->createToken('refresh_token')->accessToken;
+                    
+                }
+                
+            }  
+        }
+        DB::table('oauth_access_tokens')->where('user_id',$user->id)
+                    ->where('name','refresh-token')->update([
+                        'expires_at'=>now()->addHours(5)
+                    ]);
+
+           
      
-        DB::table('oauth_access_tokens')->where('user_id',$user->id)->delete();
-        $token = $user->createToken('access_token');
-    
         return response()->json([
             'user' => $user,
-            'authorization' => [
-                'token' => $token->accessToken,
-                'type' => 'bearer',
-            ]
+            'tokens'=>$tokens,
         ]);
+        
+        
     }
 
 

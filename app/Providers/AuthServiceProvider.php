@@ -34,8 +34,8 @@ class AuthServiceProvider extends ServiceProvider
         //     'view-users' => 'View Users',
         // ]);
 
-        Passport::tokensExpireIn(now()->addHours(2));
+        Passport::tokensExpireIn(now()->addDays(6));
         Passport::refreshTokensExpireIn(now()->addHours(5));
-        Passport::personalAccessTokensExpireIn(now()->addDays(6));
+        Passport::personalAccessTokensExpireIn(now()->addHours(2));
     }
 }

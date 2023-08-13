@@ -6,7 +6,6 @@ namespace App\Models;
 
 use App\Models\Filters\UserFilter;
 use Laravel\Passport\HasApiTokens;
-use Illuminate\Container\Container;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
