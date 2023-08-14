@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use Carbon\Carbon;
 use App\Models\User;
@@ -16,9 +16,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Laravel\Passport\Bridge\AccessToken;
 use App\Http\Requests\ManageUsersRequest;
-use Laravel\Passport\Bridge\RefreshToken;
-use Laravel\Passport\Events\RefreshTokenCreated;
-use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
+
 
 
 class AuthController extends Controller

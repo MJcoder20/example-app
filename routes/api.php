@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\API\UserController;
 
 
 /*
@@ -29,8 +30,9 @@ Route::group(['middleware' => 'auth:api'],function() {
     Route::post('/logout',[AuthController::class, 'logout']);
     Route::post('/reset', [AuthController::class, 'reset']);
     Route::post('/refresh', [AuthController::class,'refresh']);
+    Route::resource('users', UserController::class);
+
 });
-// Route::post('/reset', [AuthController::class, 'reset']);
 
 
 

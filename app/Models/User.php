@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Models\Address;
 use App\Models\Filters\UserFilter;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
@@ -60,23 +61,34 @@ class User extends Authenticatable
     }
 
 
-    // public function createRefreshToken($name, array $scopes = [])
-    // {
-    //     return Container::getInstance()->make(PersonalAccessTokenFactory::class)->make(
-    //         $this->getKey(), $name, $scopes
-    //     );
-    // }
+    //Accessors and Mutators
 
-    // public function AauthAcessToken(){
-    //     return $this->hasMany('\App\OauthAccessToken');
-    // }
+    public function setAddress($value){
+        if($this->getAddresses()==null){
+            Address::create($value);
+        }else{
+            $address=Address::where('addressable_id',$this->id);
+            $address->update($value);
+        }
+    
+    }
 
-    // public function refresh_tokens(): MorphMany
-    // {
-    //     return $this->morphMany('App\Models\RefreshToken', 'tokenable');
-    // }
+    public function getAddresses()
+    {
+       return Address::where('addressable_type','App\Models\User')
+                ->where('addressable_id',$this->id)->get();
+    }
+
+    public function setFullName($first,$last){
+        $this->attributes['full_name']=$first. ' '.$last;
+    }
+
+    public function getFullName(){
+        return $this->full_name;
+    }
 
 
+    //Filter
     public function scopeFilter(Builder $builder, $request){
         return (new UserFilter())->filter($builder, $request);
     }
