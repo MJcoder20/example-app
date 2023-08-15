@@ -1,7 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Models\User;
 // use App\Http\Controllers\AuthController;
+use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\UserController;
 
@@ -31,6 +33,14 @@ Route::group(['middleware' => 'auth:api'],function() {
     Route::post('/reset', [AuthController::class, 'reset']);
     Route::post('/refresh', [AuthController::class,'refresh']);
     Route::resource('users', UserController::class);
+    // Route::apiResource('users','UserController');
+    // Route::get('/users', function () {
+    //     return UserResource::collection(User::paginate(3));
+    // });
+    // Route::get('/user/{id}', function (string $id) {
+    //     return new UserResource(User::findOrFail($id));
+    // });
+    
 
 });
 

@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Address;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ManageUsersRequest;
 use App\Http\Controllers\API\AuthController;
@@ -17,30 +18,38 @@ class UserController extends Controller
     
     public function index()
     {
-        AuthController::refresh(request());
-
-        $users = User::filter(request()->all())->get();
-
-        // $i=0;$all=[];
         if(Auth::user()->is_admin==1){
-            foreach($users as $user){
-                $user->setFullName($user->first_name,$user->last_name);
-                $user->setAddresses($user->userAddresses());
-                // $all[$i]['Full Name']=$user->getFullName();
-                // $all[$i]['addresses']=$user->getAddresses();
-                // $i++;
-            }
-
-            return response()->json([
-                'Users'=>$users,
-                // 'Users'=>$all
-            ]);
+            
+            return UserResource::collection(User::with('Addresses')->paginate(5));
 
         }else{
             return response()->json([
                 'message'=>"You're not an admin"
             ]);
         }
+
+        // $users = User::filter(request()->all())->get();
+
+        // // $i=0;$all=[];
+        // if(Auth::user()->is_admin==1){
+        //     foreach($users as $user){
+        //         $user->setFullName($user->first_name,$user->last_name);
+        //         $user->setAddresses($user->userAddresses());
+        //         // $all[$i]['Full Name']=$user->getFullName();
+        //         // $all[$i]['addresses']=$user->getAddresses();
+        //         // $i++;
+        //     }
+
+        //     return response()->json([
+        //         'Users'=>$users,
+        //         // 'Users'=>$all
+        //     ]);
+
+        // }else{
+        //     return response()->json([
+        //         'message'=>"You're not an admin"
+        //     ]);
+        // }
         
          
     }
@@ -49,15 +58,23 @@ class UserController extends Controller
 
     public function show(User $user){
         
-        if(Auth::user()->is_admin==1){
-            AuthController::refresh(request());
+        // if(Auth::user()->is_admin==1){
+        //     AuthController::refresh(request());
             
-            $user->setFullName($user->first_name,$user->last_name);
-            $user->setAddresses($user->userAddresses());
-            return response()->json([
-                'User'=>$user,
+        //     $user->setFullName($user->first_name,$user->last_name);
+        //     $user->setAddresses($user->userAddresses());
+        //     return response()->json([
+        //         'User'=>$user,
                
-            ]);
+        //     ]);
+        // }else{
+        //     return response()->json([
+        //         'message'=>"You're not an admin"
+        //     ]);
+        // }
+        if(Auth::user()->is_admin==1){
+            
+            return new UserResource($user);
         }else{
             return response()->json([
                 'message'=>"You're not an admin"
@@ -82,7 +99,7 @@ class UserController extends Controller
             
             $fields['password']=bcrypt($fields['password']);
             $user = User::create($fields);
-            $user->setFullName($fields['first_name'],$fields['last_name']);
+            // $user->setFullName($fields['first_name'],$fields['last_name']);
 
             $address['addressable_id']=$user->id;
             $address['addressable_type']='App\Models\User';
@@ -91,19 +108,22 @@ class UserController extends Controller
             $address['phone']=$request->phone;
             $address['city_id']=$request->city_id;
             Address::create($address);
-            $user->setAddresses($user->userAddresses());
+            // $user->setAddresses($user->userAddresses());
 
 
-            return response()->json([
-                'message' => 'User Created Successfully',
-                'User' => $user,
+            // return response()->json([
+            //     'message' => 'User Created Successfully',
+            //     'User' => $user,
 
-            ],200);
+            // ],200);
+
+            return new UserResource($user);
 
         }else{
             return response()->json([
                 'message' => "You're not an admin",
             ]);
+            
         }
 
     }
@@ -127,7 +147,7 @@ class UserController extends Controller
             
             $fields['password']=bcrypt($fields['password']);
             $user->update($fields);
-            $user->setFullName($fields['first_name'],$fields['last_name']);
+            // $user->setFullName($fields['first_name'],$fields['last_name']);
 
         
             $address['addressable_id']=$user->id;
@@ -141,13 +161,15 @@ class UserController extends Controller
                 $addr=Address::where('addressable_id',$user->id);
                 $addr->update($address);
            }
-           $user->setAddresses($user->userAddresses());
+        //    $user->setAddresses($user->userAddresses());
 
-            return response()->json([
-                'message' => 'User Updated Successfully',
-                'User' => $user,
+            // return response()->json([
+            //     'message' => 'User Updated Successfully',
+            //     'User' => $user,
               
-            ],200);
+            // ],200);
+
+            return new UserResource($user);
 
         }else{
             return response()->json([

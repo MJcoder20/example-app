@@ -6,6 +6,7 @@ use Laravel\Sanctum\Sanctum;
 use App\Models\PurchaseOrder;
 use App\Observers\PurchaseObserver;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Response;
 use App\Models\Sanctum\PersonalAccessToken;
 
 class AppServiceProvider extends ServiceProvider
@@ -29,5 +30,8 @@ class AppServiceProvider extends ServiceProvider
     {
         PurchaseOrder::observe(PurchaseObserver::class);
         // Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
+        Response::macro('bEncode', function ($value) {
+            return Response::make(base64_encode($value));
+        });
     }
 }
