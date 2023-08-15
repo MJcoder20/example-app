@@ -24,7 +24,7 @@ class AddressFactory extends Factory
         // $cityIDs = City::all()->pluck('id');
 
         return [
-            'addressable_id'=>Vendor::factory()||ManageUsers::factory(),
+            'addressable_id'=>Vendor::factory()||User::factory(),
             'addressable_type'=>function (array $attributes) {
                 return (class_basename(Vendor::find($attributes['addressable_id'])->type))||
                 (class_basename(User::find($attributes['addressable_id'])->type));

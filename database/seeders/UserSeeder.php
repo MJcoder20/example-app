@@ -25,6 +25,6 @@ class UserSeeder extends Seeder
             'password'=>bcrypt('$M1a2r3a4$')
         ]);
 
-        User::factory()->hasAddresses(3)->count(5)->create();
+        User::factory()->hasAddresses(1)->count(5)->create();
     }
 }

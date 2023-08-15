@@ -2,19 +2,12 @@
 
 namespace App\Http\Controllers\API;
 
-use Carbon\Carbon;
 use App\Models\User;
-use GuzzleHttp\Client;
-use Laravel\Passport\Bridge\Scope;
+use App\Events\UserLogin;
 use Illuminate\Http\Request;
-use Laravel\Passport\Passport;
 use Illuminate\Support\Facades\DB;
-use League\OAuth2\Server\CryptKey;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Http;
-use Laravel\Passport\Bridge\AccessToken;
 use App\Http\Requests\ManageUsersRequest;
 
 
@@ -37,64 +30,14 @@ class AuthController extends Controller
             ], 401);
         }
 
+        event(new UserLogin($user));
+
         $token = $user->createToken('access_token');
         $refreshToken = $user->createToken('refresh-token');
         DB::table('oauth_access_tokens')->where('user_id',$user->id)
         ->where('name','refresh-token')->update([
             'expires_at'=>now()->addHours(5)
         ]);
-
-        // $http = new Client;
-        // $response = $http->post('http://127.0.0.1:8000/oauth/token', [
-        //     'grant_type' => 'password',
-        //     'client_id' => '4',
-        //     'client_secret' => 'aBM6wQWaH8jb8o0rihMqhFzF4pWwaCaUMimmMHoK',
-        //     'username' => $validated['email'],
-        //     'password' => $validated['password'],
-        //     'scope' => '',
-        // ]);
-
-        // $result = json_decode($response->getBody(), true);
-        // if (!$response) {
-        //     return response()->json(['error' => 'Unauthorized'], 401);
-        // }
-        
-        // return response()->json($result);
-
-        // $client = DB::table('oauth_clients')
-        // ->where('password_client', true)
-        // ->get()[0];
-        // $data = [
-        //     'grant_type' => 'password',
-        //     'client_id' => $client->id,
-        //     'client_secret' => $client->secret,
-        //     'username' => $user->username,
-        //     'password' => 'what-is-your-password', // just leave whatever string
-        //     'scope' => '',
-        // ];
-        // $response = Request::create(url('/oauth/token'), 'POST', $data);
-        // return json_decode(app()->handle($response)->getContent());
-
-
-
-        // $token = new AccessToken($user->id);
-        // $token->setIdentifier(generateUniqueIdentifier());
-        // $token->setClient(new Client(2, null, null));
-        // $token->setExpiryDateTime(Carbon::now()->addDay());
-        // $token->addScope(new Scope('activity'));
-        // $privateKey = new CryptKey('file://'.storage_path('oauth-private.key'));
-
-        // $accessTokenRepository = new AccessTokenRepository(new TokenRepository, new Dispatcher);
-        // $accessTokenRepository->persistNewAccessToken($token);
-
-        // $jwtAccessToken = $token->convertToJWT($privateKey);
-        // $responseParams = [
-        //     'token_type'   => 'Bearer',
-        //     'expires_in'   => $expireDateTime - (new \DateTime())->getTimestamp(),
-        //     'access_token' => (string) $jwtAccessToken,
-        //     'user'         => $user->toArray()
-        // ];
-
 
 
         $response = [
@@ -142,7 +85,7 @@ class AuthController extends Controller
 
     public function reset(Request $request){
 
-        $this->refresh($request);
+        $this::refresh($request);
         
         $validated =$request->validate([
             'email' => 'required|email',
@@ -177,7 +120,7 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        $this->refresh($request);
+        $this::refresh($request);
         $user = $request->user();
         DB::table('oauth_access_tokens')->where('user_id',$user->id)->delete();
 
@@ -190,7 +133,7 @@ class AuthController extends Controller
 
 
 
-    public function refresh(Request $request)
+    public static function refresh(Request $request)
     {
         $user = $request->user();
         

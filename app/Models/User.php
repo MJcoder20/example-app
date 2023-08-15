@@ -62,21 +62,19 @@ class User extends Authenticatable
 
 
     //Accessors and Mutators
+    public function userAddresses(){
+        return Address::where('addressable_type','App\Models\User')
+                ->where('addressable_id',$this->id)->get();
+    }
 
-    public function setAddress($value){
-        if($this->getAddresses()==null){
-            Address::create($value);
-        }else{
-            $address=Address::where('addressable_id',$this->id);
-            $address->update($value);
-        }
+    public function setAddresses($value){
+        $this->attributes['Addresses'] = $value;
     
     }
 
     public function getAddresses()
     {
-       return Address::where('addressable_type','App\Models\User')
-                ->where('addressable_id',$this->id)->get();
+       return $this->Addresses;
     }
 
     public function setFullName($first,$last){

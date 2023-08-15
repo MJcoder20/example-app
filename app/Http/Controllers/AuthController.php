@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\User;
 use GuzzleHttp\Client;
-use Laravel\Passport\Bridge\Scope;
 use Illuminate\Http\Request;
+use Laravel\Passport\Client as OClient;
 use Laravel\Passport\Passport;
 use Illuminate\Support\Facades\DB;
+use Laravel\Passport\Bridge\Scope;
 use League\OAuth2\Server\CryptKey;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -23,6 +24,24 @@ use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 
 class AuthController extends Controller
 {
+
+    public function getTokenAndRefreshToken(OClient $oClient, $email, $password) { 
+        $oClient = OClient::where('password_client', 1)->first();
+        $http = new Client;
+        $response = $http->request('POST', 'http://127.0.0.1:8000/oauth/token', [
+            'form_params' => [
+                'grant_type' => 'password',
+                'client_id' => $oClient->id,
+                'client_secret' => $oClient->secret,
+                'username' => $email,
+                'password' => $password,
+                'scope' => '*',
+            ],
+        ]);
+        $result = json_decode((string) $response->getBody(), true);
+        return response()->json($result, 200);
+    }
+
 
     public function login(Request $request)
     {
@@ -39,14 +58,11 @@ class AuthController extends Controller
             ], 401);
         }
 
-        $token = $user->createToken('access_token');
-        $refreshToken = $user->createToken('refresh-token');
-        DB::table('oauth_access_tokens')->where('user_id',$user->id)
-        ->where('name','refresh-token')->update([
-            'expires_at'=>now()->addHours(5)
-        ]);
+        $oClient = OClient::where('password_client', 1)->first();
+        return $this->getTokenAndRefreshToken($oClient, $validated['email'], $validated['password']);
 
-        // $http = new Client;
+
+          // $http = new Client;
         // $response = $http->post('http://127.0.0.1:8000/oauth/token', [
         //     'grant_type' => 'password',
         //     'client_id' => '4',
@@ -99,15 +115,22 @@ class AuthController extends Controller
 
 
 
-        $response = [
-            'message' => 'User Logged In Successfully',
-            'user'=>$user,
-            'access_token'=>$token->accessToken,
-            'refresh_token'=>$refreshToken->accessToken,
-            'token_type' => 'Bearer',
-        ];
+    //     $token = $user->createToken('access_token');
+    //     $refreshToken = $user->createToken('refresh-token');
+    //     DB::table('oauth_access_tokens')->where('user_id',$user->id)
+    //     ->where('name','refresh-token')->update([
+    //         'expires_at'=>now()->addHours(5)
+    //     ]);
 
-       return response($response,200);
+    //     $response = [
+    //         'message' => 'User Logged In Successfully',
+    //         'user'=>$user,
+    //         'access_token'=>$token->accessToken,
+    //         'refresh_token'=>$refreshToken->accessToken,
+    //         'token_type' => 'Bearer',
+    //     ];
+
+    //    return response($response,200);
         
     }
 
