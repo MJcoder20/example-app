@@ -68,13 +68,13 @@ class User extends Authenticatable
     }
 
     public function setAddresses($value){
-        $this->attributes['Addresses'] = $value;
+        $this->attributes['addresses'] = $value;
     
     }
 
     public function getAddresses()
     {
-       return $this->Addresses;
+       return $this->addresses;
     }
 
     public function setFullName($first,$last){

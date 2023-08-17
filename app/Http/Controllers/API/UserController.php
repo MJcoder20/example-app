@@ -24,7 +24,7 @@ class UserController extends Controller
     {
         if(Auth::user()->is_admin==1){
 
-            $users = UserResource::collection(User::with('Addresses')->paginate(5));
+            $users = UserResource::collection(User::with('addresses')->paginate(5));
             return response()->apiPaginate($users);
 
         }else{
@@ -43,7 +43,7 @@ class UserController extends Controller
         
         if(Auth::user()->is_admin==1){
 
-            $user->setAddresses($user->userAddresses());
+            // $user->setAddresses($user->userAddresses());
             return response()->api(new UserResource($user));
     
         }else{

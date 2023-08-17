@@ -27,7 +27,7 @@ class UserResource extends JsonResource
             'username' => $this->username,
             'email' => $this->email,
             'full_name' => $this->full_name,
-            'Addresses' => AddressResource::collection($this->Addresses),
+            'Addresses' => AddressResource::collection($this->addresses),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
