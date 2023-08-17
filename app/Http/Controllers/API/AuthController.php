@@ -7,6 +7,7 @@ use App\Events\UserLogin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\ManageUsersRequest;
 
@@ -33,9 +34,9 @@ class AuthController extends Controller
         event(new UserLogin($user));
 
         $token = $user->createToken('access_token');
-        $refreshToken = $user->createToken('refresh-token');
+        $refreshToken = $user->createToken('refresh_token');
         DB::table('oauth_access_tokens')->where('user_id',$user->id)
-        ->where('name','refresh-token')->update([
+        ->where('name','refresh_token')->update([
             'expires_at'=>now()->addHours(5)
         ]);
 
@@ -62,9 +63,9 @@ class AuthController extends Controller
 
         $user = User::create($validated);
         $token = $user->createToken('access_token')->accessToken;
-        $refreshToken = $user->createToken('refresh-token')->accessToken;
+        $refreshToken = $user->createToken('refresh_token')->accessToken;
         DB::table('oauth_access_tokens')->where('user_id',$user->id)
-        ->where('name','refresh-token')->update([
+        ->where('name','refresh_token')->update([
             'expires_at'=>now()->addHours(5)
         ]);
 
@@ -144,7 +145,7 @@ class AuthController extends Controller
                 if(collect($token)->get('name')=='access_token'){
                     DB::table('oauth_access_tokens')->where('user_id',$user->id)->delete();
                     $user->createToken('access_token')->accessToken;
-
+                    
                 }else{
                     DB::table('oauth_access_tokens')->where('user_id',$user->id)->delete();
                     $user->createToken('refresh_token')->accessToken;
@@ -154,9 +155,9 @@ class AuthController extends Controller
         }
 
         DB::table('oauth_access_tokens')->where('user_id',$user->id)
-                    ->where('name','refresh-token')->update([
-                        'expires_at'=>now()->addHours(5)
-                    ]);
+            ->where('name','refresh_token')->update([
+                'expires_at'=>now()->addHours(5)
+            ]);
 
            
      

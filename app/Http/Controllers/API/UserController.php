@@ -42,6 +42,7 @@ class UserController extends Controller
     public function show(User $user){
         
         if(Auth::user()->is_admin==1){
+
             $user->setAddresses($user->userAddresses());
             return response()->api(new UserResource($user));
     
@@ -79,7 +80,7 @@ class UserController extends Controller
             Address::create($address);
      
 
-            // $this::SendWelcomeEmail($user);
+            SendWelcomeEmail($user);
             
             return response()->api(new UserResource($user));
 
