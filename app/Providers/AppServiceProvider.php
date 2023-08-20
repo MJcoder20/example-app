@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use Laravel\Sanctum\Sanctum;
 use App\Models\PurchaseOrder;
 use Illuminate\Support\Collection;
@@ -21,7 +22,21 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton(
+            'test1',
+            \App\Support\TestClass::class
+        );
+    
+        $this->app->bind(
+            'test2',
+            \App\Support\TestClass::class
+        );
+
+ 
+       
+        $this->app->bind(User::class, function ($app) {
+            return new User();
+        });
     }
 
     /**

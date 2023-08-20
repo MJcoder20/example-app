@@ -28,7 +28,7 @@ class AuthController extends Controller
     public function getTokenAndRefreshToken(OClient $oClient, $email, $password) { 
         $oClient = OClient::where('password_client', 1)->first();
         $http = new Client;
-        $response = $http->request('POST', 'http://127.0.0.1:8000/oauth/token', [
+        $response = $http->request('POST', 'http://127.0.0.1:8000/api/login/oauth/token', [
             'form_params' => [
                 'grant_type' => 'password',
                 'client_id' => $oClient->id,
@@ -58,8 +58,8 @@ class AuthController extends Controller
             ], 401);
         }
 
-        $oClient = OClient::where('password_client', 1)->first();
-        return $this->getTokenAndRefreshToken($oClient, $validated['email'], $validated['password']);
+        // $oClient = OClient::where('password_client', 1)->first();
+        // return $this->getTokenAndRefreshToken($oClient, $validated['email'], $validated['password']);
 
 
           // $http = new Client;
@@ -79,48 +79,22 @@ class AuthController extends Controller
         
         // return response()->json($result);
 
-        // $client = DB::table('oauth_clients')
-        // ->where('password_client', true)
-        // ->get()[0];
-        // $data = [
-        //     'grant_type' => 'password',
-        //     'client_id' => $client->id,
-        //     'client_secret' => $client->secret,
-        //     'username' => $user->username,
-        //     'password' => 'what-is-your-password', // just leave whatever string
-        //     'scope' => '',
-        // ];
-        // $response = Request::create(url('/oauth/token'), 'POST', $data);
-        // return json_decode(app()->handle($response)->getContent());
+        $oClient = OClient::where('password_client', 1)->first();
+        $http = new Client;
+        $response = $http->request('POST', 'http://127.0.0.1:8000/api/login/oauth/token', [
+            'form_params' => [
+                'grant_type' => 'password',
+                'client_id' => $oClient->id,
+                'client_secret' => $oClient->secret,
+                'username' => $user->email,
+                'password' => $user->password,
+                'scope' => '*',
+            ],
+        ]);
+        $result = json_decode((string) $response->getBody(), true);
+        return response()->json($result, 200);
 
 
-
-        // $token = new AccessToken($user->id);
-        // $token->setIdentifier(generateUniqueIdentifier());
-        // $token->setClient(new Client(2, null, null));
-        // $token->setExpiryDateTime(Carbon::now()->addDay());
-        // $token->addScope(new Scope('activity'));
-        // $privateKey = new CryptKey('file://'.storage_path('oauth-private.key'));
-
-        // $accessTokenRepository = new AccessTokenRepository(new TokenRepository, new Dispatcher);
-        // $accessTokenRepository->persistNewAccessToken($token);
-
-        // $jwtAccessToken = $token->convertToJWT($privateKey);
-        // $responseParams = [
-        //     'token_type'   => 'Bearer',
-        //     'expires_in'   => $expireDateTime - (new \DateTime())->getTimestamp(),
-        //     'access_token' => (string) $jwtAccessToken,
-        //     'user'         => $user->toArray()
-        // ];
-
-
-
-    //     $token = $user->createToken('access_token');
-    //     $refreshToken = $user->createToken('refresh-token');
-    //     DB::table('oauth_access_tokens')->where('user_id',$user->id)
-    //     ->where('name','refresh-token')->update([
-    //         'expires_at'=>now()->addHours(5)
-    //     ]);
 
     //     $response = [
     //         'message' => 'User Logged In Successfully',

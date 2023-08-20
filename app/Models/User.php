@@ -17,7 +17,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-
    
     protected $fillable = ['username','first_name','last_name','email',
     'password','is_admin','is_active'];
@@ -49,7 +48,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    
+
+    public function getUser($id)
+    {
+        return User::find($id);
+    }
+
+    public function createUser(array $data)
+    {
+        $user = User::create($data);
+        return $user;
+    }
+
+
     public function addresses(): MorphMany
     {
         return $this->morphMany(Address::class, 'addressable');

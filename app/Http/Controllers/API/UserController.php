@@ -19,6 +19,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class UserController extends Controller
 {
     use SoftDeletes;
+
+    protected $user;
+
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+    }
+
     
     public function index()
     {
@@ -42,8 +50,8 @@ class UserController extends Controller
     public function show(User $user){
         
         if(Auth::user()->is_admin==1){
-
-            // $user->setAddresses($user->userAddresses());
+            $user = $this->user->getUser($user->id);
+            // return response()->api(app('user')->get($user->id));
             return response()->api(new UserResource($user));
     
         }else{
