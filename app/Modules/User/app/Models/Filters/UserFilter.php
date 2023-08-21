@@ -1,6 +1,7 @@
-<?php 
+<?php
 
-namespace App\Models\Filters;
+namespace App\Modules\User\App\Models\Filters;
+
 
 use Illuminate\Support\Facades\DB;
 
@@ -25,6 +26,9 @@ class UserFilter {
         }
 
         return $query;
-
     }
+    
 }
+
+
+?>

@@ -1,12 +1,12 @@
 <?php
 
-namespace Database\Seeders;
+namespace App\Modules\User\Database\Seeders;
 
-use App\Models\ManageUsers;
+use App\Modules\User\App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-class ManageUsersSeeder extends Seeder
+
+class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,7 +15,7 @@ class ManageUsersSeeder extends Seeder
      */
     public function run()
     {
-        ManageUsers::factory()->create([
+        User::factory()->create([
             'username'=>'mjcoder',
             'email'=>'testj9369@gmail.com',
             'first_name'=>'test',
@@ -25,6 +25,6 @@ class ManageUsersSeeder extends Seeder
             'password'=>bcrypt('$M1a2r3a4$')
         ]);
 
-        ManageUsers::factory()->hasAddresses(3)->count(5)->create();
+        User::factory()->hasAddresses(1)->count(5)->create();
     }
 }

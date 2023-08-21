@@ -88,11 +88,6 @@ Route::get('/items/lowQuantityMail',[ItemController::class,'sendMail'])->middlew
 Route::post('cart/purchases',[ItemController::class,'purchase'])->middleware('auth');
 
 
-// Route::get('/user', function(){
-//     $user = app('user');
-//     $user->setUser(User::find(9));
-//     return new UserResource($user->getUser());
-// });
 // Auth::routes();
 
 // Route::get('/forgot-password', function () {
