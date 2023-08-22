@@ -31,8 +31,7 @@ Route::group(['middleware' => 'auth:api'],function() {
     Route::post('/logout',[AuthController::class, 'logout']);
     Route::post('/reset', [AuthController::class, 'reset']);
     Route::post('/refresh', [AuthController::class,'refresh']);
-    Route::resource('users', UserController::class);
-    // Route::apiResource('users','UserController');
+    // Route::resource('users', UserController::class);
 
 });
 

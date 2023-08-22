@@ -1,22 +1,13 @@
 <?php
 
-use App\Models\User;
-use App\Models\ManageUsers;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Laravel\Passport\Passport;
-use App\Http\Resources\UserResource;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Password;
 use App\Http\Controllers\BrandController;
 use Illuminate\Auth\Events\PasswordReset;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\InventoryController;
-use App\Http\Controllers\ManageUsersController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -29,14 +20,6 @@ use App\Http\Controllers\ManageUsersController;
 |
 */
 
-//User routes
-Route::get('/',[UserController::class, 'index'])->name('index')->middleware('auth');
-Route::get('/users/create',[UserController::class, 'create'])->middleware('auth');
-Route::post('/',[UserController::class, 'store'])->middleware('auth');
-Route::get('/users/{user}/edit',[UserController::class, 'edit'])->middleware('auth');
-Route::put('/users/{user}',[UserController::class, 'update'])->middleware('auth');
-Route::delete('/users/{user}',[UserController::class, 'destroy'])->middleware('auth');
-// Route::post('/users/search',[UserController::class, 'search'])->middleware('auth');
 
 
 // Vendor routes

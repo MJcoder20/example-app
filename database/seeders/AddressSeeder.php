@@ -3,11 +3,11 @@
 namespace Database\Seeders;
 
 use App\Models\City;
-use App\Models\User;
 use App\Models\Vendor;
 use App\Models\Address;
 use App\Models\ManageUsers;
 use Illuminate\Database\Seeder;
+use App\Modules\User\App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class AddressSeeder extends Seeder

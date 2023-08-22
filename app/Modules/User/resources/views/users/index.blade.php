@@ -5,7 +5,7 @@
 <div class="container">
   
     <div class="py-5 text-center">
-    @if(Auth::user()->is_admin==1)
+    {{-- @if(Auth::user()->is_admin==1) --}}
     <h1 style="font-size:40px;font-weight:bold">Users List</h1>
     <br><br>
     <div class="d-flex flex-column">     
@@ -43,11 +43,11 @@
         @endforeach
         </ul>
     </div>
-    {{ $users->links() }}
-    @else
-    <h1>You're not an admin</h1>
+    {{-- {{ $users->links() }} --}}
+    {{-- @else
+    <h1>You're not an admin</h1> --}}
 </div>
 </div>
-    @endif
+    {{-- @endif --}}
     
 @endsection

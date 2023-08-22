@@ -5,12 +5,13 @@ namespace App\Modules\User\App\Http\Controllers;
 use App\Models\Address;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
 use App\Modules\User\App\Models\User;
 use App\Http\Controllers\API\AuthController;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Modules\User\App\Http\Requests\UserRequest;
+use App\Modules\User\App\Http\Resources\UserResource;
 
 class UserController extends Controller
 {
@@ -23,14 +24,13 @@ class UserController extends Controller
 
             $users = UserResource::collection(User::with('addresses')->paginate(5));
             return response()->apiPaginate($users);
+            // return view('User::users.index',['users'=>User::all()]);
 
         }else{
             return response()->msg([
                 'message' => "You're not an admin"
             ]);
         }
-
-       
          
     }
 
@@ -53,7 +53,7 @@ class UserController extends Controller
     public function store(UserRequest $request){
 
         if(Auth::user()->is_admin==1){
-            AuthController::refresh($request);
+            // AuthController::refresh($request);
             
             $fields = $request->validated();
             
@@ -71,7 +71,7 @@ class UserController extends Controller
             SendWelcomeEmail($user);
             
             return response()->api(new UserResource($user));
-            
+
         }else{
 
             return response()->msg([
@@ -86,7 +86,7 @@ class UserController extends Controller
     public function update(Request $request, User $user){
 
         if(Auth::user()->is_admin==1){
-            AuthController::refresh($request);
+            // AuthController::refresh($request);
 
             $fields= $request->validate([
                 'username'=>'required|min:5',
@@ -127,7 +127,7 @@ class UserController extends Controller
     public function destroy(User $user){
 
         if(Auth::user()->is_admin==1){
-            AuthController::refresh(request());
+            // AuthController::refresh(request());
 
             Address::where('addressable_id',$user->id)->delete();
             $user->delete();

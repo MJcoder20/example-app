@@ -2,16 +2,12 @@
 
 namespace App\Providers;
 
-use App\Models\User;
-use Laravel\Sanctum\Sanctum;
+use App\Modules\User\App\Models\User;
 use App\Models\PurchaseOrder;
-use Illuminate\Support\Collection;
 use App\Observers\PurchaseObserver;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Response;
-use App\Models\Sanctum\PersonalAccessToken;
-use Illuminate\Pagination\LengthAwarePaginator;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -37,7 +33,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(User::class, function ($app) {
             return new User();
         });
-        
+
     }
 
     /**

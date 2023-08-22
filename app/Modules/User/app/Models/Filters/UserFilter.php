@@ -2,7 +2,6 @@
 
 namespace App\Modules\User\App\Models\Filters;
 
-
 use Illuminate\Support\Facades\DB;
 
 
