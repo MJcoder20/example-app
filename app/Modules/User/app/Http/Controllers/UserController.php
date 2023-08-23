@@ -66,7 +66,7 @@ class UserController extends Controller
             $address['phone']=$request->phone;
             $address['city_id']=$request->city_id;
             Address::create($address); 
-            $user->setAddresses($address); 
+            // $user->setAddresses($address); 
 
             SendWelcomeEmail($user);
             

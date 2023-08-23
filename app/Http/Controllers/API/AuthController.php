@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Modules\User\App\Models\User;
 use App\Events\UserLogin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Modules\User\App\Models\User;
 use App\Http\Requests\ManageUsersRequest;
+use App\Modules\User\App\Http\Requests\UserRequest;
 
 
 
@@ -40,7 +41,6 @@ class AuthController extends Controller
             'expires_at'=>now()->addHours(5)
         ]);
 
-
         $response = [
             'message' => 'User Logged In Successfully',
             'user'=>$user,
@@ -56,7 +56,7 @@ class AuthController extends Controller
 
 
 
-    public function register(ManageUsersRequest $request)
+    public function register(UserRequest $request)
     {
         $validated = $request->validated();
         $validated['password']= Hash::make($validated['password']);
