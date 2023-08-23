@@ -53,7 +53,6 @@ class UserController extends Controller
     public function store(UserRequest $request){
 
         if(Auth::user()->is_admin==1){
-            // AuthController::refresh($request);
             
             $fields = $request->validated();
             
@@ -61,12 +60,13 @@ class UserController extends Controller
             $user = User::create($fields);
 
             $address['addressable_id']=$user->id;
-            $address['addressable_type']='App\Models\User';
+            $address['addressable_type']='App\Modules\User\App\Models\User';
             $address['district']=$request->district;
             $address['street']=$request->street;
             $address['phone']=$request->phone;
             $address['city_id']=$request->city_id;
-            Address::create($address);  
+            Address::create($address); 
+            $user->setAddresses($address); 
 
             SendWelcomeEmail($user);
             
@@ -86,7 +86,6 @@ class UserController extends Controller
     public function update(Request $request, User $user){
 
         if(Auth::user()->is_admin==1){
-            // AuthController::refresh($request);
 
             $fields= $request->validate([
                 'username'=>'required|min:5',
@@ -103,7 +102,7 @@ class UserController extends Controller
             $user->update($fields);
         
             $address['addressable_id']=$user->id;
-            $address['addressable_type']='App\Models\User';
+            $address['addressable_type']='App\Modules\User\App\Models\User';
             $address['district']=$request->district;
             $address['street']=$request->street;
             $address['phone']=$request->phone;
@@ -127,7 +126,6 @@ class UserController extends Controller
     public function destroy(User $user){
 
         if(Auth::user()->is_admin==1){
-            // AuthController::refresh(request());
 
             Address::where('addressable_id',$user->id)->delete();
             $user->delete();

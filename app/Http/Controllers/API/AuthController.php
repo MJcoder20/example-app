@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Models\User;
+use App\Modules\User\App\Models\User;
 use App\Events\UserLogin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;

@@ -25,8 +25,8 @@ class UserRequest extends FormRequest
     {
         return [
 
-            'username'=>'required|unique:manage_users|min:5',
-            'email'=>'required|email|unique:manage_users',
+            'username'=>'required|unique:users|min:5',
+            'email'=>'required|email|unique:users',
             'first_name'=>'min:3|max:15',
             'last_name'=>'min:3|max:15', 
             'password'=>'required|same:confirm_password|min:9|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/|regex:/[@$!%*#?&]/',

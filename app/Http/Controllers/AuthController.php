@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
-use App\Models\User;
+use App\Modules\User\App\Models\User;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Laravel\Passport\Client as OClient;

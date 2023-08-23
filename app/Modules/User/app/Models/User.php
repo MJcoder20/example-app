@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Modules\User\Database\Factories\UserFactory;
 
 class User extends Authenticatable
 {
@@ -72,7 +73,7 @@ class User extends Authenticatable
 
     //Accessors and Mutators
     public function userAddresses(){
-        return Address::where('addressable_type','App\Models\User')
+        return Address::where('addressable_type','App\Modules\User\App\Models\User')
                 ->where('addressable_id',$this->id)->get();
     }
 
@@ -92,6 +93,12 @@ class User extends Authenticatable
 
     public function getFullName(){
         return $this->full_name;
+    }
+
+
+    protected static function newFactory()
+    {
+        return UserFactory::new();
     }
 
 
