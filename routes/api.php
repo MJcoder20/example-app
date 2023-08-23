@@ -3,6 +3,7 @@
 // use App\Http\Controllers\AuthController;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Request;
 use App\Http\Controllers\API\AuthController;
 
 
@@ -17,9 +18,9 @@ use App\Http\Controllers\API\AuthController;
 |
 */
 
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
+});
 
 
 Route::post('/register', [AuthController::class,'register']);
