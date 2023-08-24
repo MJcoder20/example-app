@@ -1,6 +1,5 @@
 <?php
 
-// use App\Http\Controllers\AuthController;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Request;
@@ -26,11 +25,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/register', [AuthController::class,'register']);
 Route::post('/login', [AuthController::class,'login']);
 
+
 Route::group(['middleware' => 'auth:api'],function() {  
     Route::post('/logout',[AuthController::class, 'logout']);
     Route::post('/reset', [AuthController::class, 'reset']);
     Route::post('/refresh', [AuthController::class,'refresh']);
-  
 });
 
 

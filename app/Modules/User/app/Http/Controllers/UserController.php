@@ -6,9 +6,7 @@ use App\Models\Address;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\View;
 use App\Modules\User\App\Models\User;
-use App\Http\Controllers\API\AuthController;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Modules\User\App\Http\Requests\UserRequest;
 use App\Modules\User\App\Http\Resources\UserResource;
@@ -39,7 +37,6 @@ class UserController extends Controller
     public function show(User $user){
         
         if(Auth::user()->is_admin==1){
-            // $user = $this->user->getUser($user->id);
             
             return response()->api(new UserResource($user));
         }else{
@@ -66,7 +63,6 @@ class UserController extends Controller
             $address['phone']=$request->phone;
             $address['city_id']=$request->city_id;
             Address::create($address); 
-            // $user->setAddresses($address); 
 
             SendWelcomeEmail($user);
             

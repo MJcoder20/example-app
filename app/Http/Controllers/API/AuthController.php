@@ -6,10 +6,9 @@ use App\Events\UserLogin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Modules\User\App\Models\User;
-use App\Http\Requests\ManageUsersRequest;
+use Laravel\Passport\Client as OClient;
 use App\Modules\User\App\Http\Requests\UserRequest;
 
 
@@ -34,22 +33,19 @@ class AuthController extends Controller
 
         event(new UserLogin($user));
 
-        $token = $user->createToken('access_token');
-        $refreshToken = $user->createToken('refresh_token');
-        DB::table('oauth_access_tokens')->where('user_id',$user->id)
-        ->where('name','refresh_token')->update([
-            'expires_at'=>now()->addHours(5)
-        ]);
-
-        $response = [
-            'message' => 'User Logged In Successfully',
-            'user'=>$user,
-            'access_token'=>$token->accessToken,
-            'refresh_token'=>$refreshToken->accessToken,
-            'token_type' => 'Bearer',
+        $oClient = OClient::where('password_client', 1)->first();
+        $params = [
+        
+            'grant_type' => 'password',
+            'client_secret'   => $oClient->secret,
+            'client_id'   => $oClient->id,
+            'username' => $validated['email'],
+            'password' => $validated['password'],
         ];
 
-       return response($response,200);
+        $request = Request::create('/oauth/token', 'POST', $params);
+
+        return app()->handle($request); 
         
     }
 
@@ -62,22 +58,20 @@ class AuthController extends Controller
         $validated['password']= Hash::make($validated['password']);
 
         $user = User::create($validated);
-        $token = $user->createToken('access_token')->accessToken;
-        $refreshToken = $user->createToken('refresh_token')->accessToken;
-        DB::table('oauth_access_tokens')->where('user_id',$user->id)
-        ->where('name','refresh_token')->update([
-            'expires_at'=>now()->addHours(5)
-        ]);
 
-        $response = [
-            'message' => 'User created Successfully',
-            'user'=>$user,
-            'access_token' => $token,
-            'refresh_token'=>$refreshToken,
-            'token_type' => 'Bearer',
+        $oClient = OClient::where('password_client', 1)->first();
+        $params = [
+         
+            'grant_type' => 'password',
+            'client_secret'   => $oClient->secret,
+            'client_id'   => $oClient->id,
+            'username' => $user->email,
+            'password' => $user->password,
         ];
-
-        return response($response,201);
+    
+        $request = Request::create('/oauth/token', 'POST', $params);
+    
+        return app()->handle($request); 
     
     }
 
@@ -85,8 +79,6 @@ class AuthController extends Controller
     
 
     public function reset(Request $request){
-
-        $this::refresh($request);
         
         $validated =$request->validate([
             'email' => 'required|email',
@@ -121,9 +113,10 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        $this::refresh($request);
         $user = $request->user();
         DB::table('oauth_access_tokens')->where('user_id',$user->id)->delete();
+        $access_token = DB::table('oauth_access_tokens')->where('user_id',$user->id)->where('revoked',false)->first();
+        DB::table('oauth_refresh_tokens')->where('access_token_id',collect($access_token)->get('id'))->delete();
 
         return response()->json([
             'message' => 'Successfully logged out',
@@ -138,33 +131,41 @@ class AuthController extends Controller
     {
         $user = $request->user();
         
-        $tokens = DB::table('oauth_access_tokens')->where('user_id',$user->id)->get();
-        
-        foreach($tokens as $token){
-            if(collect($token)->get('expires_at') < now()){
-                if(collect($token)->get('name')=='access_token'){
-                    DB::table('oauth_access_tokens')->where('user_id',$user->id)->delete();
-                    $user->createToken('access_token')->accessToken;
-                    
-                }else{
-                    DB::table('oauth_access_tokens')->where('user_id',$user->id)->delete();
-                    $user->createToken('refresh_token')->accessToken;
-                    
-                }
-            }  
+        $access_token = DB::table('oauth_access_tokens')->where('user_id',$user->id)->where('revoked',false)->first();
+        $refresh_token = DB::table('oauth_refresh_tokens')->where('access_token_id',collect($access_token)->get('id'))
+        ->where('revoked',false)->first();
+
+        if(collect($access_token)->get('expires_at') < now()){
+            if(collect($refresh_token)->get('expires_at') < now()){
+                DB::table('oauth_access_tokens')->where('user_id',$user->id)->delete();
+                DB::table('oauth_refresh_tokens')->where('access_token_id',collect($access_token)->get('id'))->delete();
+                $oClient = OClient::where('password_client', 1)->first();
+                $params = [
+                
+                    'grant_type' => 'password',
+                    'client_secret'   => $oClient->secret,
+                    'client_id'   => $oClient->id,
+                    'username' => $user->email,
+                    'password' => $user->password,
+                ];
+            
+                $request = Request::create('/oauth/token', 'POST', $params);
+                return app()->handle($request); 
+            }else{
+
+                DB::table('oauth_access_tokens')->where('user_id',$user->id)->delete();
+                $access_token = $user->createToken('access_token');
+                DB::table('oauth_refresh_tokens')->where('id',collect($refresh_token)->get('id'))
+                ->update(['access_token_id'=>$access_token]);
+            }
         }
-
-        DB::table('oauth_access_tokens')->where('user_id',$user->id)
-            ->where('name','refresh_token')->update([
-                'expires_at'=>now()->addHours(5)
-            ]);
-
-           
      
-        // return response()->json([
-        //     'user' => $user,
-        //     'tokens'=>$tokens,
-        // ]);
+        return response()->json([
+            'user' => $user,
+            'access_token'=>$access_token,
+            'refresh_token'=>$refresh_token
+        ]);
+        
         
         
     }
