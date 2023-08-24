@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
 use Illuminate\Support\Facades\Password;
@@ -117,3 +118,8 @@ Route::post('cart/purchases',[ItemController::class,'purchase'])->middleware('au
 //                 : back()->withErrors(['email' => [__($status)]]);
 // })->middleware('guest')->name('password.update');
 
+
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

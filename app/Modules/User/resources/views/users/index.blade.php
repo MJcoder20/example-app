@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-   
+{{-- <example-component> --}}
 <div class="container">
   
     <div class="py-5 text-center">
@@ -49,5 +49,5 @@
 </div>
 </div>
     {{-- @endif --}}
-    
+{{-- </example-component> --}}
 @endsection

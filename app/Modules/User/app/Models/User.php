@@ -18,7 +18,7 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
    
     protected $fillable = ['username','first_name','last_name','email',
-    'password','is_admin','is_active'];
+    'password','is_admin','is_active','api_token'];
 
     public $timestamps = true;
 

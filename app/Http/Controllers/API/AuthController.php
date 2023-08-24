@@ -44,6 +44,9 @@ class AuthController extends Controller
         ];
 
         $request = Request::create('/oauth/token', 'POST', $params);
+        $access_token = DB::table('oauth_access_tokens')->where('user_id',$user->id)->where('revoked',false)->first();
+        $user->api_token = $access_token->id;
+        $user->save();
 
         return app()->handle($request); 
         
@@ -70,6 +73,9 @@ class AuthController extends Controller
         ];
     
         $request = Request::create('/oauth/token', 'POST', $params);
+        $access_token = DB::table('oauth_access_tokens')->where('user_id',$user->id)->where('revoked',false)->first();
+        $user->api_token = $access_token->id;
+        $user->save();
     
         return app()->handle($request); 
     
@@ -93,17 +99,18 @@ class AuthController extends Controller
             ], 401);
         }
 
-        $token = $user->createToken('access_token')->accessToken;
+        // $token = $user->createToken('access_token')->accessToken;
+        $access_token = DB::table('oauth_access_tokens')->where('user_id',$user->id)->where('revoked',false)->first();
 
         $user->password = Hash::make($validated['password']);
         $user->save();
 
-        DB::insert('insert into password_resets (email, token, created_at) values (?, ?, ?)', [$user->email,$token, now()]);
+        DB::insert('insert into password_resets (email, token, created_at) values (?, ?, ?)', [$user->email,$user->api_token, now()]);
 
         return response()->json([
             'message' => 'User password reset Successfully',
             'user'=>$user,
-            'access_token' => $token,
+            'access_token' => $access_token,
             'token_type' => 'Bearer',
         ],200);
     }
@@ -114,10 +121,12 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         $user = $request->user();
-        DB::table('oauth_access_tokens')->where('user_id',$user->id)->delete();
-        $access_token = DB::table('oauth_access_tokens')->where('user_id',$user->id)->where('revoked',false)->first();
+        $access_token = DB::table('oauth_access_tokens')->where('user_id',$user->id)->first();
         DB::table('oauth_refresh_tokens')->where('access_token_id',collect($access_token)->get('id'))->delete();
-
+        DB::table('oauth_access_tokens')->where('user_id',$user->id)->delete();
+        $user->api_token = null;
+        $user->save();
+        
         return response()->json([
             'message' => 'Successfully logged out',
         ]);
@@ -160,6 +169,10 @@ class AuthController extends Controller
             }
         }
      
+        $access_token = DB::table('oauth_access_tokens')->where('user_id',$user->id)->where('revoked',false)->first();
+        $user->api_token = $access_token->id;
+        $user->save();
+
         return response()->json([
             'user' => $user,
             'access_token'=>$access_token,

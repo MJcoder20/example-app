@@ -22,8 +22,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-Route::post('/register', [AuthController::class,'register']);
-Route::post('/login', [AuthController::class,'login']);
+// Route::post('/register', [AuthController::class,'register']);
+// Route::post('/login', [AuthController::class,'login']);
+Route::group(['middleware' => ['cors', 'json.response']], function () {
+
+    Route::post('/login', [AuthController::class,'login']);
+    Route::post('/register', [AuthController::class,'register']);
+
+});
 
 
 Route::group(['middleware' => 'auth:api'],function() {  
