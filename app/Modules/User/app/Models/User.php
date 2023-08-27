@@ -3,20 +3,24 @@
 namespace App\Modules\User\App\Models;
 
 use App\Models\Address;
-use App\Modules\User\App\Models\Filters\UserFilter;
+use Laravel\Scout\Searchable;
 use Laravel\Passport\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
+use Modules\User\Database\Factories\UserFactory;
+use App\Modules\User\App\Models\Filters\UserFilter;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Modules\User\Database\Factories\UserFactory;
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-   
+    use HasRoles;
+    use Searchable;
+
     protected $fillable = ['username','first_name','last_name','email',
     'password','is_admin','is_active','api_token'];
 
@@ -47,6 +51,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    
 
     public function getUser($id)
     {

@@ -4,21 +4,25 @@ namespace App\Modules\User\App\Http\Controllers;
 
 use App\Models\Address;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Modules\User\App\Models\User;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Modules\User\App\Http\Requests\UserRequest;
 use App\Modules\User\App\Http\Resources\UserResource;
+use Session;
 
 class UserController extends Controller
 {
     use SoftDeletes;
 
-    
+
     public function index(){
 
         if(Auth::user()->is_admin==1){
+        // if(Auth::user()->hasRole('admin')){
 
             $users = UserResource::collection(User::with('addresses')->paginate(5));
             return response()->apiPaginate($users);
@@ -36,8 +40,7 @@ class UserController extends Controller
 
     public function show(User $user){
         
-        if(Auth::user()->is_admin==1){
-            
+        if(Auth::user()->is_admin==1){     
             return response()->api(new UserResource($user));
         }else{
             return response()->msg([
@@ -45,16 +48,28 @@ class UserController extends Controller
             ]);
         }
     }
+
+
+    public function search(Request $request){
+        return User::search($request->input('search'))->withTrashed()->paginate(5);
+    }
    
    
     public function store(UserRequest $request){
 
         if(Auth::user()->is_admin==1){
+            // if(Auth::user()->hasRole('admin')){
             
             $fields = $request->validated();
             
             $fields['password']=bcrypt($fields['password']);
             $user = User::create($fields);
+            // if($user->is_admin==1){
+            //     $user->assignRole('admin');
+            // }else{
+            //     $user->assignRole('user');
+            // }
+            
 
             $address['addressable_id']=$user->id;
             $address['addressable_type']='App\Modules\User\App\Models\User';

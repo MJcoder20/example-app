@@ -120,6 +120,6 @@ Route::post('cart/purchases',[ItemController::class,'purchase'])->middleware('au
 
 
 
-Auth::routes();
+// Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
