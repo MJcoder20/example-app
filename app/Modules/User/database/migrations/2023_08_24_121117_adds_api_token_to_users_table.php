@@ -15,6 +15,8 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('api_token', 1000)->unique()->nullable();
+            $table->string('provider_id')->nullable();
+            $table->string('avatar')->nullable();
         });
     }
 

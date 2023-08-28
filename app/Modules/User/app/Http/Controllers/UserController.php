@@ -6,10 +6,13 @@ use Session;
 use App\Models\Address;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Modules\User\App\Models\User;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Redis;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Modules\User\App\Http\Requests\UserRequest;
@@ -24,8 +27,20 @@ class UserController extends Controller
 
         if(Auth::user()->is_admin==1){
         // if(Auth::user()->hasRole('admin')){
-            
-            $users = UserResource::collection(User::with('addresses')->paginate(5));
+
+            $redis = Redis::connection();
+            if ($redis) {
+                echo 'connection done';
+            } else {
+                echo 'connection not done';
+            }
+
+            $users = Cache::remember('all_users', 30, function () {
+                return UserResource::collection(User::with('addresses')->paginate(5));
+            });
+            $users = Cache::get('all_users');
+
+            // $users = UserResource::collection(User::with('addresses')->paginate(5));
             return response()->apiPaginate($users);
             // return view('User::users.index',['users'=>User::all()]);
 
@@ -51,11 +66,13 @@ class UserController extends Controller
     }
 
 
+
     public function search(Request $request){
         // return User::search($request->input('search'))->withTrashed()->paginate(5);
         return User::search($request->input('search'))->paginate(5);
     }
    
+
    
     public function store(UserRequest $request){
 
