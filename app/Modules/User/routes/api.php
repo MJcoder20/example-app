@@ -7,7 +7,8 @@ use App\Modules\User\App\Http\Controllers\UserController;
 Route::group(['middleware' => 'auth:api'],function() {  
  
     Route::resource('users', UserController::class);
-
+    Route::post('/search', [UserController::class, 'search']);
+    
 });
 
 ?>

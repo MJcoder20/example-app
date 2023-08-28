@@ -2,7 +2,9 @@
 
 namespace App\Modules\User\App\Http\Controllers;
 
+use Session;
 use App\Models\Address;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
@@ -12,18 +14,17 @@ use Spatie\Permission\Models\Permission;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Modules\User\App\Http\Requests\UserRequest;
 use App\Modules\User\App\Http\Resources\UserResource;
-use Session;
 
 class UserController extends Controller
 {
     use SoftDeletes;
 
 
-    public function index(){
+    public function index(Request $request){
 
         if(Auth::user()->is_admin==1){
         // if(Auth::user()->hasRole('admin')){
-
+            
             $users = UserResource::collection(User::with('addresses')->paginate(5));
             return response()->apiPaginate($users);
             // return view('User::users.index',['users'=>User::all()]);
@@ -51,7 +52,8 @@ class UserController extends Controller
 
 
     public function search(Request $request){
-        return User::search($request->input('search'))->withTrashed()->paginate(5);
+        // return User::search($request->input('search'))->withTrashed()->paginate(5);
+        return User::search($request->input('search'))->paginate(5);
     }
    
    
@@ -69,7 +71,8 @@ class UserController extends Controller
             // }else{
             //     $user->assignRole('user');
             // }
-            
+            $user->api_token = Str::rand(80);
+            $user->save();
 
             $address['addressable_id']=$user->id;
             $address['addressable_type']='App\Modules\User\App\Models\User';
