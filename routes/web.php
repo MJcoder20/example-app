@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Password;
 use App\Http\Controllers\BrandController;
 use Illuminate\Auth\Events\PasswordReset;
 use App\Http\Controllers\VendorController;
+use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\InventoryController;
 
 
@@ -120,6 +121,14 @@ Route::post('cart/purchases',[ItemController::class,'purchase'])->middleware('au
 
 
 
-// Auth::routes();
+Auth::routes();
+
+ //Facebook
+ Route::get('/login/facebook', [AuthController::class, 'redirectToFacebook'])->name('login.facebook');
+ Route::get('/login/facebook/callback', [AuthController::class, 'handleFacebookCallback']);
+ //Github
+ Route::get('/login/github', [AuthController::class, 'redirectToGithub'])->name('login.github');
+ Route::get('/login/github/callback', [AuthController::class, 'handleGithubCallback']);
+
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Events\UserLogin;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -19,31 +20,36 @@ class AuthController extends Controller
 {
 
     protected function _registerOrLoginUser($data){
-        $user = User::where('email',$data->email)->first();
-          if(!$user){
-             $user = new User();
-             $user->name = $data->name;
-             $user->email = $data->email;
-             $user->provider_id = $data->id;
-             $user->avatar = $data->avatar;
-             $user->save();
-          }
-        Auth::login($user);
+        // $user = User::where('email',$data->email)->first();
+        //   if(!$user){
+        //      $user = new User();
+        //      $user->name = $data->name;
+        //      $user->username = $data->username;
+        //      $user->email = $data->email;
+        //      $user->provider_id = $data->id;
+        //      $user->avatar = $data->avatar;
+        //      $user->save();
+        //   }
+            // Auth::login($user);
+
+            $user = User::where('email',$data->email)->first();
+            if(!$user){
+                $user = new User();
+                $user->full_name = $data->name;
+                $name = explode(' ',$data->name);
+                $user->first_name = $name[0];
+                $user->last_name = $name[1];
+                $user->username = $data->username;
+                $user->email = $data->email;
+                $user->provider_id = $data->id;
+                $user->avatar = $data->avatar;
+                $user->save();
+            }
+            // $this->login($user);
+            Auth::login($user);
+           
     }
 
-    //Google Login
-    public function redirectToGoogle(){
-        return Socialite::driver('google')->stateless()->redirect();
-    }
-    
-    //Google callback  
-    public function handleGoogleCallback(){
-    
-        $user = Socialite::driver('google')->stateless()->user();
-        
-        $this->_registerorLoginUser($user);
-        return redirect('/');
-    }
     
     //Facebook Login
     public function redirectToFacebook(){
@@ -68,7 +74,7 @@ class AuthController extends Controller
     public function handleGithubCallback(){
     
         $user = Socialite::driver('github')->stateless()->user();
-        
+       
         $this->_registerorLoginUser($user);
         return redirect('/');
     }

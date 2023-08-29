@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Modules\User\App\Http\Controllers\UserController;
 
 
-// Route::get('/',[UserController::class, 'index'])->name('index');
+Route::get('/',[UserController::class, 'index'])->name('index');
 // Route::get('/users/create',[UserController::class, 'create'])->middleware('auth');
 // Route::post('/',[UserController::class, 'store'])->middleware('auth');
 // Route::get('/users/{user}/edit',[UserController::class, 'edit'])->middleware('auth');

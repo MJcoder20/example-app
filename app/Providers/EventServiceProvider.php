@@ -24,7 +24,12 @@ class EventServiceProvider extends ServiceProvider
         ],
         UserLogin::class=>[
             UserLoginNotification::class,
-        ]
+        ],
+        \SocialiteProviders\Manager\SocialiteWasCalled::class => [
+            
+            \SocialiteProviders\GitHub\GitHubExtendSocialite::class.'@handle',
+            \SocialiteProviders\Facebook\FacebookExtendSocialite::class.'@handle',
+        ],
     ];
 
     /**

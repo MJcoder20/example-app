@@ -185,7 +185,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
-
+        \SocialiteProviders\Manager\ServiceProvider::class,
         /*
          * Package Service Providers...
          */

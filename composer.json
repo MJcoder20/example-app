@@ -18,6 +18,8 @@
         "laravelcollective/html": "^6.4",
         "league/flysystem-ftp": "^3.0",
         "predis/predis": "^2.2",
+        "socialiteproviders/facebook": "^4.1",
+        "socialiteproviders/github": "^4.1",
         "spatie/laravel-enum": "^3.0",
         "spatie/laravel-permission": "^5.10",
         "symfony/psr-http-message-bridge": "^2.3"

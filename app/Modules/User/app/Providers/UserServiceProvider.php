@@ -2,6 +2,7 @@
 
 namespace App\Modules\User\App\Providers;
 
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,7 +26,7 @@ class UserServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(Router $router)
     {
         $modulePath = base_path() . '/App/Modules/User';
 
@@ -47,6 +48,11 @@ class UserServiceProvider extends ServiceProvider
         // $this->loadRoutesFrom(__DIR__.'../../routes/web.php');
         $this->loadMigrationsFrom($modulePath .'/database/migrations');
         $this->loadViewsFrom($modulePath .'/resources/views', 'User');
+
+        // $kernel = $this->app->make('Illuminate\Contracts\Http\Kernel');
+        // $kernel->pushMiddleware('\App\Modules\User\App\Http\Middleware\Admin');
+        $router->aliasMiddleware('Admin', \App\Modules\User\App\Http\Middleware\Admin::class);
+
     }
 
    
