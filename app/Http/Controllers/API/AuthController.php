@@ -108,8 +108,7 @@ class AuthController extends Controller
         ];
 
         $request = Request::create('/oauth/token', 'POST', $params);
-        $access_token = DB::table('oauth_access_tokens')->where('user_id',$user->id)->where('revoked',false)->first();
-        $user->api_token = $access_token->id;
+        $user->api_token = STR::random(80);
         $user->save();
 
         return app()->handle($request); 
@@ -137,8 +136,7 @@ class AuthController extends Controller
         ];
     
         $request = Request::create('/oauth/token', 'POST', $params);
-        $access_token = DB::table('oauth_access_tokens')->where('user_id',$user->id)->where('revoked',false)->first();
-        $user->api_token = $access_token->id;
+        $user->api_token = STR::random(80);
         $user->save();
     
         return app()->handle($request); 
