@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Modules\User\App\Models\User;
+use Modules\User\App\Models\User;
 use App\Models\PurchaseOrder;
 use App\Observers\PurchaseObserver;
 use Illuminate\Support\ServiceProvider;

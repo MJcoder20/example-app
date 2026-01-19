@@ -5,7 +5,7 @@ namespace Database\Factories;
 use App\Models\Item;
 use App\Models\Inventory;
 use App\Models\ManageUsers;
-use App\Modules\User\App\Models\User;
+use Modules\User\App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

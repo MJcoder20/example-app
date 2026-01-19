@@ -5,7 +5,7 @@ namespace Database\Factories;
 use App\Models\City;
 use App\Models\Vendor;
 use App\Models\Address;
-use App\Modules\User\App\Models\User;
+use Modules\User\App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

@@ -9,10 +9,10 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Modules\User\App\Models\User;
+use Modules\User\App\Models\User;
 use Laravel\Passport\Client as OClient;
 use Laravel\Socialite\Facades\Socialite;
-use App\Modules\User\App\Http\Requests\UserRequest;
+use Modules\User\App\Http\Requests\UserRequest;
 
 
 

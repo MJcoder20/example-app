@@ -6,7 +6,7 @@ use App\Models\City;
 use App\Models\Vendor;
 use App\Models\Address;
 use Illuminate\Database\Seeder;
-use App\Modules\User\App\Models\User;
+use Modules\User\App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class AddressSeeder extends Seeder
@@ -18,7 +18,7 @@ class AddressSeeder extends Seeder
      */
     public function run()
     {
-        Address::factory()->count(1)->for(\App\Modules\User\App\Models\User::factory(),'addressable')
+        Address::factory()->count(1)->for(\Modules\User\App\Models\User::factory(),'addressable')
         ->for(Vendor::factory(),'addressable')
         ->for(City::factory()->create())
         ->create();

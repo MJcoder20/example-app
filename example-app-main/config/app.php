@@ -190,7 +190,9 @@ return [
          * Package Service Providers...
          */
 
-        App\Modules\User\App\Providers\UserServiceProvider::class,
+        // Modules\User\App\Providers\UserServiceProvider::class,
+        Nwidart\Modules\LaravelModulesServiceProvider::class,
+        Modules\User\App\Providers\UserServiceProvider::class,
         
         /*
          * Application Service Providers...

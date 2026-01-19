@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use App\Modules\User\App\Models\User;
+use Modules\User\App\Models\User;
 use Illuminate\Support\Facades\Session;
 use App\Mail\LowItemQuantityNotification;
 use App\Notifications\VendorNotification;

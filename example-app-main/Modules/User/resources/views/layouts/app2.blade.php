@@ -119,7 +119,34 @@
       <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
      
+      {{-- <script>
+        // axios.defaults.withCredentials = true;
+        
+     </script> --}}
+     {{-- <script>
+ 
+        // const token = {{ request()->token }};
+        // const apiUrl = 'https://127.0.0.1:8000/api/login';
+       
+
+        // fetch(apiUrl, {
+        //     method: 'GET',
+        //     headers: {
+        //         'Authorization': `Bearer ${token}`,
+        //         'Content-Type': 'application/json',
+        //     },
+        // })
+        // .then(response => response.json())
+        // .then(data => {
+        //     return 'https://127.0.0.1:8000/';
+        // })
+        // .catch(error => {
+        //     return response()->json([
+        //         'message' => 'Invalid login details'
+        //     ], 401);
+        // });
       
+     </script> --}}
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
@@ -180,7 +207,7 @@
                  <div class="sidebar_user_info">
                     <div class="icon_setting"></div>
                     <div class="user_profle_side">
-                       <div class="user_img"><img class="img-responsive" src="{{ asset('Modules/User/images/'.Auth::user()->avatar) }}" alt="#" /></div>
+                       <div class="user_img"><img class="img-responsive" src="{{ asset('Modules/User/images/'.Auth::user()->avatar) }}" alt="User Image" /></div>
                        <div class="user_info">
                           <h6>{{ Auth::user()->username }}</h6>
                           <p><span class="online_animation"></span> Online</p>

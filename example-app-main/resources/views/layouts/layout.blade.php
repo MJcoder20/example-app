@@ -188,16 +188,17 @@
                  <div class="sidebar_user_info">
                     <div class="icon_setting"></div>
                     <div class="user_profle_side">
-                       <div class="user_img"><img class="img-responsive" src="{{ Auth::user()->avatar }}" alt="#" /></div>
+                       <div class="user_img"><img class="img-responsive" src="{{ asset('Modules/User/images/'.Auth::user()->avatar) }}" alt="#" /></div>
                        <div class="user_info">
                           <h6>{{ Auth::user()->username }}</h6>
                           <p><span class="online_animation"></span> Online</p>
                        </div>
                     </div>
                  </div>
-              </div>
+              </div><br><br>
+
               <div class="sidebar_blog_2">
-                
+                 <br>
                  <ul class="list-unstyled components">
 
                     <li class="active">

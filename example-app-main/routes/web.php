@@ -4,7 +4,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Modules\User\App\Models\User;
+use Modules\User\App\Models\User;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
 use Illuminate\Support\Facades\Password;

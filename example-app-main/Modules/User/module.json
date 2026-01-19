@@ -1,0 +1,6 @@
+{
+  "name": "User",
+  "providers": [
+    "Modules\\User\\App\\Providers\\UserServiceProvider"
+  ]
+}
